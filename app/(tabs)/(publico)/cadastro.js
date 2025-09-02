@@ -259,33 +259,27 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    scrollView: {
-        flexGrow: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     header: {
         width: '100%',
         alignItems: 'center',
-        paddingVertical: 50,
     },
     logoContainer: {
         width: 100,
         height: 100,
         justifyContent: 'center',
         alignItems: 'center',
+        marginTop: '110'
     },
     logo: {
-        width: '80',
-        height: '80',
+        width: '90',
+        height: '90',
         resizeMode: 'contain',
     },
     signUpContent: {
         width: '80%',
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignSelf: 'center',
         paddingHorizontal: 20,
+        alignItems: 'center',
     },
     signUpTextContainer: {
         marginBottom: 20,
@@ -301,7 +295,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 25,
         paddingLeft: 20,
-        marginBottom: 5,
+        marginBottom: 20,
         borderColor: '#a6a6a6',
         borderWidth: 1,
     },
@@ -312,7 +306,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fff',
         borderRadius: 25,
-        marginBottom: 5,
+        marginBottom: 20,
         paddingHorizontal: 15,
         borderColor: '#a6a6a6',
         borderWidth: 1,
@@ -323,11 +317,6 @@ const styles = StyleSheet.create({
     },
     icon: {
         paddingHorizontal: 5,
-    },
-    passwordHint: {
-        color: '#555555',
-        textAlign: 'center',
-        marginBottom: 5,
     },
     submitButton: {
         width: '70%',
@@ -357,7 +346,6 @@ const styles = StyleSheet.create({
     },
     loginButtonText: {
         fontSize: 14,
-
         color: '#148311',
         textDecorationLine: 'underline',
     },

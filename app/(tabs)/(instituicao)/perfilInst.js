@@ -9,7 +9,6 @@ import {
     ScrollView,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
@@ -28,7 +27,7 @@ function Header({ onMenuPress }) {
                 <TouchableOpacity onPress={onMenuPress}>
                     <Ionicons name="menu" size={40} color="#e3ff92" />
                 </TouchableOpacity>
-                 <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
                     <AntDesign name="home" size={40} margin={5} color="#e3ff92" />
                 </TouchableOpacity>
             </View>
@@ -87,12 +86,11 @@ export default function ProfileScreen() {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
     const [image, setImage] = useState(null);
-    const [userName, setUserName] = useState('Nome do usuário');
+    const [userName, setUserName] = useState('Nome da instituição');
     const [personalData, setPersonalData] = useState({
-        name: 'Claudia Almeida Ferreira',
-        date: '22/08/2007',
+        cnpj: '12.345.678/0001-46',
+        cpf: '123.456.789-00',
         email: 'exemplo@email.com',
-        password: '*******',
     });
 
     const pickImage = async () => {
@@ -137,29 +135,22 @@ export default function ProfileScreen() {
 
                 <View style={styles.card}>
                     <Text style={styles.cardTitle}>Dados pessoais</Text>
-                    <Text style={styles.label}>Nome:</Text>
+                    <Text style={styles.label}>CNPJ:</Text>
                     <TextInput
                         style={styles.input}
-                        value={personalData.name}
+                        value={personalData.cnpj}
                         editable={false}
                     />
-                    <Text style={styles.label}>Data de nascimento:</Text>
+                    <Text style={styles.label}>CPF:</Text>
                     <TextInput
                         style={styles.input}
-                        value={personalData.date}
+                        value={personalData.cpf}
                         editable={false}
                     />
                     <Text style={styles.label}>Email:</Text>
                     <TextInput
                         style={styles.input}
                         value={personalData.email}
-                        editable={false}
-                    />
-                    <Text style={styles.label}>Senha:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={personalData.password}
-                        secureTextEntry={true}
                         editable={false}
                     />
                 </View>
@@ -294,7 +285,7 @@ const styles = StyleSheet.create({
         right: 15,
         padding: 10,
     },
-      label: {
+    label: {
         fontSize: 14,
         color: '#b8bfa6',
         marginBottom: 4,

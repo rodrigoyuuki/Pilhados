@@ -16,7 +16,7 @@ function NewsDetailCard({ title, imageSource, imageCaption, author, date, conten
     const router = useRouter();
     return (
         <View style={styles.newsDetailCard}>
-            <TouchableOpacity onPress={() => router.push('inicio')} style={styles.backButton}>
+            <TouchableOpacity onPress={() => router.back('')} style={styles.backButton}>
                 <FontAwesome name="chevron-circle-left" size={33} margin={5} color="#148311" />
             </TouchableOpacity>
             <Text style={styles.newsTitle}>{title}</Text>

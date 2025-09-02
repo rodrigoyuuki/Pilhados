@@ -90,6 +90,13 @@ export default function StackLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="dica"
+        options={{
+          title: 'Dica',
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

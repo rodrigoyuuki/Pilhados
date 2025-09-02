@@ -22,7 +22,7 @@ function Header({ onMenuPress }) {
                 <TouchableOpacity onPress={onMenuPress}>
                     <Ionicons name="menu" size={40} color="#fff" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('perfil')}>
+                <TouchableOpacity onPress={() => router.push('perfilInst')}>
                     <Ionicons name="person-circle" size={40} color="#fff" />
                 </TouchableOpacity>
             </View>
@@ -107,7 +107,7 @@ export default function inicioInst() {
                     descricao="coleta realizada com o objetivo de remover pilhas e baterias usadas e quebradas."
                 />
             </ScrollView>
-            <TabBar />
+            <TabBar/>
             {shouldRenderDrawer && (
                 <Drawer
                     isVisible={isDrawerVisible}

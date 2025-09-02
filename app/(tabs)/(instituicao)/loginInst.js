@@ -144,7 +144,7 @@ export default function Login() {
                     </TouchableOpacity>
                     <View style={styles.registerContainer}>
                         <Text style={styles.registerText}>Não tem conta?</Text>
-                        <TouchableOpacity onPress={() => router.push('/cadastroInst')}>
+                        <TouchableOpacity onPress={() => router.push('cadastroInst')}>
                             <Text style={styles.registerLink}>Cadastre-se</Text>
                         </TouchableOpacity>
                     </View>

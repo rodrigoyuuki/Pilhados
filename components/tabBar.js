@@ -19,7 +19,7 @@ export default function TabBar(){
                     <Ionicons name="home" size={27} color="#e3ff92" />
                     <Text style={styles.tabText}>Home</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.tabItem}>
+                <TouchableOpacity style={styles.tabItem} onPress={() => router.push('dicas')}>
                     <Ionicons name="bulb-outline" size={27} color="#e3ff92" />
                     <Text style={styles.tabText}>Dicas</Text>
                 </TouchableOpacity>

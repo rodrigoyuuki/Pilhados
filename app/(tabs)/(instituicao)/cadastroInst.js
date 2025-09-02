@@ -21,9 +21,7 @@ import CustomModal from '../../../components/alerts';
 import LoadingModal from '../../../components/loading';
 import { auth, db } from "../../../firebase/firebaseConfig";
 
-
 export default function Cadastro() {
-
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [passHide, setPassHide] = useState(true);
@@ -36,6 +34,7 @@ export default function Cadastro() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [cpf, setCpf] = useState("");
   const [cnpj, setCnpj] = useState("");
+  const [nomeInst, setNomeInst] = useState(""); 
 
   useEffect(() => {
     const unsub = onAuthStateChanged(auth, (usuario) => {
@@ -101,6 +100,7 @@ export default function Cadastro() {
 
       await setDoc(doc(db, "instituicao", currentUser.uid), {
         email: email,
+        nome: nomeInst,
         cpf: cpf.replace(/\D/g, ''),
         cnpj: cnpj.replace(/\D/g, '')
       });
@@ -110,7 +110,7 @@ export default function Cadastro() {
         uid: currentUser.uid,
       });
 
-      router.push("/inicioInst"); 
+      router.push("/(app)/homeInst");
     } catch (err) {
       console.log("Error code: ", err.code);
       console.log("Error message: ", err.message);
@@ -139,7 +139,11 @@ export default function Cadastro() {
     const cleanedCpf = cpf.replace(/\D/g, '');
     const cleanedCnpj = cnpj.replace(/\D/g, '');
 
-    if (!email.trim()) {
+    if (!nomeInst.trim()) {
+        setErrorMessage("Digite o nome da instituição!");
+        setErrorModalVisible(true);
+        return false;
+    } else if (!email.trim()) {
       setErrorMessage("Digite seu email!");
       setErrorModalVisible(true);
       return false;
@@ -178,106 +182,108 @@ export default function Cadastro() {
 
   return (
     <SafeAreaView style={styles.container}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
         <LoadingModal visible={loading} message="Criando sua conta..." />
-          <View style={styles.header}>
-            <View style={styles.logoContainer}>
-              <Image
-                source={require('../../../assets/images/logo2.png')}
-                style={styles.logo}
-              />
-            </View>
+        <View style={styles.header}>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require('../../../assets/images/logo2.png')}
+              style={styles.logo}
+            />
           </View>
-          <View style={styles.signUpContent}>
-            <CustomModal
-              visible={errorModalVisible}
-              message={errorMessage}
-              onClose={() => setErrorModalVisible(false)}
-            />
-            <View style={styles.signUpTextContainer}>
-              <Text style={styles.signUpText}>Cadastro</Text>
-            </View>
+        </View>
+        <View style={styles.signUpContent}>
+          <CustomModal
+            visible={errorModalVisible}
+            message={errorMessage}
+            onClose={() => setErrorModalVisible(false)}
+          />
+          <View style={styles.signUpTextContainer}>
+            <Text style={styles.signUpText}>Cadastro</Text>
+          </View>
+          <TextInput
+            placeholder="Nome da Instituição"
+            style={styles.input}
+            placeholderTextColor={'#999'}
+            value={nomeInst}
+            onChangeText={setNomeInst}
+          />
+          <TextInput
+            placeholder="CPF"
+            style={styles.input}
+            keyboardType="numeric"
+            placeholderTextColor={'#999'}
+            value={cpf}
+            onChangeText={formatCpf}
+          />
+          <TextInput
+            placeholder="CNPJ"
+            style={styles.input}
+            keyboardType="numeric"
+            placeholderTextColor={'#999'}
+            value={cnpj}
+            onChangeText={formatCnpj}
+          />
+          <TextInput
+            placeholder="Email"
+            style={styles.input}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            placeholderTextColor={'#999'}
+            value={email}
+            onChangeText={setEmail}
+          />
+          <View style={styles.senhaContainer}>
             <TextInput
-              placeholder="CPF"
-              style={styles.input}
-              keyboardType="numeric"
-              placeholderTextColor={'#999'}
-              value={cpf}
-              onChangeText={formatCpf}
-            />
-            <TextInput
-              placeholder="CNPJ"
-              style={styles.input}
-              keyboardType="numeric"
-              placeholderTextColor={'#999'}
-              value={cnpj}
-              onChangeText={formatCnpj}
-            />
-            <TextInput
-              placeholder="Email"
-              style={styles.input}
+              placeholder="Senha"
+              style={styles.senhaInput}
               autoCapitalize="none"
-              keyboardType="email-address"
+              autoCorrect={false}
               placeholderTextColor={'#999'}
-              value={email}
-              onChangeText={setEmail}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={passHide}
             />
-            <View style={styles.senhaContainer}>
-              <TextInput
-                placeholder="Senha"
-                style={styles.senhaInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholderTextColor={'#999'}
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={passHide}
-              />
-              <TouchableOpacity style={styles.icon}
-                onPress={() => setPassHide(!passHide)}>
-                <Ionicons name={passHide ? 'eye-outline' : 'eye-off-outline'} size={24} color="#333" />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.senhaContainer}>
-              <TextInput
-                placeholder="Confirmar senha"
-                style={styles.senhaInput}
-                autoCapitalize="none"
-                autoCorrect={false}
-                placeholderTextColor={'#999'}
-                value={confirmPassword}
-                onChangeText={setConfirmPassword}
-                secureTextEntry={passHide2}
-              />
-              <TouchableOpacity style={styles.icon}
-                onPress={() => setPassHide2(!passHide2)}>
-                <Ionicons name={passHide2 ? 'eye-outline' : 'eye-off-outline'} size={24} color="#333" />
-              </TouchableOpacity>
-            </View>
-            <Text style={styles.passwordHint}>
-              A senha precisa ter 8 caracteres{"\n"}
-              contendo no mín. um especial{"\n"}
-              (!@#$_-*&)
-            </Text>
-            <TouchableOpacity
-              style={styles.submitButton}
-              onPress={handleCreateUser}
-              disabled={loading}
-            >
-              <Text style={styles.submitText}>Cadastrar</Text>
+            <TouchableOpacity style={styles.icon}
+              onPress={() => setPassHide(!passHide)}>
+              <Ionicons name={passHide ? 'eye-outline' : 'eye-off-outline'} size={24} color="#333" />
             </TouchableOpacity>
-            <View style={styles.loginTextContainer}>
-              <Text style={styles.loginText}>Já tem conta?</Text>
-              <TouchableOpacity
-                style={styles.loginButton}
-                onPress={() => router.push('/loginInst')}
-              >
-                <Text style={styles.loginButtonText}>Acesse aqui!</Text>
-              </TouchableOpacity>
-            </View>
           </View>
+          <View style={styles.senhaContainer}>
+            <TextInput
+              placeholder="Confirmar senha"
+              style={styles.senhaInput}
+              autoCapitalize="none"
+              autoCorrect={false}
+              placeholderTextColor={'#999'}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry={passHide2}
+            />
+            <TouchableOpacity style={styles.icon}
+              onPress={() => setPassHide2(!passHide2)}>
+              <Ionicons name={passHide2 ? 'eye-outline' : 'eye-off-outline'} size={24} color="#333" />
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            style={styles.submitButton}
+            onPress={handleCreateUser}
+            disabled={loading}
+          >
+            <Text style={styles.submitText}>Cadastrar</Text>
+          </TouchableOpacity>
+          <View style={styles.loginTextContainer}>
+            <Text style={styles.loginText}>Já tem conta?</Text>
+            <TouchableOpacity
+              style={styles.loginButton}
+              onPress={() => router.push("loginInst")}
+            >
+              <Text style={styles.loginButtonText}>Acesse aqui!</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
@@ -291,7 +297,6 @@ const styles = StyleSheet.create({
   header: {
     width: '100%',
     alignItems: 'center',
-    paddingTop: 70,
   },
   logoContainer: {
     width: 100,
@@ -324,7 +329,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f8ffe3',
     borderRadius: 25,
     paddingLeft: 20,
-    marginBottom: 5,
+    marginBottom: 20,
     borderColor: '#a6a6a6',
     borderWidth: 1,
   },
@@ -335,7 +340,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f8ffe3',
     borderRadius: 25,
-    marginBottom: 5,
+    marginBottom: 20,
     paddingHorizontal: 15,
     borderColor: '#a6a6a6',
     borderWidth: 1,
@@ -346,12 +351,6 @@ const styles = StyleSheet.create({
   },
   icon: {
     paddingHorizontal: 5,
-  },
-  passwordHint: {
-    color: '#555555',
-    textAlign: 'left',
-    marginBottom: 5,
-    width: '90%'
   },
   submitButton: {
     width: '70%',

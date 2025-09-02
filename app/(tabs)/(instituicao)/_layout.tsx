@@ -41,6 +41,13 @@ export default function StackLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="perfilInst"
+        options={{
+          title: 'perfilInst',
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }
