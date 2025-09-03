@@ -52,7 +52,7 @@ export default function Configuracoes() {
                     <TouchableOpacity style={styles.item} onPress={() => console.log('Ajuda e suporte')}>
                         <Text style={styles.itemText}>Ajuda e suporte</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.item} onPress={() => router.push('boasvindas')}>
+                    <TouchableOpacity style={styles.item} onPress={() => router.push('boasVindas')}>
                         <Text style={styles.itemText}>Sair</Text>
                         <FontAwesome name="sign-out" size={20} color="#000" />
                     </TouchableOpacity>

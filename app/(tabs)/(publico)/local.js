@@ -132,7 +132,7 @@ export default function AgendamentoLocal() {
                         <SchedulingForm />
                         <TouchableOpacity
                             style={styles.proceedButton}
-                            onPress={() => router.push('valorfinal')}
+                            onPress={() => router.push('valorFinal')}
                         >
                             <Text style={styles.proceedButtonText}>Prosseguir</Text>
                         </TouchableOpacity>
