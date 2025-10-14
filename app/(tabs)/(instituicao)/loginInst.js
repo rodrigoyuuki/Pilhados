@@ -27,9 +27,9 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    function esqueciSenha(){
-         setErrorMessage("Em produção!");
-         setErrorModalVisible(true);
+    function esqueciSenha() {
+        setErrorMessage("Em produção!");
+        setErrorModalVisible(true);
     }
 
     function handleSignIn() {
@@ -44,7 +44,7 @@ export default function Login() {
                     email: currentUser.email,
                     uid: currentUser.uid,
                 });
-                router.push('inicioInst'); 
+                router.push('inicioInst');
             })
 
             .catch((err) => {
@@ -96,6 +96,8 @@ export default function Login() {
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+                
+                
                 <LoadingModal visible={loading} message="Fazendo login..." />
                 <CustomModal
                     visible={errorModalVisible}
@@ -132,8 +134,8 @@ export default function Login() {
                         </TouchableOpacity>
                     </View>
                     <TouchableOpacity
-                        onPress={esqueciSenha}
                         style={styles.forgotPasswordButton}
+                        onPress={esqueciSenha}
                     >
                         <Text style={styles.linkText}>Esqueceu sua senha?</Text>
                     </TouchableOpacity>
@@ -208,7 +210,7 @@ const styles = StyleSheet.create({
         color: '#555555',
     },
     loginButton: {
-        width: '50%',
+        width: '80%',
         height: 50,
         backgroundColor: '#148311',
         borderRadius: 25,

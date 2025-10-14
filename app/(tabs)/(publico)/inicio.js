@@ -14,6 +14,16 @@ import TabBar from '../../../components/tabBar';
 
 function Header({ onMenuPress }) {
     const router = useRouter();
+    const { noticia } = router.params;
+
+    if (!noticia) {
+        return (
+            <View style={styles.container}>
+                <Text style={{ color: 'white' }}>Opção não encontrado.</Text>
+            </View>
+        );
+    }
+
     return (
         <View style={styles.header}>
             <View style={styles.headerTopRow}>
@@ -41,20 +51,6 @@ function ServiceCard() {
     );
 }
 
-function NewsCard({ title, content, destination }) {
-    const router = useRouter();
-    return (
-        <View style={styles.newsCard}>
-            <Text style={styles.newsTitle}>{title}</Text>
-            <Text style={styles.newsContent}>{content}</Text>
-            <TouchableOpacity style={styles.readMoreButton} onPress={() => router.push('noticia')}>
-                <Text style={styles.readMoreText}>Ler mais</Text>
-                <Ionicons name="add-circle" size={20} color="#f8ffe3" style={styles.readMoreIcon} />
-            </TouchableOpacity>
-        </View>
-    );
-}
-
 export default function Inicio() {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
@@ -71,16 +67,16 @@ export default function Inicio() {
             <Header onMenuPress={toggleDrawer} />
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <ServiceCard />
-                <NewsCard
-                    title="Escola em Taboão da Serra realiza campanha para coleta"
-                    content="Durante o mês de agosto, a ETEC de Taboão da Serra realizará uma campanha para coleta de lixo eletrônico. A mobilização foi gerada através de um projeto dos alunos."
-                    destination="noticia1"
-                />
-                <NewsCard
-                    title="Conheça a AjudaAÊ, a nova ONG parceira do Pilhados"
-                    content="A AjudaAÊ existe desde 2005 e surgiu como uma iniciativa de auxiliar pessoas desabrigadas."
-                    destination="noticia2"
-                />
+
+                <View style={styles.newsCard}>
+                    <Text style={styles.newsTitle}>{noticia.title}</Text>
+                    <Text style={styles.newsContent}>{noticia.content}</Text>
+
+                    <TouchableOpacity style={styles.readMoreButton} onPress={() => router.push('noticia')}>
+                        <Text style={styles.readMoreText}>Ler mais</Text>
+                        <Ionicons name="add-circle" size={20} color="#f8ffe3" style={styles.readMoreIcon} />
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
             <TabBar />
             {shouldRenderDrawer && (

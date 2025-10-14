@@ -9,18 +9,21 @@ import {
     Image,
     TextInput,
     KeyboardAvoidingView,
-    ScrollView,
-    Platform
+    Platform,
+    ScrollView, // Mantido apenas para garantir que o scroll funcione, mas removido do bloco de renderização principal para replicar a estrutura do segundo código
 } from 'react-native';
+// Verifique se o caminho para o firebaseConfig está correto no seu projeto
 import { auth } from '../../../firebase/firebaseConfig'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import CustomModal from '../../../components/alerts';
+import LoadingModal from '../../../components/loading'; // Adicionado, pois estava no segundo bloco de código
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 
 
 export default function Login() {
     const router = useRouter();
+    const [loading, setLoading] = useState(false); // Adicionado o estado de loading do segundo bloco
     const [passHide, setPassHide] = useState(true);
     const [errorModalVisible, setErrorModalVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
@@ -38,39 +41,34 @@ export default function Login() {
             return;
         }
 
+        setLoading(true); // Inicia o loading
+
         signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
+                setLoading(false); // Para o loading em sucesso
                 const currentUser = userCredential.user;
                 setUser({
                     email: currentUser.email,
                     uid: currentUser.uid,
                 });
+                // Note que o segundo bloco usava 'inicioInst'. Mantenho a rota 'inicio' do seu primeiro bloco.
+                // Se você realmente quiser a rota do segundo bloco, mude para router.push('inicioInst');
                 router.push('inicio');
             })
 
             .catch((err) => {
+                setLoading(false); // Para o loading em erro
                 console.log(err.code);
-                if (err.code === "auth/invalid-email") {
+                if (err.code === "auth/invalid-email" || err.code === "auth/invalid-credential") {
                     setErrorMessage("Email ou senha inválidos!");
                     setErrorModalVisible(true);
-                }
-
-                else if (err.code === "auth/missing-password") {
+                } else if (err.code === "auth/missing-password") {
                     setErrorMessage("A senha é obrigatória!");
                     setErrorModalVisible(true);
-                }
-
-                else if (err.code === "auth/invalid-credential") {
-                    setErrorMessage("Email ou senha inválidos!");
-                    setErrorModalVisible(true);
-                }
-
-                else if (err.code === "auth/user-not-found") {
+                } else if (err.code === "auth/user-not-found") {
                     setErrorMessage("Usuário não encontrado!");
                     setErrorModalVisible(true);
-                }
-
-                else {
+                } else {
                     setErrorMessage("Erro ao tentar fazer login! Tente novamente.");
                     setErrorModalVisible(true);
                 }
@@ -96,14 +94,16 @@ export default function Login() {
         <SafeAreaView style={styles.container}>
             <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
-                style={{ flex: 1 }}>
-                <ScrollView contentContainerStyle={styles.scrollView}>
-                    <CustomModal
-                        visible={errorModalVisible}
-                        message={errorMessage}
-                        onClose={() => setErrorModalVisible(false)}
+                style={{ flex: 1, width: '100%', alignItems: 'center', justifyContent: 'center' }}>
 
-                    />
+                {/* Adicionado o LoadingModal do segundo bloco */}
+                <LoadingModal visible={loading} message="Fazendo login..." />
+
+                <CustomModal
+                    visible={errorModalVisible}
+                    message={errorMessage}
+                    onClose={() => setErrorModalVisible(false)}
+                />
                     <View style={styles.content}>
                         <Image
                             source={require('../../../assets/images/logo.png')}
@@ -137,21 +137,20 @@ export default function Login() {
                             style={styles.forgotPasswordButton}
                             onPress={esqueciSenha}>
                             <Text style={styles.linkText}>Esqueceu sua senha?</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.loginButton}
-                        onPress={() => handleSignIn('inicio')}>
-                        <Text style={styles.loginButtonText}>Login</Text>
-                    </TouchableOpacity>
-                    <View style={styles.registerContainer}>
-                        <Text style={styles.registerText}>Não tem conta?</Text>
-                        <TouchableOpacity onPress={() => router.push("cadastro")}>
-                            <Text style={styles.registerLink}>Cadastre-se</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity
+                            style={styles.loginButton}
+                            onPress={handleSignIn}>
+                            <Text style={styles.loginButtonText}>Login</Text>
+                        </TouchableOpacity>
+                        <View style={styles.registerContainer}>
+                            <Text style={styles.registerText}>Não tem conta?</Text>
+                            <TouchableOpacity onPress={() => router.push("cadastro")}>
+                                <Text style={styles.registerLink}>Cadastre-se</Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-            </ScrollView>
-        </KeyboardAvoidingView>
+            </KeyboardAvoidingView>
         </SafeAreaView >
     );
 }
@@ -160,18 +159,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        alignItems: 'center',
-    },
-    scrollView: {
-        flexGrow: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
     },
     content: {
-        width: '100%',
+        width: '85%',
+        alignSelf: 'center',
         alignItems: 'center',
-        paddingHorizontal: 20,
     },
     logo: {
         width: 120,
@@ -210,14 +202,14 @@ const styles = StyleSheet.create({
     },
     forgotPasswordButton: {
         alignSelf: 'flex-end',
-        marginRight: '40%',
+        marginRight: '10%',
         marginBottom: 30,
     },
     linkText: {
         color: '#555555',
     },
     loginButton: {
-        width: '50%',
+        width: '80%',
         height: 50,
         backgroundColor: '#148311',
         borderRadius: 25,
@@ -231,7 +223,6 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
     },
     registerContainer: {
-        flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 10,
     },

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     View,
@@ -7,39 +7,50 @@ import {
     TouchableOpacity,
     Image,
     ScrollView,
+    FlatList
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
-function NewsDetailCard({ title, imageSource, imageCaption, author, date, content, coment,  onGoBack }) {
-    const router = useRouter();
-    return (
-        <View style={styles.newsDetailCard}>
-            <TouchableOpacity onPress={() => router.back('')} style={styles.backButton}>
-                <FontAwesome name="chevron-circle-left" size={33} margin={5} color="#148311" />
-            </TouchableOpacity>
-            <Text style={styles.newsTitle}>{title}</Text>
-            <Text style={styles.newsContent}>{content}</Text>
-            {imageSource && (
-                <View style={styles.imageContainer}>
-                    <Image source={imageSource} style={styles.newsImage} />
-                    <Text style={styles.imageCaption}>{imageCaption}</Text>
-                </View>
-            )}
-            <View style={styles.authorContainer}>
-                <Ionicons name="person-circle" size={30} color="#148311" />
-                <View>
-                    <Text style={styles.authorText}>{author}</Text>
-                    <Text style={styles.dateText}>{date}</Text>
-                </View>
-            </View>
-            <Text style={styles.fullContent}>{coment}</Text>
-        </View>
-    );
-}
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../../firebase/firebaseConfig";
 
 export default function NewsScreen() {
+    const [listaNoticias, setListaNoticias] = useState([]);
+
+    function infoNoticias(doc) {
+        const data = doc.data();
+        return {
+            id: doc.id,
+            content: data.content,
+            createdAt: data.createdAt,
+            imageUri: data.imageUri,
+            summary: data.summary,
+            title: data.title,
+        };
+    }
+
+    async function getDados() {
+        const noticias = [];
+        try {
+            const docRef = collection(db, "noticias");
+            const snapshot = await getDocs(docRef);
+
+            snapshot.forEach((doc) => {
+                const noticia = infoNoticias(doc);
+                noticias.push(noticia);
+            });
+            setListaNoticias(noticias);
+        } catch (err) {
+            console.error("Erro ao carregar notícias:", err);
+        }
+    }
+
+
+    useEffect(() => {
+        getDados();
+    }, []);
+
     const handleGoBack = () => {
         console.log("Botão de voltar pressionado.");
     };
@@ -47,16 +58,7 @@ export default function NewsScreen() {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <NewsDetailCard
-                    title="Escola em Taboão da Serra realiza campanha para coleta"
-                    content="Durante o mês de agosto, a ETEC de Taboão da Serra realizará uma campanha para coleta de lixo eletrônico. A mobilização foi gerada através de um projeto dos alunos."
-                    coment="A Escola Técnica Estadual (ETEC) de Taboão da Serra será o ponto de partida para uma importante iniciativa ambiental neste mês de agosto. Por meio de um projeto idealizado e organizado por seus próprios alunos, a instituição promove uma campanha de coleta de lixo eletrônico, incentivando a comunidade a descartar corretamente equipamentos que não são"
-                    imageSource={{ uri: 'https://taboaoemfoco.com.br/wp-content/uploads/2018/03/Predio-da-Etec-Taboao.jpg' }}
-                    imageCaption="Fonte: dos próprios autores, 2025"
-                    author="Helena Lee"
-                    date="08 de agosto de 2025, 09:31"
-                    onGoBack={handleGoBack}
-                />
+                 <Text key={item.id}>{item.content}</Text>
             </ScrollView>
         </SafeAreaView>
     );

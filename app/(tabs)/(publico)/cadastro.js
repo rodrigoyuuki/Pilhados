@@ -222,13 +222,6 @@ export default function SignUp() {
                             </TouchableOpacity>
                         </View>
 
-                        <Text style={styles.passwordHint}>
-                            A senha precisa ter 8 caracteres{"\n"}
-                            contendo no mín. um especial{"\n"}
-                            (!@#$_-*&)
-                        </Text>
-
-
                         <TouchableOpacity
                             style={styles.submitButton}
                             onPress={handleCreateUser}
@@ -288,6 +281,7 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: 'bold',
         color: '#555555',
+        paddingBottom: 20,
     },
     input: {
         width: '90%',
@@ -325,7 +319,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 20,
+        marginTop: 10,
     },
     submitText: {
         fontWeight: 'bold',

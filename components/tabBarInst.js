@@ -10,12 +10,14 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import EvilIcons from '@expo/vector-icons/EvilIcons';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
-export default function TabBar(){
+export default function TabBar() {
 
-        const router = useRouter();
-        return (
-             <View style={styles.tabBar}>
+    const router = useRouter();
+    return (
+        <View style={styles.tabBar}>
             <TouchableOpacity
                 style={styles.tabItem}
                 onPress={() => router.push("homeInst")}>
@@ -28,16 +30,24 @@ export default function TabBar(){
                 <AntDesign name="pluscircleo" size={24} color="#e3ff92" />
                 <Text style={styles.tabText}>Ideias</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.tabItem}>
+            <TouchableOpacity
+                style={styles.tabItem}
+                onPress={() => router.push("")}>
+                <FontAwesome5 name="clock" size={24} color="#e3ff92" />
+                <Text style={styles.tabText}>Histórico</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.tabItem}
+                onPress={() => router.push("")}>
                 <Ionicons name="calendar-outline" size={27} color="#e3ff92" />
                 <Text style={styles.tabText}>Calendário</Text>
             </TouchableOpacity>
         </View>
-        );
+    );
 }
 
 const styles = StyleSheet.create({
-     tabBar: {
+    tabBar: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
