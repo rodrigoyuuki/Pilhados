@@ -4,22 +4,21 @@ import {
     Text,
     TouchableOpacity,
 } from 'react-native';
-import {Ionicons, Feather} from '@expo/vector-icons';
+import { Ionicons, Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
-export default function HeaderInicio({onMenuPress}) {
+export default function HeaderPerfil({ onMenuPress }) {
     const router = useRouter();
     return (
         <View style={styles.header}>
             <View style={styles.headerTopRow}>
                 <TouchableOpacity onPress={onMenuPress}>
-                    <Feather name="menu" size={35} color="white" />
+                    <Ionicons name="menu" size={40} color="#e3ff92" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('perfil')}>
-                    <Ionicons name="person-circle" size={40} color="#fff" />
+                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+                    <Ionicons name="home" size={30} color="#e3ff92" />
                 </TouchableOpacity>
             </View>
-            <Text style={styles.headerTitle}>Olá, bem vindo ao PILHADOS!</Text>
         </View>
     );
 }
@@ -36,9 +35,5 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         marginBottom: 10,
-    },
-    headerTitle: {
-        fontSize: 16,
-        color: '#fff',
     },
 })

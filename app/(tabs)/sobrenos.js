@@ -3,12 +3,11 @@ import {
     StyleSheet,
     View,
     Text,
-    SafeAreaView,
     TouchableOpacity,
     ScrollView,
     Linking,
 } from 'react-native';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 
 export default function Sobrenos() {
@@ -30,13 +29,21 @@ export default function Sobrenos() {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-                    <FontAwesome name="chevron-circle-left" size={40} margin={5} color="#148311" />
+                <TouchableOpacity
+                    style={styles.backButton}
+                    onPress={handleGoBack}>
+                    <Ionicons name="chevron-back" size={24} color="white" />
                 </TouchableOpacity>
-                <Text style={styles.title}>Sobre nós</Text>
+
+                <View style={styles.titleView}>
+                    <Text style={styles.title}>Sobre nós</Text>
+                </View>
+
+                <View style={{ width: 45 }}></View>
             </View>
+            <View style={{height: 1, width: '100%', backgroundColor: '#a6a6a6'}}></View>
 
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View>
@@ -79,7 +86,7 @@ export default function Sobrenos() {
                     </Text>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </View>
     );
 }
 
@@ -89,32 +96,39 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     header: {
-        flexDirection: 'row',
+        width: '100%',
+        height: 115,
         alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 20,
-        paddingHorizontal: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: '#a6a6a6',
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        padding: 30,
     },
-    backButton: {
-        position: 'absolute',
-        left: 20,
-        paddingTop: 25,
+    titleView: {
+        alignSelf: 'center',
+        marginHorizontal: 'auto',
     },
     title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#000',
-        paddingTop: 25,
+        fontSize: 22,
+        color: 'black',
+        fontFamily: 'Poppins ExtraBold',
+    },
+    backButton: {
+        width: 35,
+        height: 35,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#148311',
+        borderRadius: 50,
+        alignSelf: 'flex-start',
     },
     scrollViewContent: {
         paddingVertical: 20,
         paddingHorizontal: 15,
     },
     paragraph: {
-        fontSize: 16,
-        lineHeight: 24,
+        fontSize: 15,
+        lineHeight: 22,
+        textAlign: 'justify',
         color: '#333',
         marginBottom: 15,
         marginRight: 15,

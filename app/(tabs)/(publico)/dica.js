@@ -1,20 +1,27 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import {
-    StyleSheet,
-    View,
-    Text,
-    SafeAreaView,
-    TouchableOpacity,
     Image,
     ScrollView,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+    Dimensions
 } from 'react-native';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { useRouter } from 'expo-router';
-import { useLocalSearchParams } from 'expo-router';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function App() {
     const router = useRouter();
     const params = useLocalSearchParams();
+    const scrollViewRef = useRef(null);
+    const [indexAtual, setIndexAtual] = useState(0);
+    const telaWidth = Dimensions.get('window').width;
+
+    const cardContainerWidth = telaWidth * 0.9;
+    const paddingCardContainer = 24 * 2;
+    const cardInnerWidth = cardContainerWidth - paddingCardContainer;
 
     const handleGoBack = () => {
         router.back();
@@ -22,7 +29,6 @@ export default function App() {
 
     let sectionText = [];
     let sectionTitle = [];
-
     try {
         sectionText = JSON.parse(params.sectionText);
         sectionTitle = JSON.parse(params.sectionTitle);
@@ -31,37 +37,69 @@ export default function App() {
         sectionTitle = [params.sectionTitle];
     }
 
+    const handleScroll = (event) => {
+        const offsetX = event.nativeEvent.contentOffset.x;
+        const index = Math.round(offsetX / cardInnerWidth);
+        setIndexAtual(index);
+    };
+
+    const handleDotPress = (index) => {
+        scrollViewRef.current?.scrollTo({ x: index * cardInnerWidth, animated: true });
+        setIndexAtual(index);
+    };
+
     return (
-        <SafeAreaView style={styles.container}>
-            <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <View style={styles.cardContainer}>
-                    <TouchableOpacity
-                        onPress={handleGoBack}
-                        style={styles.backButton}>
-                        <FontAwesome name="chevron-circle-left" size={33} margin={5} color="#f8ffe3" />
-                    </TouchableOpacity>
+        <View style={styles.container}>
+            <View style={styles.cardContainer}>
+                <TouchableOpacity
+                    onPress={handleGoBack}
+                    style={styles.backButton}>
+                    <Ionicons name="chevron-back" size={24} color="#0e670b" />
+                </TouchableOpacity>
 
-                    <Text style={styles.cardTitle}>{params.title}</Text>
-                    <View style={styles.contentArea}>
-                        <View style={styles.imageContainer}>
-                            <Image source={{ uri: params.image }} style={styles.cardImage} />
-                        </View>
-
-                        <Text style={styles.sectionTitle}>{sectionTitle[0]}</Text>
-                        <View style={styles.mainContent}>
-                            <Text style={styles.textContent}>{sectionText[0]}</Text>
-                        </View>
+                <Text style={styles.cardTitle}>{params.title}</Text>
+                <View style={styles.contentArea}>
+                    <View style={styles.imageContainer}>
+                        <Image source={{ uri: params.image }} style={styles.cardImage} />
                     </View>
+
+                    <ScrollView
+                        ref={scrollViewRef}
+                        horizontal
+                        pagingEnabled
+                        showsHorizontalScrollIndicator={false}
+                        onScroll={handleScroll}
+                        scrollEventThrottle={16}
+                        contentContainerStyle={{ alignItems: 'flex-start' }}
+                    >
+                        {sectionTitle.map((title, index) => {
+                            return (
+                                <View
+                                    key={index}
+                                    style={{
+                                        width: cardInnerWidth,
+                                        paddingVertical: 20,
+                                        paddingHorizontal: 20
+                                    }} >
+                                    <Text style={styles.sectionTitle}>{title}</Text>
+                                    <Text style={styles.textContent}>{sectionText[index]}</Text>
+                                </View>
+                            );
+                        })}
+                    </ScrollView>
 
                     <View style={styles.dotNav}>
-                        <View style={[styles.dot, styles.activeDot]}></View>
-                        <View style={styles.dot}></View>
-                        <View style={styles.dot}></View>
-                        <View style={styles.dot}></View>
+                        {sectionTitle.map((_, index) => (
+                            <TouchableOpacity
+                                key={index}
+                                style={[styles.dot, indexAtual === index && styles.activeDot]}
+                                onPress={() => handleDotPress(index)}
+                            />
+                        ))}
                     </View>
                 </View>
-            </ScrollView>
-        </SafeAreaView>
+            </View >
+        </View >
     );
 }
 
@@ -69,15 +107,13 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#f2ffcb',
-    },
-    scrollViewContent: {
         alignItems: 'center',
         paddingVertical: 80,
     },
     cardContainer: {
         width: '90%',
         backgroundColor: '#0e670b',
-        borderRadius: 32,
+        borderRadius: 20,
         shadowColor: "#000",
         shadowOffset: {
             width: 0,
@@ -86,7 +122,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        paddingVertical: 32,
+        paddingVertical: 30,
         paddingHorizontal: 24,
         position: 'relative',
     },
@@ -94,10 +130,15 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: 16,
         left: 16,
-        zIndex: 1,
+        backgroundColor: '#f8ffe3',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 33,
+        height: 33
     },
     cardTitle: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: 'bold',
         color: '#f8ffe3',
         textAlign: 'center',
@@ -118,15 +159,11 @@ const styles = StyleSheet.create({
         height: 200,
         borderRadius: 16,
     },
-    /*imageCaption: {
-        fontSize: 12,
-        color: '#f8ffe3',
-        marginTop: 8,
-        textAlign: 'center',
-    },*/
     textContent: {
         width: '100%',
-        alignItems: 'center',
+        textAlign: 'justify',
+        color: '#f8ffe3',
+        fontSize: 13,
     },
     sectionTitle: {
         fontSize: 18,
@@ -135,24 +172,16 @@ const styles = StyleSheet.create({
         color: '#f8ffe3',
         marginBottom: 8,
     },
-    mainContent: {
-        fontSize: 14,
-        lineHeight: 20,
-        color: '#f8ffe3',
-        textAlign: 'center',
-        textAlign: 'justify'
-    },
     dotNav: {
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: 24,
-        marginBottom: 16,
     },
     dot: {
-        width: 12,
-        height: 12,
-        backgroundColor: '#edffb9',
+        width: 10,
+        height: 10,
+        backgroundColor: '#f8ffe3',
         borderRadius: 6,
         marginHorizontal: 4,
     },

@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
 import {
     StyleSheet,
     View,
     Text,
-    SafeAreaView,
     TouchableOpacity,
-    ScrollView,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
@@ -23,12 +20,11 @@ export default function ServiceCard() {
 }
 
 const styles = StyleSheet.create({
-
     serviceCard: {
-        width: '90%',
+        width: '70%',
         backgroundColor: '#f8ffe3',
         borderRadius: 20,
-        padding: 25,
+        padding: 35,
         alignItems: 'center',
         marginBottom: 20,
         shadowColor: '#000',
@@ -38,19 +34,19 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     serviceText: {
-        fontSize: 18,
+        fontSize: 15,
         color: '#148311',
         marginBottom: 15,
     },
     serviceButton: {
         backgroundColor: '#148311',
-        paddingHorizontal: 30,
+        paddingHorizontal: 10,
         paddingVertical: 12,
-        borderRadius: 10,
+        borderRadius: 13,
     },
     serviceButtonText: {
         color: '#f8ffe3',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 13,
     },
 })

@@ -9,6 +9,7 @@ import {
     Switch
 } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 
 export default function Configuracoes() {
@@ -26,20 +27,27 @@ export default function Configuracoes() {
     return (
         <SafeAreaView style={styles.container}>
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-                    <FontAwesome name="chevron-circle-left" size={33} margin={5} color="#148311" />
+                <TouchableOpacity
+                    style={styles.backButton}
+                    onPress={handleGoBack}>
+                    <Ionicons name="chevron-back" size={24} color="white" />
                 </TouchableOpacity>
-                <Text style={styles.title}>Configurações</Text>
+
+                <View style={styles.titleView}>
+                    <Text style={styles.title}>Configurações</Text>
+                </View>
+
+                <View style={{ width: 45 }}></View>
             </View>
+            <View style={{ height: 1, width: '100%', backgroundColor: '#a6a6a6' }}></View>
 
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>Notificações</Text>
                     <View style={styles.item}>
                         <Text style={styles.itemText}>Notificações</Text>
                         <Switch
-                            trackColor={{ false: "#767577", true: "#4ca444" }}
-                            thumbColor={isNotificationsEnabled ? "#148311" : "#f4f3f4"}
+                            trackColor={{ false: "#767577", true: "#d0eb7dff" }}
+                            thumbColor={isNotificationsEnabled ? "#4ca444" : "#f4f3f4"}
                             ios_backgroundColor="#3e3e3e"
                             onValueChange={() => setIsNotificationsEnabled(previousState => !previousState)}
                             value={isNotificationsEnabled}
@@ -49,12 +57,15 @@ export default function Configuracoes() {
 
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Outros</Text>
-                    <TouchableOpacity style={styles.item} onPress={() => console.log('Ajuda e suporte')}>
+                    <TouchableOpacity onPress={() => console.log('Ajuda e suporte')}>
                         <Text style={styles.itemText}>Ajuda e suporte</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.item} onPress={() => router.push('boasVindas')}>
+
+                    <View style={{ height: 1, width: '100%', backgroundColor: '#a6a6a6', marginVertical: 15 }}></View>
+
+                    <TouchableOpacity style={styles.logOut} onPress={() => router.push('boasVindas')}>
                         <Text style={styles.itemText}>Sair</Text>
-                        <FontAwesome name="sign-out" size={20} color="#000" />
+                        <FontAwesome style={{marginLeft: 10}} name="sign-out" size={20} color="#000" />
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -68,31 +79,37 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
     },
     header: {
-        flexDirection: 'row',
+        width: '100%',
+        height: 115,
         alignItems: 'center',
-        justifyContent: 'center',
-        paddingVertical: 20,
-        paddingHorizontal: 20,
-        borderBottomWidth: 1,
-        borderBottomColor: '#a6a6a6',
+        justifyContent: 'flex-start',
+        flexDirection: 'row',
+        padding: 30,
     },
-    backButton: {
-        position: 'absolute',
-        left: 20,
-        paddingTop: 25,
+    titleView: {
+        alignSelf: 'center',
+        marginHorizontal: 'auto',
     },
     title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#000',
-        paddingTop: 25,
+        fontSize: 22,
+        color: 'black',
+        fontFamily: 'Poppins ExtraBold',
+    },
+    backButton: {
+        width: 35,
+        height: 35,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#148311',
+        borderRadius: 50,
+        alignSelf: 'flex-start',
     },
     scrollViewContent: {
         paddingVertical: 20,
-        paddingHorizontal: 15,
+        paddingHorizontal: 30,
     },
     section: {
-        marginBottom: 30,
+        marginBottom: 10,
     },
     sectionTitle: {
         fontSize: 18,
@@ -105,11 +122,12 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingVertical: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee',
     },
     itemText: {
         fontSize: 16,
         color: '#333',
     },
+    logOut: {
+        flexDirection: 'row'
+    }
 });

@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  SafeAreaView,
   ScrollView,
   TouchableOpacity,
   Image,
@@ -25,7 +24,6 @@ export default function Dicas() {
     const data = doc.data();
     return {
       id: doc.id,
-      content: data.content,
       description: data.description,
       image: data.image,
       title: data.title,
@@ -61,7 +59,7 @@ export default function Dicas() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View style={styles.header}>
           <Ionicons name="bulb-outline" size={60} color="#148311" />
@@ -76,7 +74,6 @@ export default function Dicas() {
               pathname: '/dica',
               params: {
                 id: item.id,
-                content: item.content,
                 description: item.description,
                 image: item.image,
                 title: item.title,
@@ -89,13 +86,16 @@ export default function Dicas() {
               <Text style={styles.cardTitle}>{item.title}</Text>
               <Text style={styles.cardDescription}>{item.description}</Text>
             </View>
-            <Ionicons name="chevron-forward" size={24} color="#148311" />
+            <TouchableOpacity style={styles.cardButton}>
+              <Ionicons name="chevron-forward" size={24} color="#b6e388" />
+            </TouchableOpacity>
           </TouchableOpacity>
         ))}
 
       </ScrollView>
 
       <TabBar />
+
       {shouldRenderDrawer && (
         <Drawer
           isVisible={isDrawerVisible}
@@ -103,7 +103,7 @@ export default function Dicas() {
           setShouldRenderDrawer={setShouldRenderDrawer}
         />
       )}
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -137,13 +137,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   cardImage: {
-    width: 80,
+    width: 90,
     height: 100,
-    borderRadius: 10,
+    borderRadius: 30,
     marginRight: 10,
   },
   cardContent: {
     flex: 1,
+    marginRight: 10
   },
   cardTitle: {
     fontSize: 16,
@@ -154,5 +155,13 @@ const styles = StyleSheet.create({
   cardDescription: {
     fontSize: 13,
     color: "#2e2e2e",
+  },
+  cardButton: {
+    backgroundColor: '#f2ffcb',
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 33,
+    height: 33
   },
 });

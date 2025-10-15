@@ -7,7 +7,6 @@ import {
     TouchableOpacity,
     ScrollView,
 } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import Drawer from '../../../components/drawer';
 import TabBar from '../../../components/tabBar';
@@ -15,9 +14,9 @@ import ServiceCard from '../../../components/serviceCard';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
 import HeaderInicio from '../../../components/headerInicio';
+import Entypo from '@expo/vector-icons/Entypo';
 
 export default function Inicio() {
-    //MUDEI A FUNÇÃO QUE PUXA AS INFORMAÇÕES PARA CA E CHAMEI ELA EM NOTÍCIA
     const router = useRouter();
 
     const [listaNoticias, setListaNoticias] = useState([]);
@@ -83,10 +82,10 @@ export default function Inicio() {
                                     imageUri: noticia.imageUri,
                                     summary: noticia.summary,
                                     createdAt: noticia.createdAt
-                                    //TÔ PASSANDO AS INFORMAÇÕES PARA NOTÍCIA POR AQUI
                                 }
                             })}>
                             <Text style={styles.readMoreText}>Ler mais</Text>
+                            <Entypo name="plus" size={24} color="#f8ffe3" />
                         </TouchableOpacity>
                     </View>
                 ))}
@@ -112,15 +111,14 @@ const styles = StyleSheet.create({
     scrollViewContent: {
         alignItems: 'center',
         paddingTop: 20,
-        paddingBottom: 100,
+        paddingBottom: 150,
     },
     newsCard: {
-        width: '90%',
+        width: '80%',
         backgroundColor: '#edffb9',
-        borderRadius: 20,
         padding: 25,
         marginBottom: 20,
-        borderRadius: 10,
+        borderRadius: 20,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.1,
@@ -129,22 +127,24 @@ const styles = StyleSheet.create({
     },
     newsTitle: {
         fontSize: 16,
-        fontWeight: 'bold',
+        fontStyle: 'italic',
         color: '#4ca444',
         marginBottom: 10,
+        textAlign: 'center'
     },
     newsContent: {
-        fontSize: 14,
+        fontSize: 13,
         color: '#555',
         marginBottom: 20,
+        textAlign: 'justifye'
     },
     readMoreButton: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#4ca444',
-        paddingVertical: 10,
-        borderRadius: 10,
+        paddingVertical: 13,
+        borderRadius: 15,
     },
     readMoreText: {
         color: '#f8ffe3',

@@ -3,11 +3,8 @@ import {
     StyleSheet,
     View,
     Text,
-    SafeAreaView,
     TouchableOpacity,
-    ScrollView,
 } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import Animated, {
     useSharedValue,
@@ -15,6 +12,7 @@ import Animated, {
     withTiming,
     runOnJS
 } from 'react-native-reanimated';
+import Feather from '@expo/vector-icons/Feather';
 
 function DrawerMenu({ isVisible, onClose, setShouldRenderDrawer }) {
     const router = useRouter();
@@ -47,7 +45,7 @@ function DrawerMenu({ isVisible, onClose, setShouldRenderDrawer }) {
             />
             <Animated.View style={[styles.drawerContent, animatedStyle]}>
                 <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                    <Ionicons name="close" size={30} color="#fff" />
+                    <Feather name="x-square" size={30} color="white" />
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.drawerItem} onPress={() => router.push('sobrenos')}>
                     <Text style={styles.drawerItemText}>Sobre nós</Text>
@@ -68,7 +66,6 @@ export default function Drawer(props) {
 }
 
 const styles = StyleSheet.create({
-
     drawerContainer: {
         ...StyleSheet.absoluteFillObject,
         flexDirection: 'row',
@@ -79,9 +76,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0,0,0,0.5)',
     },
     drawerContent: {
-        width: '70%',
-        paddingTop: 50,
-        paddingHorizontal: 20,
+        width: '60%',
+        paddingTop: 70,
+        paddingHorizontal: 30,
         backgroundColor: '#4ca444',
         position: 'absolute',
         left: 0,
@@ -91,7 +88,7 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
     },
     drawerItemText: {
-        fontSize: 17,
+        fontSize: 15,
         color: '#f8ffe3',
     },
     closeButton: {
@@ -99,6 +96,7 @@ const styles = StyleSheet.create({
         top: 15,
         right: 15,
         padding: 10,
+        marginVertical: 20
     },
 
 })
