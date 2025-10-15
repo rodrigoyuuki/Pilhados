@@ -234,7 +234,7 @@ export default function SignUp() {
                             <Text style={styles.loginText}>Já tem conta?</Text>
                             <TouchableOpacity
                                 style={styles.loginButton}
-                                onPress={() => router.push("login")}
+                                onPress={() => router.push("inicio")}
                             >
                                 <Text style={styles.loginButtonText}>Acesse aqui!</Text>
                             </TouchableOpacity>

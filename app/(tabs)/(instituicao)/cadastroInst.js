@@ -278,7 +278,7 @@ export default function Cadastro() {
             <Text style={styles.loginText}>Já tem conta?</Text>
             <TouchableOpacity
               style={styles.loginButton}
-              onPress={() => router.push("loginInst")}
+              onPress={() => router.push("incioInst")}
             >
               <Text style={styles.loginButtonText}>Acesse aqui!</Text>
             </TouchableOpacity>

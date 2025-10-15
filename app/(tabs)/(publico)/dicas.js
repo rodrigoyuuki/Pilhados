@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -12,11 +12,46 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 import TabBar from "../../../components/tabBar";
 import Drawer from "../../../components/drawer";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../../firebase/firebaseConfig";
 
 export default function Dicas() {
+  const router = useRouter();
   const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const router = useRouter();
+  const [listaDicas, setListaDicas] = useState([]);
+
+  function infoDicas(doc) {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      content: data.content,
+      description: data.description,
+      image: data.image,
+      title: data.title,
+      sectionTitle: Array.isArray(data.section?.sectionTitle) ? data.section.sectionTitle : [],
+      sectionText: Array.isArray(data.section?.sectionText) ? data.section.sectionText : [],
+    };
+  }
+
+  async function getDados() {
+    const dicas = [];
+    try {
+      const docRef = collection(db, "dicas");
+      const snapshot = await getDocs(docRef);
+
+      snapshot.forEach((doc) => {
+        const dica = infoDicas(doc);
+        dicas.push(dica);
+      });
+      setListaDicas(dicas);
+    } catch (err) {
+      console.error("Erro ao carregar notícias:", err);
+    }
+  }
+  useEffect(() => {
+    getDados();
+  }, []);
 
   const toggleDrawer = () => {
     if (!isDrawerVisible) {
@@ -24,45 +59,6 @@ export default function Dicas() {
     }
     setIsDrawerVisible(!isDrawerVisible);
   };
-
-  const dicas = [
-    {
-      id: 1,
-      title: "Descarte de pilhas",
-      description:
-        "Você sabia que o descarte incorreto de pilhas pode liberar metais pesados no solo? Aprenda a fazer a separação correta desses resíduos.",
-      image:
-        "https://autossustentavel.com/wp-content/uploads/2018/11/battery-1930833_1920-Copia-1.jpg",
-      route: "dica",
-    },
-    {
-      id: 2,
-      title: "Comece a mudança!",
-      description:
-        "Comece a mudança ecológica em casa com pequenos passos, como separar o lixo reciclável e economizar água e energia!",
-      image:
-        "https://sustainablefuturesacademy.org/images/566cca26f35d4d76c5ece8793261fa3f.jpg",
-      route: "/dicas/mudanca",
-    },
-    {
-      id: 3,
-      title: "Plante uma horta em casa",
-      description:
-        "Mesmo em espaços pequenos, é possível ter uma horta de temperos e chás. Isso garante alimentos mais saudáveis!",
-      image:
-        "https://www.theepochtimes.com/_next/image?url=https://img.theepochtimes.com/assets/uploads/2025/07/22/id5890973-shutterstock_2150765615-700x700.jpg&w=1200&q=75",
-      route: "/dicas/horta",
-    },
-    {
-      id: 4,
-      title: "Descarte de aparelhos",
-      description:
-        "Separe eletrodomésticos quebrados para levar a pontos de coleta. Assim você evita danos ambientais e ainda ajuda na reciclagem.",
-      image:
-        "https://blog.superbid.net/wp-content/uploads/2024/09/tipos-de-leiloes-de-sucata-1.jpg",
-      route: "/dicas/aparelhos",
-    },
-  ];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -72,12 +68,22 @@ export default function Dicas() {
           <Text style={styles.headerTitle}>Dicas</Text>
         </View>
 
-        {dicas.map((item) => (
+        {listaDicas.map((item) => (
           <TouchableOpacity
             key={item.id}
             style={styles.card}
-            onPress={() => router.push(item.route)}
-          >
+            onPress={() => router.push({
+              pathname: '/dica',
+              params: {
+                id: item.id,
+                content: item.content,
+                description: item.description,
+                image: item.image,
+                title: item.title,
+                sectionTitle: JSON.stringify(item.sectionTitle),
+                sectionText: JSON.stringify(item.sectionText),
+              }
+            })}>
             <Image source={{ uri: item.image }} style={styles.cardImage} />
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle}>{item.title}</Text>
@@ -86,6 +92,7 @@ export default function Dicas() {
             <Ionicons name="chevron-forward" size={24} color="#148311" />
           </TouchableOpacity>
         ))}
+
       </ScrollView>
 
       <TabBar />

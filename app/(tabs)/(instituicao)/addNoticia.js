@@ -20,8 +20,6 @@ import { db } from '../../../firebase/firebaseConfig';
 import Drawer from '../../../components/drawer';
 import TabBar from '../../../components/tabBarInst';
 
-const router = useRouter();
-
 const noticiasCollectionRef = collection(db, 'noticias');
 
 function Header({ onMenuPress }) {
@@ -44,6 +42,7 @@ function AddNoticia() {
     const [title, setTitle] = useState('');
     const [summary, setSummary] = useState('');
     const [content, setContent] = useState('');
+    const [createdAt, setCreatedAt] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -82,7 +81,7 @@ function AddNoticia() {
                 summary: summary,
                 content: content,
                 imageUri: image,
-                createdAt: new Date()
+                createdAt: createdAt,
             });
 
             setTitle('');
@@ -138,6 +137,15 @@ function AddNoticia() {
                     autoCapitalize="sentences"
                 />
                 <TextInput
+                    placeholder="Infome a data de criação: "
+                    placeholderTextColor={'#9bac6a'}
+                    style={styles.input}
+                    value={createdAt}
+                    onChangeText={setCreatedAt}
+                    multiline
+                    autoCapitalize="sentences"
+                />
+                <TextInput
                     placeholder="Escreva sua matéria aqui "
                     placeholderTextColor={'#9bac6a'}
                     style={styles.input}
@@ -160,9 +168,10 @@ function AddNoticia() {
 }
 
 export default function Adicionar() {
+    const router = useRouter();
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
-    
+
     const toggleDrawer = () => {
         if (!isDrawerVisible) {
             setShouldRenderDrawer(true);

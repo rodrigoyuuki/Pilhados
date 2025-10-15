@@ -11,49 +11,49 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import Drawer from '../../../components/drawer';
 import TabBar from '../../../components/tabBar';
-
-function Header({ onMenuPress }) {
-    const router = useRouter();
-    const { noticia } = router.params;
-
-    if (!noticia) {
-        return (
-            <View style={styles.container}>
-                <Text style={{ color: 'white' }}>Opção não encontrado.</Text>
-            </View>
-        );
-    }
-
-    return (
-        <View style={styles.header}>
-            <View style={styles.headerTopRow}>
-                <TouchableOpacity onPress={onMenuPress}>
-                    <Ionicons name="menu" size={40} color="#fff" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('perfil')}>
-                    <Ionicons name="person-circle" size={40} color="#fff" />
-                </TouchableOpacity>
-            </View>
-            <Text style={styles.headerTitle}>Olá, bem vindo ao PILHADOS!</Text>
-        </View>
-    );
-}
-
-function ServiceCard() {
-    const router = useRouter();
-    return (
-        <View style={styles.serviceCard}>
-            <Text style={styles.serviceText}>Agende sua coleta aqui!</Text>
-            <TouchableOpacity style={styles.serviceButton} onPress={() => router.push('agendamento')}>
-                <Text style={styles.serviceButtonText}>Contratar serviço</Text>
-            </TouchableOpacity>
-        </View>
-    );
-}
+import ServiceCard from '../../../components/serviceCard';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../../firebase/firebaseConfig";
+import HeaderInicio from '../../../components/headerInicio';
 
 export default function Inicio() {
+    //MUDEI A FUNÇÃO QUE PUXA AS INFORMAÇÕES PARA CA E CHAMEI ELA EM NOTÍCIA
+    const router = useRouter();
+
+    const [listaNoticias, setListaNoticias] = useState([]);
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
+
+    function infoNoticias(doc) {
+        const data = doc.data();
+        return {
+            id: doc.id,
+            content: data.content,
+            createdAt: data.createdAt,
+            imageUri: data.imageUri,
+            summary: data.summary,
+            title: data.title,
+        };
+    }
+
+    async function getDados() {
+        const noticias = [];
+        try {
+            const docRef = collection(db, "noticias");
+            const snapshot = await getDocs(docRef);
+
+            snapshot.forEach((doc) => {
+                const noticia = infoNoticias(doc);
+                noticias.push(noticia);
+            });
+            setListaNoticias(noticias);
+        } catch (err) {
+            console.error("Erro ao carregar notícias:", err);
+        }
+    }
+    useEffect(() => {
+        getDados();
+    }, []);
 
     const toggleDrawer = () => {
         if (!isDrawerVisible) {
@@ -64,20 +64,34 @@ export default function Inicio() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header onMenuPress={toggleDrawer} />
+            <HeaderInicio onMenuPress={toggleDrawer} />
+
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <ServiceCard />
-
-                <View style={styles.newsCard}>
-                    <Text style={styles.newsTitle}>{noticia.title}</Text>
-                    <Text style={styles.newsContent}>{noticia.content}</Text>
-
-                    <TouchableOpacity style={styles.readMoreButton} onPress={() => router.push('noticia')}>
-                        <Text style={styles.readMoreText}>Ler mais</Text>
-                        <Ionicons name="add-circle" size={20} color="#f8ffe3" style={styles.readMoreIcon} />
-                    </TouchableOpacity>
-                </View>
+                {listaNoticias.map((noticia) => (
+                    <View key={noticia.id} style={styles.newsCard}>
+                        <Text style={styles.newsTitle}>{noticia.title}</Text>
+                        <Text style={styles.newsContent}>{noticia.content}</Text>
+                        <TouchableOpacity
+                            style={styles.readMoreButton}
+                            onPress={() => router.push({
+                                pathname: '/noticia',
+                                params: {
+                                    id: noticia.id,
+                                    title: noticia.title,
+                                    content: noticia.content,
+                                    imageUri: noticia.imageUri,
+                                    summary: noticia.summary,
+                                    createdAt: noticia.createdAt
+                                    //TÔ PASSANDO AS INFORMAÇÕES PARA NOTÍCIA POR AQUI
+                                }
+                            })}>
+                            <Text style={styles.readMoreText}>Ler mais</Text>
+                        </TouchableOpacity>
+                    </View>
+                ))}
             </ScrollView>
+
             <TabBar />
             {shouldRenderDrawer && (
                 <Drawer
@@ -95,60 +109,10 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#f5f5f5',
     },
-    header: {
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 40,
-        paddingBottom: 40,
-        backgroundColor: '#148311',
-        borderBottomWidth: 1,
-        borderBottomColor: '#eee',
-    },
-    headerTopRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginBottom: 10,
-    },
-    headerTitle: {
-        fontSize: 16,
-        color: '#fff',
-    },
     scrollViewContent: {
         alignItems: 'center',
         paddingTop: 20,
         paddingBottom: 100,
-    },
-    serviceCard: {
-        width: '90%',
-        backgroundColor: '#f8ffe3',
-        borderRadius: 20,
-        padding: 25,
-        alignItems: 'center',
-        marginBottom: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
-        elevation: 3,
-    },
-    serviceText: {
-        fontSize: 18,
-        color: '#148311',
-        marginBottom: 15,
-    },
-    serviceButton: {
-        backgroundColor: '#148311',
-        paddingHorizontal: 30,
-        paddingVertical: 12,
-        borderRadius: 10,
-    },
-    serviceButtonText: {
-        color: '#f8ffe3',
-        fontWeight: 'bold',
-        fontSize: 16,
     },
     newsCard: {
         width: '90%',
@@ -187,24 +151,5 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
         marginRight: 5,
-    },
-    readMoreIcon: {
-        marginTop: 2,
-    },
-    partnerCard: {
-        width: '90%',
-        backgroundColor: '#d8f0d8',
-        borderRadius: 20,
-        padding: 25,
-    },
-    partnerTitle: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        color: '#148311',
-        marginBottom: 10,
-    },
-    partnerContent: {
-        fontSize: 14,
-        color: '#555',
     },
 });

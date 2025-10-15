@@ -10,51 +10,56 @@ import {
 } from 'react-native';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
-
-
-function DiscardDetailCard({ title, imageSource, imageCaption, content }) {
-    const router = useRouter();
-    return (
-        <View style={styles.cardContainer}>
-            <TouchableOpacity onPress={() => router.back('')} style={styles.backButton}>
-                <FontAwesome name="chevron-circle-left" size={33} margin={5} color="#f8ffe3" />
-            </TouchableOpacity>
-
-            <Text style={styles.cardTitle}>{title}</Text>
-
-            <View style={styles.contentArea}>
-                <View style={styles.imageContainer}>
-                    <Image source={imageSource} style={styles.cardImage} />
-                    <Text style={styles.imageCaption}>{imageCaption}</Text>
-                </View>
-
-                <View style={styles.textContent}>
-                    <Text style={styles.sectionTitle}>1. Guarde as pilhas usadas em um recipiente</Text>
-                    <Text style={styles.mainContent}>
-                        Não misture as pilhas usadas com o lixo comum. O ideal é guardá-las em um recipiente de plástico resistente com tampa, como um pote de sorvete, para evitar vazamentos e contato com outros materiais. Mantenha-as em um local fresco e seco.
-                    </Text>
-                </View>
-            </View>
-
-            <View style={styles.dotNav}>
-                <View style={[styles.dot, styles.activeDot]}></View>
-                <View style={styles.dot}></View>
-                <View style={styles.dot}></View>
-                <View style={styles.dot}></View>
-            </View>
-        </View>
-    );
-}
+import { useLocalSearchParams } from 'expo-router';
 
 export default function App() {
+    const router = useRouter();
+    const params = useLocalSearchParams();
+
+    const handleGoBack = () => {
+        router.back();
+    };
+
+    let sectionText = [];
+    let sectionTitle = [];
+
+    try {
+        sectionText = JSON.parse(params.sectionText);
+        sectionTitle = JSON.parse(params.sectionTitle);
+    } catch {
+        sectionText = [params.sectionText];
+        sectionTitle = [params.sectionTitle];
+    }
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <DiscardDetailCard
-                    title="Descarte de pilhas"
-                    imageSource={{ uri: 'https://autossustentavel.com/wp-content/uploads/2018/11/battery-1930833_1920-Copia-1.jpg' }}
-                    content="Não misture as pilhas usadas com o lixo comum. O ideal é guardá-las em um recipiente de plástico resistente com tampa, como um pote de sorvete, para evitar vazamentos e contato com outros materiais. Mantenha-as em um local fresco e seco."
-                />
+                <View style={styles.cardContainer}>
+                    <TouchableOpacity
+                        onPress={handleGoBack}
+                        style={styles.backButton}>
+                        <FontAwesome name="chevron-circle-left" size={33} margin={5} color="#f8ffe3" />
+                    </TouchableOpacity>
+
+                    <Text style={styles.cardTitle}>{params.title}</Text>
+                    <View style={styles.contentArea}>
+                        <View style={styles.imageContainer}>
+                            <Image source={{ uri: params.image }} style={styles.cardImage} />
+                        </View>
+
+                        <Text style={styles.sectionTitle}>{sectionTitle[0]}</Text>
+                        <View style={styles.mainContent}>
+                            <Text style={styles.textContent}>{sectionText[0]}</Text>
+                        </View>
+                    </View>
+
+                    <View style={styles.dotNav}>
+                        <View style={[styles.dot, styles.activeDot]}></View>
+                        <View style={styles.dot}></View>
+                        <View style={styles.dot}></View>
+                        <View style={styles.dot}></View>
+                    </View>
+                </View>
             </ScrollView>
         </SafeAreaView>
     );
@@ -113,12 +118,12 @@ const styles = StyleSheet.create({
         height: 200,
         borderRadius: 16,
     },
-    imageCaption: {
+    /*imageCaption: {
         fontSize: 12,
         color: '#f8ffe3',
         marginTop: 8,
         textAlign: 'center',
-    },
+    },*/
     textContent: {
         width: '100%',
         alignItems: 'center',

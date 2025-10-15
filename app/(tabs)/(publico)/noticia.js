@@ -14,51 +14,41 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
+import { useLocalSearchParams } from 'expo-router';
 
 export default function NewsScreen() {
-    const [listaNoticias, setListaNoticias] = useState([]);
-
-    function infoNoticias(doc) {
-        const data = doc.data();
-        return {
-            id: doc.id,
-            content: data.content,
-            createdAt: data.createdAt,
-            imageUri: data.imageUri,
-            summary: data.summary,
-            title: data.title,
-        };
-    }
-
-    async function getDados() {
-        const noticias = [];
-        try {
-            const docRef = collection(db, "noticias");
-            const snapshot = await getDocs(docRef);
-
-            snapshot.forEach((doc) => {
-                const noticia = infoNoticias(doc);
-                noticias.push(noticia);
-            });
-            setListaNoticias(noticias);
-        } catch (err) {
-            console.error("Erro ao carregar notícias:", err);
-        }
-    }
-
-
-    useEffect(() => {
-        getDados();
-    }, []);
+    const router = useRouter();
+    const params = useLocalSearchParams();
+    //É AQUI QUE EU PUXO AS INFORMAÇÕES DE INÍCIO, SE QUISER EXIBIR TEM QUE USAR "params" AGORA, NÃO NOTÍCIA
 
     const handleGoBack = () => {
-        console.log("Botão de voltar pressionado.");
+        router.back();
     };
 
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                 <Text key={item.id}>{item.content}</Text>
+                <View style={styles.newsDetailCard}>
+                    <TouchableOpacity
+                        onPress={handleGoBack}
+                        style={styles.backButton}>
+                        <FontAwesome name="chevron-circle-left" size={40} margin={5} color="#148311" />
+                    </TouchableOpacity>
+
+                    <Text style={styles.newsTitle}>{params.title}</Text>
+                    <Text style={styles.newsContent}>{params.summary}</Text>
+
+                    <View style={styles.imageContainer}>
+                        <Image
+                            source={{ uri: params.imageUri }}
+                            style={styles.newsImage}
+                            resizeMode="cover"
+                        />
+                    </View>
+
+                    <Text style={styles.dateText}>{params.createdAt}</Text>
+                    <Text style={styles.fullContent}>{params.content}</Text>
+                </View>
             </ScrollView>
         </SafeAreaView>
     );
@@ -116,7 +106,7 @@ const styles = StyleSheet.create({
         height: 200,
         borderRadius: 10,
     },
-    imageCaption: {
+    /*imageCaption: {
         fontSize: 12,
         color: '#888',
         marginTop: 5,
@@ -136,7 +126,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: '#148311',
         marginLeft: 10,
-    },
+    },*/
     dateText: {
         fontSize: 12,
         color: '#888',
