@@ -70,7 +70,7 @@ export default function Inicio() {
                 {listaNoticias.map((noticia) => (
                     <View key={noticia.id} style={styles.newsCard}>
                         <Text style={styles.newsTitle}>{noticia.title}</Text>
-                        <Text style={styles.newsContent}>{noticia.content}</Text>
+                        <Text style={styles.newsContent}>{noticia.summary}</Text>
                         <TouchableOpacity
                             style={styles.readMoreButton}
                             onPress={() => router.push({
