@@ -73,7 +73,7 @@ export default function SignUp() {
                 uid: currentUser.uid,
             });
 
-            router.push("teste");
+            router.push("inicio");
         } catch (err) {
             console.log("Error code: ", err.code);
             console.log("Error message: ", err.message);
@@ -234,7 +234,7 @@ export default function SignUp() {
                             <Text style={styles.loginText}>Já tem conta?</Text>
                             <TouchableOpacity
                                 style={styles.loginButton}
-                                onPress={() => router.push("inicio")}
+                                onPress={() => router.push("login")}
                             >
                                 <Text style={styles.loginButtonText}>Acesse aqui!</Text>
                             </TouchableOpacity>

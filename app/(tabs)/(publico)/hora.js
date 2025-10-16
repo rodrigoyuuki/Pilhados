@@ -9,7 +9,6 @@ import {
     Dimensions,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
 import Animated, {
     useSharedValue,
@@ -25,8 +24,10 @@ function Header({ onMenuPress }) {
     return (
         <View style={styles.header}>
             <View style={styles.headerTopRow}>
-                <TouchableOpacity onPress={() => router.back()}>
-                    <FontAwesome name="chevron-circle-left" size={40} margin={5} color="#148311" />
+                <TouchableOpacity
+                    onPress={() => router.back()}
+                    style={styles.backButton}>
+                    <Ionicons name="chevron-back" size={24} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => console.log('perfil')}>
                     <Ionicons name="person-circle" size={40} color="#148311" />
@@ -227,9 +228,17 @@ const styles = StyleSheet.create({
         marginTop: 30
     },
     headerTitle: {
-        fontSize: 22,
+        fontSize: 20,
         color: '#148311',
-        fontWeight: 'bold',
+        fontFamily: 'PoppinsBold'
+    },
+    backButton: {
+        backgroundColor: '#148311',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 33,
+        height: 33
     },
     scrollViewContent: {
         flexGrow: 1,
@@ -243,10 +252,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: 15,
         color: '#148311',
         marginBottom: 40,
         textAlign: 'center',
+        fontFamily: 'PoppinsRegular'
     },
     timePickerContainer: {
         flexDirection: 'row',
@@ -288,7 +298,7 @@ const styles = StyleSheet.create({
         color: '#148311',
     },
     proceedButton: {
-        width: '80%',
+        width: '60%',
         height: 50,
         backgroundColor: '#148311',
         borderRadius: 25,
@@ -298,38 +308,7 @@ const styles = StyleSheet.create({
     },
     proceedButtonText: {
         color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    drawerContainer: {
-        ...StyleSheet.absoluteFillObject,
-        flexDirection: 'row',
-        zIndex: 10,
-    },
-    drawerOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    drawerContent: {
-        width: '70%',
-        paddingTop: 50,
-        paddingHorizontal: 20,
-        backgroundColor: '#4ca444',
-        position: 'absolute',
-        left: 0,
-        height: '100%',
-    },
-    drawerItem: {
-        paddingVertical: 15,
-    },
-    drawerItemText: {
-        fontSize: 17,
-        color: '#f8ffe3',
-    },
-    closeButton: {
-        position: 'absolute',
-        top: 15,
-        right: 15,
-        padding: 10,
+        fontSize: 16,
+        fontFamily: 'PoppinsRegular'
     },
 });

@@ -9,7 +9,6 @@ import {
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
 
 function Header() {
@@ -17,8 +16,10 @@ function Header() {
     return (
         <View style={styles.header}>
             <View style={styles.headerTopRow}>
-                <TouchableOpacity onPress={() => router.back()}>
-                    <FontAwesome name="chevron-circle-left" size={40} margin={5} color="#148311" />
+                <TouchableOpacity
+                    onPress={() => router.back()}
+                    style={styles.backButton}>
+                    <Ionicons name="chevron-back" size={24} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => router.push('perfil')}>
                     <Ionicons name="person-circle" size={40} color="#148311" />
@@ -139,9 +140,17 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     headerTitle: {
-        fontSize: 22,
+        fontSize: 20,
         color: '#148311',
-        fontWeight: 'bold',
+        fontFamily: 'PoppinsBold',
+    },
+    backButton: {
+        backgroundColor: '#148311',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 33,
+        height: 33
     },
     scrollViewContent: {
         flexGrow: 1,

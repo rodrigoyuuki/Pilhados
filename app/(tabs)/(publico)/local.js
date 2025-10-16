@@ -10,7 +10,6 @@ import {
     TextInput,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
 import Animated, {
     useSharedValue,
@@ -26,8 +25,10 @@ function Header({ onMenuPress }) {
     return (
         <View style={styles.header}>
             <View style={styles.headerTopRow}>
-                <TouchableOpacity onPress={() => router.back()}>
-                    <FontAwesome name="chevron-circle-left" size={40} margin={5} color="#148311" />
+                <TouchableOpacity
+                    onPress={() => router.back()}
+                    style={styles.backButton}>
+                    <Ionicons name="chevron-back" size={24} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => console.log('perfil')}>
                     <Ionicons name="person-circle" size={40} color="#148311" />
@@ -173,9 +174,17 @@ const styles = StyleSheet.create({
         marginTop: 30,
     },
     headerTitle: {
-        fontSize: 22,
+        fontSize: 20,
         color: '#148311',
-        fontWeight: 'bold',
+        fontFamily: 'PoppinsBold'
+    },
+    backButton: {
+        backgroundColor: '#148311',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 33,
+        height: 33
     },
     scrollViewContent: {
         flexGrow: 1,
@@ -194,10 +203,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     formSectionTitle: {
-        fontSize: 16,
+        fontSize: 14,
         color: '#555',
         marginBottom: 20,
         textAlign: 'center',
+        fontFamily: 'PoppinsRegular'
     },
     dropdownButton: {
         flexDirection: 'row',
@@ -212,7 +222,8 @@ const styles = StyleSheet.create({
     },
     dropdownText: {
         color: '#fff',
-        fontSize: 16,
+        fontSize: 14,
+        fontFamily: 'PoppinsRegular'
     },
     input: {
         width: '100%',
@@ -222,6 +233,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 15,
         marginBottom: 15,
+        fontFamily: 'PoppinsRegular',
+        fontSize: 14,
     },
     inputSmall: {
         width: '40%',
@@ -231,6 +244,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingHorizontal: 15,
         marginBottom: 15,
+        fontFamily: 'PoppinsRegular',
+        fontSize: 14,
     },
     proceedButton: {
         width: '80%',
@@ -243,38 +258,7 @@ const styles = StyleSheet.create({
     },
     proceedButtonText: {
         color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    drawerContainer: {
-        ...StyleSheet.absoluteFillObject,
-        flexDirection: 'row',
-        zIndex: 10,
-    },
-    drawerOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    drawerContent: {
-        width: '70%',
-        paddingTop: 50,
-        paddingHorizontal: 20,
-        backgroundColor: '#4ca444',
-        position: 'absolute',
-        left: 0,
-        height: '100%',
-    },
-    drawerItem: {
-        paddingVertical: 15,
-    },
-    drawerItemText: {
-        fontSize: 17,
-        color: '#f8ffe3',
-    },
-    closeButton: {
-        position: 'absolute',
-        top: 15,
-        right: 15,
-        padding: 10,
+        fontSize: 16,
+        fontFamily: 'PoppinsRegular'
     },
 });

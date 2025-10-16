@@ -83,11 +83,11 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     message: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        fontSize: 22,
         textAlign: 'center',
         color: '#555555',
         marginBottom: 50,
+        fontFamily: 'PoppinsBold'
     },
     printButton: {
         flexDirection: 'row',
@@ -102,12 +102,12 @@ const styles = StyleSheet.create({
     },
     printButtonText: {
         color: '#148311',
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 16,
         marginLeft: 10,
+        fontFamily: 'PoppinsRegular'
     },
     homeButton: {
-        width: '80%',
+        width: '70%',
         height: 50,
         backgroundColor: '#148311',
         borderRadius: 25,
@@ -116,7 +116,7 @@ const styles = StyleSheet.create({
     },
     homeButtonText: {
         color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 16,
+        fontFamily: 'PoppinsRegular'
     },
 });

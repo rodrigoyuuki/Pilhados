@@ -34,9 +34,10 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     serviceText: {
-        fontSize: 15,
+        fontSize: 13,
         color: '#148311',
         marginBottom: 15,
+        fontFamily: 'PoppinsRegular'
     },
     serviceButton: {
         backgroundColor: '#148311',
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     },
     serviceButtonText: {
         color: '#f8ffe3',
-        fontWeight: 'bold',
         fontSize: 13,
+        fontFamily: 'PoppinsRegular'
     },
 })

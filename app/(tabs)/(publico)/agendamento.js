@@ -8,7 +8,6 @@ import {
     ScrollView,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { useRouter } from 'expo-router';
 
 function Header() {
@@ -16,8 +15,10 @@ function Header() {
     return (
         <View style={styles.header}>
             <View style={styles.headerTopRow}>
-                <TouchableOpacity onPress={() => router.back()}>
-                    <FontAwesome name="chevron-circle-left" size={40} margin={5} color="#148311" />
+                <TouchableOpacity
+                    onPress={() => router.back()}
+                    style={styles.backButton}>
+                    <Ionicons name="chevron-back" size={24} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => router.push('perfil')}>
                     <Ionicons name="person-circle" size={40} color="#148311" />
@@ -112,11 +113,20 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 30
     },
-    headerTitle: {
-        fontSize: 22,
-        color: '#148311',
-        fontWeight: 'bold',
+    backButton: {
+        backgroundColor: '#148311',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 33,
+        height: 33
     },
+    headerTitle: {
+        fontSize: 20,
+        color: '#148311',
+        fontFamily: 'PoppinsBold'
+    },
+    
     scrollViewContent: {
         alignItems: 'center',
         paddingTop: 20,
@@ -129,9 +139,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     infoText: {
-        fontSize: 16,
+        fontSize: 15,
         color: '#148311',
         textAlign: 'center',
+        fontFamily: 'PoppinsRegular'
     },
     calendarContainer: {
         width: '90%',
@@ -187,7 +198,7 @@ const styles = StyleSheet.create({
         color: 'transparent',
     },
     proceedButton: {
-        width: '80%',
+        width: '60%',
         height: 50,
         backgroundColor: '#148311',
         borderRadius: 25,
@@ -200,7 +211,7 @@ const styles = StyleSheet.create({
     },
     proceedButtonText: {
         color: 'white',
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 16,
+        fontFamily: 'PoppinsRegular'
     },
 });

@@ -19,7 +19,6 @@ import { useLocalSearchParams } from 'expo-router';
 export default function NewsScreen() {
     const router = useRouter();
     const params = useLocalSearchParams();
-    //É AQUI QUE EU PUXO AS INFORMAÇÕES DE INÍCIO, SE QUISER EXIBIR TEM QUE USAR "params" AGORA, NÃO NOTÍCIA
 
     const handleGoBack = () => {
         router.back();
@@ -32,7 +31,7 @@ export default function NewsScreen() {
                     <TouchableOpacity
                         onPress={handleGoBack}
                         style={styles.backButton}>
-                        <FontAwesome name="chevron-circle-left" size={40} margin={5} color="#148311" />
+                        <Ionicons name="chevron-back" size={24} color="#fff" />
                     </TouchableOpacity>
 
                     <Text style={styles.newsTitle}>{params.title}</Text>
@@ -81,21 +80,27 @@ const styles = StyleSheet.create({
     },
     backButton: {
         position: 'absolute',
-        top: 15,
-        left: 15,
-        zIndex: 1,
+        top: 16,
+        left: 16,
+        backgroundColor: '#0e670b',
+        borderRadius: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: 33,
+        height: 33
     },
     newsTitle: {
-        fontSize: 18,
-        fontStyle: 'italic',
+        fontSize: 17,
         color: '#148311',
         marginBottom: 10,
         marginTop: 15,
+        fontFamily: 'PoppinsBlackItalic'
     },
     newsContent: {
-        fontSize: 14,
+        fontSize: 13,
         color: '#555',
         marginBottom: 20,
+        fontFamily: 'PoppinsRegular'
     },
     imageContainer: {
         alignItems: 'center',
@@ -106,35 +111,16 @@ const styles = StyleSheet.create({
         height: 200,
         borderRadius: 10,
     },
-    /*imageCaption: {
-        fontSize: 12,
-        color: '#888',
-        marginTop: 5,
-        textAlign: 'center',
-    },
-    authorContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginTop: 10,
-        marginBottom: 20,
-        borderTopWidth: 1,
-        borderTopColor: '#eee',
-        paddingTop: 15,
-    },
-    authorText: {
-        fontSize: 14,
-        fontWeight: 'bold',
-        color: '#148311',
-        marginLeft: 10,
-    },*/
     dateText: {
         fontSize: 12,
         color: '#888',
         marginLeft: 10,
+        fontFamily: 'PoppinsRegular'
     },
     fullContent: {
-        fontSize: 14,
+        fontSize: 13,
         lineHeight: 20,
         color: '#333',
+        fontFamily: 'PoppinsRegular'
     },
 });

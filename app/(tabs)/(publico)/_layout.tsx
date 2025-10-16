@@ -97,6 +97,13 @@ export default function StackLayout() {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="historico"
+        options={{
+          title: 'Historico',
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

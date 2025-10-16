@@ -27,7 +27,7 @@ export default function HeaderInicio({onMenuPress}) {
 const styles = StyleSheet.create({
     header: {
         paddingTop: 40,
-        paddingBottom: 40,
+        paddingBottom: 30,
         paddingHorizontal: 35,
         backgroundColor: '#148311',
     },
@@ -40,5 +40,6 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 16,
         color: '#fff',
+        fontFamily: 'PoppinsRegular'
     },
 })

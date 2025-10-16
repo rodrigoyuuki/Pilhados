@@ -90,6 +90,7 @@ const styles = StyleSheet.create({
     drawerItemText: {
         fontSize: 15,
         color: '#f8ffe3',
+        fontFamily: 'PoppinsRegular'
     },
     closeButton: {
         position: 'absolute',

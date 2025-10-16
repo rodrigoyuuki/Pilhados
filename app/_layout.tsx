@@ -10,6 +10,11 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
+    PoppinsRegular: require('../assets/fonts/Poppins-Regular.ttf'),
+    PoppinsItalic: require('../assets/fonts/Poppins-Italic.ttf'),
+    PoppinsBlackItalic: require('../assets/fonts/Poppins-BlackItalic.ttf'),
+    PoppinsExtraBold: require('../assets/fonts/Poppins-ExtraBold.ttf'),
+    PoppinsBold: require('../assets/fonts/Poppins-Bold.ttf'),
   });
 
   if (!loaded) {

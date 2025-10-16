@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function TabBar(){
 
@@ -22,6 +23,10 @@ export default function TabBar(){
                 <TouchableOpacity style={styles.tabItem} onPress={() => router.push('dicas')}>
                     <Ionicons name="bulb-outline" size={27} color="#e3ff92" />
                     <Text style={styles.tabText}>Dicas</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.tabItem} onPress={() => router.push('historico')}>
+                    <AntDesign name="clock-circle" size={24} color="#e3ff92" />
+                    <Text style={styles.tabText}>Histórico</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.tabItem} onPress={() => router.push('agendamento')}>
                     <Ionicons name="calendar-outline" size={27} color="#e3ff92" />
@@ -56,8 +61,9 @@ const styles = StyleSheet.create({
         paddingBottom: '40'
     },
     tabText: {
-        fontSize: 12,
+        fontSize: 10,
         color: '#e3ff92',
         marginTop: 5,
+        fontFamily: 'PoppinsRegular'
     },
 })

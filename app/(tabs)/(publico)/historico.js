@@ -10,13 +10,11 @@ import {
 import { useRouter } from 'expo-router';
 import Drawer from '../../../components/drawer';
 import TabBar from '../../../components/tabBar';
-import ServiceCard from '../../../components/serviceCard';
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
-import HeaderInicio from '../../../components/headerInicio';
-import Entypo from '@expo/vector-icons/Entypo';
+import {Ionicons, Feather, Entypo} from '@expo/vector-icons';
 
-export default function Inicio() {
+export default function Historico() {
     const router = useRouter();
 
     const [listaNoticias, setListaNoticias] = useState([]);
@@ -63,10 +61,18 @@ export default function Inicio() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <HeaderInicio onMenuPress={toggleDrawer} />
+            <View style={styles.header}>
+            <View style={styles.headerTopRow}>
+                <TouchableOpacity onPress={toggleDrawer}>
+                    <Feather name="menu" size={35} color="white" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => router.push('perfil')}>
+                    <Ionicons name="person-circle" size={40} color="#fff" />
+                </TouchableOpacity>
+            </View>
+        </View>
 
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <ServiceCard />
                 {listaNoticias.map((noticia) => (
                     <View key={noticia.id} style={styles.newsCard}>
                         <Text style={styles.newsTitle}>{noticia.title}</Text>
@@ -126,18 +132,17 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     newsTitle: {
-        fontSize: 15,
+        fontSize: 16,
+        fontStyle: 'italic',
         color: '#4ca444',
         marginBottom: 10,
-        textAlign: 'center',
-        fontFamily: 'PoppinsBlackItalic'
+        textAlign: 'center'
     },
     newsContent: {
-        fontSize: 12,
+        fontSize: 13,
         color: '#555',
         marginBottom: 20,
-        textAlign: 'justify',
-        fontFamily: 'PoppinsRegular'
+        textAlign: 'justifye'
     },
     readMoreButton: {
         flexDirection: 'row',
@@ -149,8 +154,24 @@ const styles = StyleSheet.create({
     },
     readMoreText: {
         color: '#f8ffe3',
-        fontSize: 15,
+        fontSize: 16,
+        fontWeight: 'bold',
         marginRight: 5,
-        fontFamily: 'PoppinsRegular'
+    },
+    header: {
+        paddingTop: 40,
+        paddingBottom: 40,
+        paddingHorizontal: 35,
+        backgroundColor: '#148311',
+    },
+    headerTopRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+        marginBottom: 10,
+    },
+    headerTitle: {
+        fontSize: 16,
+        color: '#fff',
     },
 });
