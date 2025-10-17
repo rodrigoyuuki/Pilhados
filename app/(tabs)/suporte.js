@@ -84,9 +84,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 'auto',
     },
     title: {
-        fontSize: 22,
+        fontSize: 20,
         color: 'black',
-        fontFamily: 'Poppins ExtraBold',
+        fontFamily: 'PoppinsBold',
     },
     backButton: {
         width: 35,
@@ -108,11 +108,12 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
     introText: {
-        fontSize: 16,
+        fontSize: 15,
         lineHeight: 24,
         color: '#333',
         marginBottom: 30,
         textAlign: 'center',
+        fontFamily: 'PoppinsRegular',
     },
     contactItem: {
         flexDirection: 'row',
@@ -122,8 +123,9 @@ const styles = StyleSheet.create({
         borderBottomColor: '#eee',
     },
     contactText: {
-        fontSize: 16,
+        fontSize: 15,
         color: '#333',
         marginLeft: 15,
+        fontFamily: 'PoppinsRegular',
     },
 });

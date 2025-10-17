@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
         color: '#4ca444',
         marginBottom: 10,
         textAlign: 'center',
-        fontFamily: 'PoppinsBlackItalic'
+        fontFamily: 'PoppinsSemiBoldItalic'
     },
     newsContent: {
         fontSize: 12,

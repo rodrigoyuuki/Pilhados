@@ -9,11 +9,9 @@ import {
     TextInput,
     Image,
 } from 'react-native';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { Ionicons, Feather, FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import CustomModal from '../../../components/alerts';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
 import * as ImagePicker from 'expo-image-picker';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseConfig';
@@ -23,11 +21,12 @@ import TabBar from '../../../components/tabBarInst';
 const noticiasCollectionRef = collection(db, 'noticias');
 
 function Header({ onMenuPress }) {
+    const router = useRouter();
     return (
         <View style={styles.header}>
             <View style={styles.headerTopRow}>
                 <TouchableOpacity onPress={onMenuPress}>
-                    <Ionicons name="menu" size={40} color="#fff" />
+                    <Feather name="menu" size={35} color="white" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => router.push('perfil')}>
                     <Ionicons name="person-circle" size={40} color="#fff" />
@@ -244,12 +243,15 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         width: '100%',
         textAlign: 'center',
-        fontSize: 18,
+        fontSize: 17,
         marginBottom: 10,
+        fontFamily: 'PoppinsRegular'
     },
     input: {
         width: '100%',
         marginBottom: 10,
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular'
     },
     imageView: {
         backgroundColor: '#cbe18a',
@@ -278,6 +280,7 @@ const styles = StyleSheet.create({
     },
     addNoticiaButtonText: {
         fontSize: 18,
-        color: 'white'
+        color: 'white',
+        fontFamily: 'PoppinsRegular'
     },
 });

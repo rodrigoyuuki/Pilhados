@@ -12,6 +12,7 @@ import { useRouter } from 'expo-router';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import EvilIcons from '@expo/vector-icons/EvilIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function TabBar() {
 
@@ -20,14 +21,14 @@ export default function TabBar() {
         <View style={styles.tabBar}>
             <TouchableOpacity
                 style={styles.tabItem}
-                onPress={() => router.push("homeInst")}>
+                onPress={() => router.push("inicioInst")}>
                 <Ionicons name="home" size={27} color="#e3ff92" />
                 <Text style={styles.tabText}>Home</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.tabItem}
                 onPress={() => router.push("addNoticia")}>
-                <AntDesign name="pluscircleo" size={24} color="#e3ff92" />
+                <Ionicons name="bulb-outline" size={26} color="#e3ff92" />
                 <Text style={styles.tabText}>Ideias</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -71,8 +72,9 @@ const styles = StyleSheet.create({
         paddingBottom: '40'
     },
     tabText: {
-        fontSize: 12,
+        fontSize: 10,
         color: '#e3ff92',
         marginTop: 5,
+        fontFamily: 'PoppinsRegular'
     },
 })

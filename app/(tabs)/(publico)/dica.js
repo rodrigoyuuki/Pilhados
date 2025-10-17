@@ -139,11 +139,11 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontSize: 20,
-        fontWeight: 'bold',
         color: '#f8ffe3',
         textAlign: 'center',
         marginTop: 16,
-        marginBottom: 24,
+        marginBottom: 20,
+        fontFamily: 'PoppinsBold',
     },
     contentArea: {
         alignItems: 'center',
@@ -163,14 +163,14 @@ const styles = StyleSheet.create({
         width: '100%',
         textAlign: 'justify',
         color: '#f8ffe3',
-        fontSize: 13,
+        fontSize: 12,
+        fontFamily: 'PoppinsRegular'
     },
     sectionTitle: {
         fontSize: 18,
-        fontWeight: 'bold',
-        fontStyle: 'italic',
         color: '#f8ffe3',
         marginBottom: 8,
+        fontFamily: 'PoppinsItalic',
     },
     dotNav: {
         flexDirection: 'row',

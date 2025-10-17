@@ -278,10 +278,9 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     signUpText: {
-        fontSize: 30,
-        fontWeight: 'bold',
+        fontSize: 22,
         color: '#555555',
-        paddingBottom: 20,
+        fontFamily: 'PoppinsBold',
     },
     input: {
         width: '90%',
@@ -292,6 +291,8 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderColor: '#a6a6a6',
         borderWidth: 1,
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular',
     },
     senhaContainer: {
         width: '90%',
@@ -307,7 +308,8 @@ const styles = StyleSheet.create({
     },
     senhaInput: {
         flex: 1,
-        fontSize: 16,
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular',
     },
     icon: {
         paddingHorizontal: 5,
@@ -322,9 +324,9 @@ const styles = StyleSheet.create({
         marginTop: 10,
     },
     submitText: {
-        fontWeight: 'bold',
         color: 'white',
         fontSize: 18,
+        fontFamily: 'PoppinsRegular',
     },
     loginTextContainer: {
         flexDirection: 'row',
@@ -332,14 +334,16 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     loginText: {
-        fontSize: 14,
         color: '#555555',
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular',
     },
     loginButton: {
         marginLeft: 5,
     },
     loginButtonText: {
-        fontSize: 14,
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular',
         color: '#148311',
         textDecorationLine: 'underline',
     },

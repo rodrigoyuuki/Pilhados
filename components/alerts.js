@@ -38,10 +38,10 @@ const styles = StyleSheet.create({
 
     modalText: {
         fontSize: 20,
-        fontFamily: 'Poppins Regular',
         marginBottom: 20,
         textAlign: 'center',
         color: '#fff',
+        fontFamily: 'PoppinsRegular',
     },
 
     modalButton: {
@@ -55,8 +55,7 @@ const styles = StyleSheet.create({
 
     modalButtonText: {
         color: '#148311',
-        fontWeight: 'bold',
-        fontFamily: 'Poppins Regular',
+        fontFamily: 'PoppinsRegular',
         fontSize: 15
     },
 

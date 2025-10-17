@@ -94,13 +94,15 @@ const styles = StyleSheet.create({
         color: '#148311',
         marginBottom: 10,
         marginTop: 15,
-        fontFamily: 'PoppinsBlackItalic'
+        fontFamily: 'PoppinsSemiBoldItalic',
+        textAlign: 'center',
     },
     newsContent: {
         fontSize: 13,
-        color: '#555',
+        color: '#333',
         marginBottom: 20,
-        fontFamily: 'PoppinsRegular'
+        fontFamily: 'PoppinsRegular',
+        textAlign: 'justify',
     },
     imageContainer: {
         alignItems: 'center',
@@ -121,6 +123,7 @@ const styles = StyleSheet.create({
         fontSize: 13,
         lineHeight: 20,
         color: '#333',
-        fontFamily: 'PoppinsRegular'
+        fontFamily: 'PoppinsRegular',
+        textAlign: 'justify',
     },
 });

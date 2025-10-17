@@ -13,21 +13,12 @@ import {
 import CustomModal from '../../../components/alerts';
 import Drawer from '../../../components/drawer';
 import TabBar from '../../../components/tabBarInst';
+import HeaderInicio from '../../../components/headerInicio';
 
 function Header({ onMenuPress }) {
     const router = useRouter();
     return (
-        <View style={styles.header}>
-            <View style={styles.headerTopRow}>
-                <TouchableOpacity onPress={onMenuPress}>
-                    <Ionicons name="menu" size={40} color="#fff" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('perfilInst')}>
-                    <Ionicons name="person-circle" size={40} color="#fff" />
-                </TouchableOpacity>
-            </View>
-            <Text style={styles.headerTitle}>Olá, bem vindo ao PILHADOS!</Text>
-        </View>
+        <HeaderInicio onMenuPress={onMenuPress} />
     );
 }
 
@@ -104,7 +95,7 @@ export default function inicioInst() {
                     material="pilhas e baterias"
                     horario="09:16"
                     responsavel="Rafael Prado"
-                    descricao="coleta realizada com o objetivo de remover pilhas e baterias usadas e quebradas."
+                    descricao="Coleta realizada com o objetivo de remover pilhas e baterias usadas e quebradas."
                 />
             </ScrollView>
             <TabBar/>
@@ -164,9 +155,10 @@ const styles = StyleSheet.create({
         elevation: 3,
     },
     serviceText: {
-        fontSize: 18,
+        fontSize: 16,
         color: '#148311',
         marginBottom: 15,
+        fontFamily: 'PoppinsRegular'
     },
     serviceButton: {
         backgroundColor: '#148311',
@@ -176,16 +168,16 @@ const styles = StyleSheet.create({
     },
     serviceButtonText: {
         color: '#f8ffe3',
-        fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 14,
+        fontFamily: 'PoppinsRegular'
     },
     coletaTitle: {
-        fontSize: 20,
+        fontSize: 19,
         color: '#0e670b',
-        fontWeight: 'bold',
         alignSelf: 'flex-start',
         paddingLeft: 30,
         paddingBottom: 20,
+        fontFamily: 'PoppinsSemiBoldItalic'
     },
     coletaCard: {
         width: '90%',
@@ -201,35 +193,35 @@ const styles = StyleSheet.create({
     },
     coletaHeader: {
         fontSize: 18,
-        fontWeight: 'bold',
         color: '#148311',
         marginBottom: 15,
         textAlign: 'center',
-        fontStyle: 'italic'
+        fontFamily: 'PoppinsSemiBoldItalic'
     },
     coletaInfo: {
         flexDirection: 'row',
         marginBottom: 5,
     },
     coletaLabel: {
-        fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 14,
         color: '#333',
         marginRight: 5,
+        fontFamily: 'PoppinsRegular'
     },
     coletaText: {
         fontSize: 16,
         color: '#555',
     },
     coletaDescriptionLabel: {
-        fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: 15,
         color: '#333',
         marginTop: 15,
         marginBottom: 5,
+        fontFamily: 'PoppinsBold'
     },
     coletaDescriptionText: {
-        fontSize: 16,
+        fontSize: 15,
         color: '#555',
+        fontFamily: 'PoppinsRegular'
     },
 });

@@ -173,9 +173,10 @@ const styles = StyleSheet.create({
         marginBottom: 20,
     },
     loginTitle: {
-        fontSize: 24,
-        fontWeight: 'bold',
+        fontSize: 22,
         marginBottom: 30,
+        fontFamily: 'PoppinsBold',
+        color: '#555'
     },
     input: {
         width: '80%',
@@ -185,6 +186,8 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         paddingHorizontal: 20,
         marginBottom: 20,
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular',
     },
     passwordContainer: {
         flexDirection: 'row',
@@ -200,6 +203,8 @@ const styles = StyleSheet.create({
     passwordInput: {
         flex: 1,
         height: '100%',
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular',
     },
     forgotPasswordButton: {
         alignSelf: 'flex-end',
@@ -207,7 +212,9 @@ const styles = StyleSheet.create({
         marginBottom: 30,
     },
     linkText: {
-        color: '#555555',
+        color: '#555',
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular',
     },
     loginButton: {
         width: '80%',
@@ -221,7 +228,7 @@ const styles = StyleSheet.create({
     loginButtonText: {
         color: 'white',
         fontSize: 18,
-        fontWeight: 'bold',
+        fontFamily: 'PoppinsRegular',
     },
     registerContainer: {
         alignItems: 'center',
@@ -230,9 +237,13 @@ const styles = StyleSheet.create({
     registerText: {
         color: '#555555',
         marginRight: 5,
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular',
     },
     registerLink: {
         color: '#148311',
         textDecorationLine: 'underline',
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular',
     },
 });

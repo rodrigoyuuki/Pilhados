@@ -109,8 +109,8 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 22,
-        color: 'black',
-        fontFamily: 'Poppins ExtraBold',
+        color: '#000',
+        fontFamily: 'PoppinsBold',
     },
     backButton: {
         width: 35,
@@ -126,21 +126,23 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
     },
     paragraph: {
-        fontSize: 15,
+        fontSize: 13,
         lineHeight: 22,
         textAlign: 'justify',
         color: '#333',
         marginBottom: 15,
         marginRight: 15,
         marginLeft: 15,
+        fontFamily: 'PoppinsRegular',
     },
     linkText: {
-        fontSize: 16,
+        fontSize: 13,
         lineHeight: 24,
         color: '#333',
         paddingLeft: 15,
         paddingRight: 15,
         paddingBottom: 30,
+        fontFamily: 'PoppinsRegular',
     },
     link: {
         color: '#148311',

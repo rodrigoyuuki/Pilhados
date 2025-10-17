@@ -122,10 +122,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   headerTitle: {
-    fontSize: 22,
-    fontWeight: "bold",
+    fontSize: 20,
     color: "#148311",
     marginTop: 5,
+    fontFamily: 'PoppinsBold'
   },
   card: {
     flexDirection: "row",
@@ -147,14 +147,15 @@ const styles = StyleSheet.create({
     marginRight: 10
   },
   cardTitle: {
-    fontSize: 16,
-    fontWeight: "bold",
+    fontSize: 15.5,
     color: "#0b4d0b",
     marginBottom: 5,
+    fontFamily: 'PoppinsBold'
   },
   cardDescription: {
-    fontSize: 13,
+    fontSize: 11,
     color: "#2e2e2e",
+    fontFamily: 'PoppinsRegular',
   },
   cardButton: {
     backgroundColor: '#f2ffcb',

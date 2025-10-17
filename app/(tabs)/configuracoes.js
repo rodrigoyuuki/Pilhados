@@ -91,9 +91,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 'auto',
     },
     title: {
-        fontSize: 22,
+        fontSize: 20,
         color: 'black',
-        fontFamily: 'Poppins ExtraBold',
+        fontFamily: 'PoppinsRegular',
     },
     backButton: {
         width: 35,
@@ -112,10 +112,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     sectionTitle: {
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 16,
         color: '#333',
         marginBottom: 10,
+        fontFamily: 'PoppinsBold',
     },
     item: {
         flexDirection: 'row',
@@ -124,8 +124,9 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
     },
     itemText: {
-        fontSize: 16,
+        fontSize: 15,
         color: '#333',
+        fontFamily: 'PoppinsRegular',
     },
     logOut: {
         flexDirection: 'row'
