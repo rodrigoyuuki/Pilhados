@@ -23,7 +23,9 @@ import {
 } from "firebase/auth";
 import CustomModal from '../../../components/alerts';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import LoadingModal from '../../../components/loading'
+import LoadingModal from '../../../components/loading';
+import InputSenha from '../../../components/inputSenha';
+import InputText from '../../../components/inputText';
 
 export default function SignUp() {
     const router = useRouter();
@@ -52,17 +54,26 @@ export default function SignUp() {
         return unsub;
     }, []);
 
-    async function handleCreateUser() {
-        setLoading(true);
-        if (!validateForms()) {
-            setLoading(false);
-            return;
+    const formatBirthday = (text) => {
+        let cleaned = text.replace(/\D/g, '');
+        cleaned = cleaned.slice(0, 8);
+
+        if (cleaned.length >= 5) {
+            return cleaned.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
+        } else if (cleaned.length >= 3) {
+            return cleaned.replace(/(\d{2})(\d{1,2})/, '$1/$2');
+        } else {
+            return cleaned;
         }
+    };
+
+
+    async function handleCreateUser() {
+        if (!validateForms()) return;
+        setLoading(true);
 
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const currentUser = userCredential.user;
-            await updateProfile(currentUser, { displayName: name });
+            const { user } = await createUserWithEmailAndPassword(auth, email, password);
             await setDoc(doc(db, "users", currentUser.uid), {
                 name: name,
                 email: email,
@@ -74,60 +85,29 @@ export default function SignUp() {
             });
 
             router.push("inicio");
-        } catch (err) {
-            console.log("Error code: ", err.code);
-            console.log("Error message: ", err.message);
-            if (err.code == "auth/invalid-email") {
-                setErrorMessage("Email inválido!");
-                setErrorModalVisible(true);
-            }
-            else if (err.code == "auth/missing-password") {
-                setErrorMessage("A senha é obrigatória!");
-                setErrorModalVisible(true);
-            }
-            else if (err.code == "auth/email-already-in-use") {
-                setErrorMessage("Esse e-mail já está sendo usado!");
-                setErrorModalVisible(true);
-            }
-            else {
-                setErrorMessage("Erro ao criar conta! Tente novamente mais tarde.");
-                setErrorModalVisible(true);
-            }
-        } finally {
+        }
+        catch (err) {
+            console.error("Erro Firebase:", err);
+            const messages = {
+                "auth/invalid-email": "Email inválido!",
+                "auth/missing-password": "A senha é obrigatória!",
+                "auth/email-already-in-use": "Esse e-mail já está sendo usado!"
+            };
+            showError(messages[err.code] || "Erro ao criar conta! Tente novamente mais tarde.");
+        }
+        finally {
             setLoading(false);
         }
     }
 
     function validateForms() {
-        if (!name.trim()) {
-            setErrorMessage("Digite seu nome!");
-            setErrorModalVisible(true);
-            return false;
-        } else if (!birthDate.trim()) {
-            setErrorMessage("Digite sua data de nascimento!");
-            setErrorModalVisible(true);
-            return false;
-        } else if (!email.trim()) {
-            setErrorMessage("Digite seu email!");
-            setErrorModalVisible(true);
-            return false;
-        } else if (password.length === 0) {
-            setErrorMessage("A senha é obrigatória!");
-            setErrorModalVisible(true);
-            return false;
-        } else if (password.length < 8) {
-            setErrorMessage("A senha deve ter pelo menos 8 caracteres!");
-            setErrorModalVisible(true);
-            return false;
-        } else if (!email.includes("@") || !email.includes(".")) {
-            setErrorMessage("Email inválido!");
-            setErrorModalVisible(true);
-            return false;
-        } else if (password !== confirmPassword) {
-            setErrorMessage("As senhas não coincidem!");
-            setErrorModalVisible(true);
-            return false;
-        }
+
+        if (!nomeInst.trim()) return showError("Digite o nome da instituição!");
+        if (!email.trim()) return showError("Digite seu email!");
+        if (!email.includes("@") || !email.includes(".")) return showError("Email inválido!");
+        if (!password) return showError("A senha é obrigatória!");
+        if (password.length < 8) return showError("A senha deve ter pelo menos 8 caracteres!");
+        if (password !== confirmPassword) return showError("As senhas não coincidem!");
 
         return true;
     }
@@ -160,68 +140,35 @@ export default function SignUp() {
                             <Text style={styles.signUpText}>Cadastro</Text>
                         </View>
 
-                        <TextInput
+                        <InputText
                             placeholder="Nome"
-                            style={styles.input}
-                            keyboardType="default"
-                            placeholderTextColor={'#999'}
                             value={name}
                             onChangeText={setName}
                         />
-
-                        <TextInput
+                        <InputText
                             placeholder="Data de nascimento"
-                            style={styles.input}
-                            keyboardType="default"
-                            placeholderTextColor={'#999'}
+                            keyboardType="numeric"
                             value={birthDate}
-                            onChangeText={setBirthDate}
+                            onChangeText={(t) => setBirthDate(formatBirthday(t))}
                         />
 
-                        <TextInput
+                        <InputText
                             placeholder="Email"
-                            style={styles.input}
                             autoCapitalize="none"
                             keyboardType="email-address"
-                            placeholderTextColor={'#999'}
                             value={email}
                             onChangeText={setEmail}
                         />
-
-                        <View style={styles.senhaContainer}>
-                            <TextInput
-                                placeholder="Senha"
-                                style={styles.senhaInput}
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                                placeholderTextColor={'#999'}
-                                value={password}
-                                onChangeText={setPassword}
-                                secureTextEntry={passHide}
-                            />
-                            <TouchableOpacity style={styles.icon}
-                                onPress={() => setPassHide(!passHide)}>
-                                <Ionicons name={passHide ? 'eye-outline' : 'eye-off-outline'} size={24} color="#333" />
-                            </TouchableOpacity>
-                        </View>
-
-                        <View style={styles.senhaContainer}>
-                            <TextInput
-                                placeholder="Confirmar senha"
-                                style={styles.senhaInput}
-                                autoCapitalize="none"
-                                autoCorrect={false}
-                                placeholderTextColor={'#999'}
-                                value={confirmPassword}
-                                onChangeText={setConfirmPassword}
-                                secureTextEntry={passHide2}
-                            />
-                            <TouchableOpacity style={styles.icon}
-                                onPress={() => setPassHide2(!passHide2)}>
-                                <Ionicons name={passHide2 ? 'eye-outline' : 'eye-off-outline'} size={24} color="#333" />
-                            </TouchableOpacity>
-                        </View>
-
+                        <InputSenha
+                            placeholder="Senha"
+                            value={password}
+                            onChangeText={setPassword}
+                        />
+                        <InputSenha
+                            placeholder="Confirmar senha"
+                            value={confirmPassword}
+                            onChangeText={setConfirmPassword}
+                        />
                         <TouchableOpacity
                             style={styles.submitButton}
                             onPress={handleCreateUser}
@@ -281,38 +228,6 @@ const styles = StyleSheet.create({
         fontSize: 22,
         color: '#555555',
         fontFamily: 'PoppinsBold',
-    },
-    input: {
-        width: '90%',
-        height: 50,
-        backgroundColor: '#fff',
-        borderRadius: 25,
-        paddingLeft: 20,
-        marginBottom: 20,
-        borderColor: '#a6a6a6',
-        borderWidth: 1,
-        fontSize: 13,
-        fontFamily: 'PoppinsRegular',
-    },
-    senhaContainer: {
-        width: '90%',
-        height: 50,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#fff',
-        borderRadius: 25,
-        marginBottom: 20,
-        paddingHorizontal: 15,
-        borderColor: '#a6a6a6',
-        borderWidth: 1,
-    },
-    senhaInput: {
-        flex: 1,
-        fontSize: 13,
-        fontFamily: 'PoppinsRegular',
-    },
-    icon: {
-        paddingHorizontal: 5,
     },
     submitButton: {
         width: '70%',

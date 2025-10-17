@@ -20,12 +20,12 @@ import {
 import CustomModal from '../../../components/alerts';
 import LoadingModal from '../../../components/loading';
 import { auth, db } from "../../../firebase/firebaseConfig";
+import InputSenha from '../../../components/inputSenha';
+import InputText from '../../../components/inputText';
 
 export default function Cadastro() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [passHide, setPassHide] = useState(true);
-  const [passHide2, setPassHide2] = useState(true);
   const [errorModalVisible, setErrorModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [user, setUser] = useState(null);
@@ -48,134 +48,80 @@ export default function Cadastro() {
     return unsub;
   }, []);
 
-  const formatCpf = (text) => {
-    const cleanedText = text.replace(/\D/g, '');
-    let formattedCpf = '';
-    if (cleanedText.length > 0) {
-      formattedCpf += cleanedText.substring(0, 3);
-      if (cleanedText.length > 3) {
-        formattedCpf += '.' + cleanedText.substring(3, 6);
-      }
-      if (cleanedText.length > 6) {
-        formattedCpf += '.' + cleanedText.substring(6, 9);
-      }
-      if (cleanedText.length > 9) {
-        formattedCpf += '-' + cleanedText.substring(9, 11);
-      }
-    }
-    setCpf(formattedCpf);
-  };
+  const formatDocument = (text, type) => {
+    const MAX_LENGTH = type === 'cnpj' ? 14 : 11;
+    let cleaned = text.replace(/\D/g, '');
+    cleaned = cleaned.slice(0, MAX_LENGTH);
 
-  const formatCnpj = (text) => {
-    const cleanedText = text.replace(/\D/g, '');
-    let formattedCnpj = '';
-    if (cleanedText.length > 0) {
-      formattedCnpj += cleanedText.substring(0, 2);
-      if (cleanedText.length > 2) {
-        formattedCnpj += '.' + cleanedText.substring(2, 5);
+    const masks = {
+      cpf: [3, 6, 9],
+      cnpj: [2, 5, 8, 12]
+    };
+
+    let formatted = '';
+    const limits = masks[type];
+    cleaned.split('').forEach((char, i) => {
+      formatted += char;
+      if (limits.includes(i + 1)) {
+        if (type === 'cpf') {
+          formatted += (i === 8 ? '-' : '.');
+        } else if (type === 'cnpj') {
+          formatted += (i === 7 ? '/' : (i === 11 ? '-' : '.'));
+        }
       }
-      if (cleanedText.length > 5) {
-        formattedCnpj += '.' + cleanedText.substring(5, 8);
-      }
-      if (cleanedText.length > 8) {
-        formattedCnpj += '/' + cleanedText.substring(8, 12);
-      }
-      if (cleanedText.length > 12) {
-        formattedCnpj += '-' + cleanedText.substring(12, 14);
-      }
-    }
-    setCnpj(formattedCnpj);
+    });
+
+    return formatted;
   };
 
   async function handleCreateUser() {
+    if (!validateForms()) return;
     setLoading(true);
-    if (!validateForms()) {
-      setLoading(false);
-      return;
-    }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const currentUser = userCredential.user;
-
-      await setDoc(doc(db, "instituicao", currentUser.uid), {
-        email: email,
+      const { user } = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, "instituicao", user.uid), {
+        email,
         nome: nomeInst,
         cpf: cpf.replace(/\D/g, ''),
         cnpj: cnpj.replace(/\D/g, '')
       });
-
-      setUser({
-        email: currentUser.email,
-        uid: currentUser.uid,
-      });
-
-      router.push("/(app)/homeInst");
-    } catch (err) {
-      console.log("Error code: ", err.code);
-      console.log("Error message: ", err.message);
-      if (err.code == "auth/invalid-email") {
-        setErrorMessage("Email inválido!");
-        setErrorModalVisible(true);
-      }
-      else if (err.code == "auth/missing-password") {
-        setErrorMessage("A senha é obrigatória!");
-        setErrorModalVisible(true);
-      }
-      else if (err.code == "auth/email-already-in-use") {
-        setErrorMessage("Esse e-mail já está sendo usado!");
-        setErrorModalVisible(true);
-      }
-      else {
-        setErrorMessage("Erro ao criar conta! Tente novamente mais tarde.");
-        setErrorModalVisible(true);
-      }
-    } finally {
+      setUser({ email: user.email, uid: user.uid });
+      router.push("inicioInst");
+    }
+    catch (err) {
+      console.error("Erro Firebase:", err);
+      const messages = {
+        "auth/invalid-email": "Email inválido!",
+        "auth/missing-password": "A senha é obrigatória!",
+        "auth/email-already-in-use": "Esse e-mail já está sendo usado!"
+      };
+      showError(messages[err.code] || "Erro ao criar conta! Tente novamente mais tarde.");
+    }
+    finally {
       setLoading(false);
     }
   }
+
+  const showError = (msg) => {
+    setErrorMessage(msg);
+    setErrorModalVisible(true);
+    return false;
+  };
 
   function validateForms() {
     const cleanedCpf = cpf.replace(/\D/g, '');
     const cleanedCnpj = cnpj.replace(/\D/g, '');
 
-    if (!nomeInst.trim()) {
-      setErrorMessage("Digite o nome da instituição!");
-      setErrorModalVisible(true);
-      return false;
-    } else if (!email.trim()) {
-      setErrorMessage("Digite seu email!");
-      setErrorModalVisible(true);
-      return false;
-    } else if (password.length === 0) {
-      setErrorMessage("A senha é obrigatória!");
-      setErrorModalVisible(true);
-      return false;
-    } else if (password.length < 8) {
-      setErrorMessage("A senha deve ter pelo menos 8 caracteres!");
-      setErrorModalVisible(true);
-      return false;
-    } else if (!email.includes("@") || !email.includes(".")) {
-      setErrorMessage("Email inválido!");
-      setErrorModalVisible(true);
-      return false;
-    } else if (password !== confirmPassword) {
-      setErrorMessage("As senhas não coincidem!");
-      setErrorModalVisible(true);
-      return false;
-    } else if (cleanedCpf.length > 0 && cleanedCpf.length !== 11) {
-      setErrorMessage("CPF inválido!");
-      setErrorModalVisible(true);
-      return false;
-    } else if (cleanedCnpj.length > 0 && cleanedCnpj.length !== 14) {
-      setErrorMessage("CNPJ inválido!");
-      setErrorModalVisible(true);
-      return false;
-    } else if (cleanedCpf.length === 0 && cleanedCnpj.length === 0) {
-      setErrorMessage("Digite o CPF ou o CNPJ!");
-      setErrorModalVisible(true);
-      return false;
-    }
+    if (!nomeInst.trim()) return showError("Digite o nome da instituição!");
+    if (!email.trim()) return showError("Digite seu email!");
+    if (!email.includes("@") || !email.includes(".")) return showError("Email inválido!");
+    if (!password) return showError("A senha é obrigatória!");
+    if (password.length < 8) return showError("A senha deve ter pelo menos 8 caracteres!");
+    if (password !== confirmPassword) return showError("As senhas não coincidem!");
+    if (cleanedCpf && cleanedCpf.length !== 11) return showError("CPF inválido!");
+    if (cleanedCnpj && cleanedCnpj.length !== 14) return showError("CNPJ inválido!");
+    if (!cleanedCpf && !cleanedCnpj) return showError("Digite o CPF ou o CNPJ!");
 
     return true;
   }
@@ -203,70 +149,40 @@ export default function Cadastro() {
           <View style={styles.signUpTextContainer}>
             <Text style={styles.signUpText}>Cadastro</Text>
           </View>
-          <TextInput
+          <InputText
             placeholder="Nome da Instituição"
-            style={styles.input}
-            placeholderTextColor={'#999'}
             value={nomeInst}
             onChangeText={setNomeInst}
           />
-          <TextInput
+          <InputText
             placeholder="CPF"
-            style={styles.input}
             keyboardType="numeric"
-            placeholderTextColor={'#999'}
             value={cpf}
-            onChangeText={formatCpf}
+            onChangeText={(t) => setCpf(formatDocument(t, 'cpf'))}
           />
-          <TextInput
+          <InputText
             placeholder="CNPJ"
-            style={styles.input}
             keyboardType="numeric"
-            placeholderTextColor={'#999'}
             value={cnpj}
-            onChangeText={formatCnpj}
+            onChangeText={(t) => setCnpj(formatDocument(t, 'cnpj'))}
           />
-          <TextInput
+          <InputText
             placeholder="Email"
-            style={styles.input}
             autoCapitalize="none"
             keyboardType="email-address"
-            placeholderTextColor={'#999'}
             value={email}
             onChangeText={setEmail}
           />
-          <View style={styles.senhaContainer}>
-            <TextInput
-              placeholder="Senha"
-              style={styles.senhaInput}
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholderTextColor={'#999'}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={passHide}
-            />
-            <TouchableOpacity style={styles.icon}
-              onPress={() => setPassHide(!passHide)}>
-              <Ionicons name={passHide ? 'eye-outline' : 'eye-off-outline'} size={24} color="#333" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.senhaContainer}>
-            <TextInput
-              placeholder="Confirmar senha"
-              style={styles.senhaInput}
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholderTextColor={'#999'}
-              value={confirmPassword}
-              onChangeText={setConfirmPassword}
-              secureTextEntry={passHide2}
-            />
-            <TouchableOpacity style={styles.icon}
-              onPress={() => setPassHide2(!passHide2)}>
-              <Ionicons name={passHide2 ? 'eye-outline' : 'eye-off-outline'} size={24} color="#333" />
-            </TouchableOpacity>
-          </View>
+          <InputSenha
+            placeholder="Senha"
+            value={password}
+            onChangeText={setPassword}
+          />
+          <InputSenha
+            placeholder="Confirmar senha"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
           <TouchableOpacity
             style={styles.submitButton}
             onPress={handleCreateUser}
@@ -322,38 +238,6 @@ const styles = StyleSheet.create({
     fontSize: 22,
     color: '#555555',
     fontFamily: 'PoppinsBold',
-  },
-  input: {
-    width: '90%',
-    height: 50,
-    backgroundColor: '#f8ffe3',
-    borderRadius: 25,
-    paddingLeft: 20,
-    marginBottom: 20,
-    borderColor: '#a6a6a6',
-    borderWidth: 1,
-    fontSize: 13,
-    fontFamily: 'PoppinsRegular',
-  },
-  senhaContainer: {
-    width: '90%',
-    height: 50,
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f8ffe3',
-    borderRadius: 25,
-    marginBottom: 20,
-    paddingHorizontal: 15,
-    borderColor: '#a6a6a6',
-    borderWidth: 1,
-  },
-  senhaInput: {
-    flex: 1,
-    fontSize: 13,
-    fontFamily: 'PoppinsRegular',
-  },
-  icon: {
-    paddingHorizontal: 5,
   },
   submitButton: {
     width: '70%',

@@ -78,7 +78,7 @@ export default function App() {
                                     key={index}
                                     style={{
                                         width: cardInnerWidth,
-                                        paddingVertical: 20,
+                                        paddingVertical: 10,
                                         paddingHorizontal: 20
                                     }} >
                                     <Text style={styles.sectionTitle}>{title}</Text>
@@ -141,8 +141,8 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#f8ffe3',
         textAlign: 'center',
-        marginTop: 16,
-        marginBottom: 20,
+        marginTop: 25,
+        marginBottom: 16,
         fontFamily: 'PoppinsBold',
     },
     contentArea: {

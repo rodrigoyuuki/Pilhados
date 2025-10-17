@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     fontSize: 15.5,
     color: "#0b4d0b",
     marginBottom: 5,
-    fontFamily: 'PoppinsBold'
+    fontFamily: 'PoppinsBold',
   },
   cardDescription: {
     fontSize: 11,
