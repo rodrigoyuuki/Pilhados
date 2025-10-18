@@ -17,19 +17,19 @@ export default function TabBar(){
         return (
             <View style={styles.tabBar}>
                 <TouchableOpacity style={styles.tabItem} onPress={() => router.push('inicio')}>
-                    <Ionicons name="home" size={27} color="#e3ff92" />
+                    <Ionicons name="home" size={27} color="#fff" />
                     <Text style={styles.tabText}>Home</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.tabItem} onPress={() => router.push('dicas')}>
-                    <Ionicons name="bulb-outline" size={27} color="#e3ff92" />
+                    <Ionicons name="bulb-outline" size={27} color="#fff" />
                     <Text style={styles.tabText}>Dicas</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.tabItem} onPress={() => router.push('historico')}>
-                    <AntDesign name="clock-circle" size={24} color="#e3ff92" />
+                    <AntDesign name="clock-circle" size={24} color="#fff" />
                     <Text style={styles.tabText}>Histórico</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.tabItem} onPress={() => router.push('agendamento')}>
-                    <Ionicons name="calendar-outline" size={27} color="#e3ff92" />
+                    <Ionicons name="calendar-outline" size={27} color="#fff" />
                     <Text style={styles.tabText}>Calendário</Text>
                 </TouchableOpacity>
             </View>
@@ -46,8 +46,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 120,
         backgroundColor: '#148311',
-        borderTopWidth: 1,
-        borderTopColor: '#eee',
         paddingLeft: 15,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: -2 },
@@ -62,7 +60,7 @@ const styles = StyleSheet.create({
     },
     tabText: {
         fontSize: 10,
-        color: '#e3ff92',
+        color: '#fff',
         marginTop: 5,
         fontFamily: 'PoppinsRegular'
     },

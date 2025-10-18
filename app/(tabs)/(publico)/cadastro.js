@@ -31,10 +31,9 @@ export default function SignUp() {
     const router = useRouter();
 
     const [loading, setLoading] = useState(false);
-    const [passHide, setPassHide] = useState(true);
-    const [passHide2, setPassHide2] = useState(true);
     const [errorModalVisible, setErrorModalVisible] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
+
     const [user, setUser] = useState(null);
     const [name, setName] = useState("");
     const [birthDate, setBirthDate] = useState("");
@@ -57,7 +56,6 @@ export default function SignUp() {
     const formatBirthday = (text) => {
         let cleaned = text.replace(/\D/g, '');
         cleaned = cleaned.slice(0, 8);
-
         if (cleaned.length >= 5) {
             return cleaned.replace(/(\d{2})(\d{2})(\d{1,4})/, '$1/$2/$3');
         } else if (cleaned.length >= 3) {
@@ -67,49 +65,65 @@ export default function SignUp() {
         }
     };
 
-
     async function handleCreateUser() {
         if (!validateForms()) return;
         setLoading(true);
 
         try {
-            const { user } = await createUserWithEmailAndPassword(auth, email, password);
+            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+            const currentUser = userCredential.user;
+
+            await updateProfile(currentUser, { displayName: name });
+
             await setDoc(doc(db, "users", currentUser.uid), {
                 name: name,
                 email: email,
                 birthDate: birthDate
             });
+
             setUser({
                 email: currentUser.email,
                 uid: currentUser.uid,
             });
 
             router.push("inicio");
-        }
-        catch (err) {
-            console.error("Erro Firebase:", err);
-            const messages = {
-                "auth/invalid-email": "Email inválido!",
-                "auth/missing-password": "A senha é obrigatória!",
-                "auth/email-already-in-use": "Esse e-mail já está sendo usado!"
-            };
-            showError(messages[err.code] || "Erro ao criar conta! Tente novamente mais tarde.");
-        }
-        finally {
+
+        } catch (err) {
+            if (err.code === "auth/invalid-email") {
+                setErrorMessage("Email inválido!");
+            } else if (err.code === "auth/missing-password") {
+                setErrorMessage("A senha é obrigatória!");
+            } else if (err.code === "auth/email-already-in-use") {
+                setErrorMessage("Esse e-mail já está sendo usado!");
+            } else {
+                setErrorMessage("Erro ao criar conta! Tente novamente mais tarde.");
+            }
+            setErrorModalVisible(true);
+        } finally {
             setLoading(false);
         }
     }
 
     function validateForms() {
-
-        if (!nomeInst.trim()) return showError("Digite o nome da instituição!");
-        if (!email.trim()) return showError("Digite seu email!");
-        if (!email.includes("@") || !email.includes(".")) return showError("Email inválido!");
-        if (!password) return showError("A senha é obrigatória!");
-        if (password.length < 8) return showError("A senha deve ter pelo menos 8 caracteres!");
-        if (password !== confirmPassword) return showError("As senhas não coincidem!");
-
-        return true;
+        if (!name.trim()) {
+            setErrorMessage("Digite seu nome!");
+        } else if (!birthDate.trim()) {
+            setErrorMessage("Digite sua data de aniversário!");
+        } else if (!email.trim()) {
+            setErrorMessage("Digite seu email!");
+        } else if (password.length === 0) {
+            setErrorMessage("A senha é obrigatória!");
+        } else if (password.length < 6) {
+            setErrorMessage("A senha deve ter pelo menos 6 caracteres!");
+        } else if (!email.includes("@") || !email.includes(".")) {
+            setErrorMessage("Email inválido!");
+        } else if (password !== confirmPassword) {
+            setErrorMessage("As senhas não coincidem!");
+        } else {
+            return true;
+        }
+        setErrorModalVisible(true);
+        return false;
     }
 
     return (
@@ -195,71 +209,17 @@ export default function SignUp() {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-    },
-    header: {
-        width: '100%',
-        alignItems: 'center',
-    },
-    logoContainer: {
-        width: 100,
-        height: 100,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: '50'
-    },
-    logo: {
-        width: '90',
-        height: '90',
-        resizeMode: 'contain',
-    },
-    signUpContent: {
-        width: '80%',
-        alignSelf: 'center',
-        paddingHorizontal: 20,
-        alignItems: 'center',
-    },
-    signUpTextContainer: {
-        marginBottom: 20,
-    },
-    signUpText: {
-        fontSize: 22,
-        color: '#555555',
-        fontFamily: 'PoppinsBold',
-    },
-    submitButton: {
-        width: '70%',
-        height: 50,
-        backgroundColor: '#148311',
-        borderRadius: 25,
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop: 10,
-    },
-    submitText: {
-        color: 'white',
-        fontSize: 18,
-        fontFamily: 'PoppinsRegular',
-    },
-    loginTextContainer: {
-        flexDirection: 'row',
-        marginTop: 20,
-        marginBottom: 20,
-    },
-    loginText: {
-        color: '#555555',
-        fontSize: 13,
-        fontFamily: 'PoppinsRegular',
-    },
-    loginButton: {
-        marginLeft: 5,
-    },
-    loginButtonText: {
-        fontSize: 13,
-        fontFamily: 'PoppinsRegular',
-        color: '#148311',
-        textDecorationLine: 'underline',
-    },
+    container: { flex: 1,  backgroundColor: '#fff' },
+    header: { width: '100%', alignItems: 'center' },
+    logoContainer: { width: 100, height: 100, justifyContent: 'center', alignItems: 'center', marginTop: 50 },
+    logo: { width: 90, height: 90, resizeMode: 'contain' },
+    signUpContent: { width: '80%', alignSelf: 'center', paddingHorizontal: 20, alignItems: 'center' },
+    signUpTextContainer: { marginBottom: 20 },
+    signUpText: { fontSize: 22, color: '#555555', fontFamily: 'PoppinsBold' },
+    submitButton: { width: '70%', height: 50, backgroundColor: '#148311', borderRadius: 25, justifyContent: 'center', alignItems: 'center', marginTop: 10 },
+    submitText: { color: 'white', fontSize: 18, fontFamily: 'PoppinsRegular' },
+    loginTextContainer: { flexDirection: 'row', marginTop: 20, marginBottom: 20 },
+    loginText: { color: '#555555', fontSize: 13, fontFamily: 'PoppinsRegular' },
+    loginButton: { marginLeft: 5 },
+    loginButtonText: { fontSize: 13, fontFamily: 'PoppinsRegular', color: '#148311', textDecorationLine: 'underline' },
 });

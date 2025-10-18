@@ -13,25 +13,13 @@ import {
 import CustomModal from '../../../components/alerts';
 import Drawer from '../../../components/drawer';
 import TabBar from '../../../components/tabBarInst';
-import HeaderInicio from '../../../components/headerInicio';
+import HeaderInst from '../../../components/headerInst';
+import ServiceCard from '../../../components/serviceCard';
 
 function Header({ onMenuPress }) {
     const router = useRouter();
     return (
-        <HeaderInicio onMenuPress={onMenuPress} />
-    );
-}
-
-function ServiceCard({ onPress }) {
-    return (
-        <View style={styles.serviceCard}>
-            <Text style={styles.serviceText}>Agende sua coleta aqui!</Text>
-            <TouchableOpacity
-                style={styles.serviceButton}
-                onPress={onPress}>
-                <Text style={styles.serviceButtonText}>Contratar serviço</Text>
-            </TouchableOpacity>
-        </View>
+        <HeaderInst onMenuPress={onMenuPress} />
     );
 }
 
@@ -74,11 +62,6 @@ export default function inicioInst() {
         setIsDrawerVisible(!isDrawerVisible);
     };
 
-    const handlePressAgendar = () => {
-        setModalVisible(true);
-        setMessage("Aguardando agendamento...");
-    };
-
     return (
         <SafeAreaView style={styles.container}>
             <CustomModal
@@ -88,7 +71,8 @@ export default function inicioInst() {
             />
             <Header onMenuPress={toggleDrawer} />
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                <ServiceCard onPress={handlePressAgendar} />
+                <ServiceCard />
+
                 <Text style={styles.coletaTitle}>COLETAS ANTERIORES</Text>
                 <ColetaCard
                     data="08 de agosto"

@@ -16,27 +16,9 @@ import Animated, {
     withTiming,
     runOnJS
 } from 'react-native-reanimated';
+import HeaderAgend from '../../../components/headerAgend';
 
 const screenWidth = Dimensions.get('window').width;
-
-function Header({ onMenuPress }) {
-    const router = useRouter();
-    return (
-        <View style={styles.header}>
-            <View style={styles.headerTopRow}>
-                <TouchableOpacity
-                    onPress={() => router.back()}
-                    style={styles.backButton}>
-                    <Ionicons name="chevron-back" size={24} color="#fff" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => console.log('perfil')}>
-                    <Ionicons name="person-circle" size={40} color="#148311" />
-                </TouchableOpacity>
-            </View>
-            <Text style={styles.headerTitle}>Agendamento</Text>
-        </View>
-    );
-}
 
 function TimePicker() {
     const hours = Array.from({ length: 24 }, (_, i) => i % 24);
@@ -178,7 +160,9 @@ export default function AppointmentScreen() {
     return (
         <Animated.View style={[styles.container, animatedStyle]}>
             <SafeAreaView style={{ flex: 1 }}>
-                <Header onMenuPress={toggleDrawer} />
+                <HeaderAgend onMenuPress={toggleDrawer} />
+                <Text style={styles.headerTitle}>Agendamento</Text>
+
                 <ScrollView contentContainerStyle={styles.scrollViewContent}>
                     <View style={styles.content}>
                         <Text style={styles.subtitle}>
@@ -210,35 +194,11 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    header: {
-        flexDirection: 'column',
-        justifyContent: 'flex-end',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 10,
-        paddingBottom: 20,
-        backgroundColor: '#fff',
-        borderBottomWidth: 0,
-    },
-    headerTopRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginBottom: 10,
-        marginTop: 30
-    },
     headerTitle: {
         fontSize: 20,
         color: '#148311',
-        fontFamily: 'PoppinsBold'
-    },
-    backButton: {
-        backgroundColor: '#148311',
-        borderRadius: 50,
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 33,
-        height: 33
+        fontFamily: 'PoppinsBold',
+        alignSelf: 'center'
     },
     scrollViewContent: {
         flexGrow: 1,

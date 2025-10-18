@@ -11,18 +11,45 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import Drawer from '../../../components/drawer';
 import HeaderPerfil from '../../../components/headerPerfil';
+import { getAuth, updateProfile } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../../firebase/firebaseConfig';
 
 export default function ProfileScreen() {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
     const [image, setImage] = useState(null);
-    const [userName, setUserName] = useState('Nome do usuário');
+    const auth = getAuth();
+    const user = auth.currentUser;
     const [personalData, setPersonalData] = useState({
-        name: 'Claudia Almeida Ferreira',
-        date: '22/08/2007',
-        email: 'exemplo@email.com',
-        password: '*******',
+        name: '',
+        email: '',
+        birthDate: '',
     });
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (user) {
+                try {
+                    const docRef = doc(db, 'users', user.uid);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        setPersonalData({
+                            name: data.name || '',
+                            email: data.email || '',
+                            birthDate: data.birthDate || '',
+                        });
+                    } else {
+                        console.log('Documento não encontrado!');
+                    }
+                } catch (error) {
+                    console.log('Erro ao buscar nome:', error);
+                }
+            }
+        };
+        fetchUser();
+    }, []);
 
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -62,35 +89,18 @@ export default function ProfileScreen() {
             </TouchableOpacity>
 
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <Text style={styles.userName}>{userName}</Text>
+                <Text style={styles.userName}>{personalData.name}</Text>
 
                 <View style={styles.card}>
                     <Text style={styles.cardTitle}>Dados pessoais</Text>
                     <Text style={styles.label}>Nome:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={personalData.name}
-                        editable={false}
-                    />
+                    <Text style={styles.information}>{personalData.name}</Text>
+
                     <Text style={styles.label}>Data de nascimento:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={personalData.date}
-                        editable={false}
-                    />
+                    <Text style={styles.information}>{personalData.birthDate}</Text>
+
                     <Text style={styles.label}>Email:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={personalData.email}
-                        editable={false}
-                    />
-                    <Text style={styles.label}>Senha:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={personalData.password}
-                        secureTextEntry={true}
-                        editable={false}
-                    />
+                    <Text style={styles.information}>{personalData.email}</Text>
                 </View>
 
                 <TouchableOpacity style={styles.editButton}>
@@ -151,7 +161,7 @@ const styles = StyleSheet.create({
         color: '#148311',
         marginBottom: 15,
     },
-    input: {
+    information: {
         width: '100%',
         borderBottomWidth: 1,
         borderBottomColor: '#148311',

@@ -28,7 +28,7 @@ function Header({ onMenuPress }) {
                 <TouchableOpacity onPress={onMenuPress}>
                     <Feather name="menu" size={35} color="white" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('perfil')}>
+                <TouchableOpacity onPress={() => router.push('perfilInst')}>
                     <Ionicons name="person-circle" size={40} color="#fff" />
                 </TouchableOpacity>
             </View>
@@ -87,6 +87,7 @@ function AddNoticia() {
             setSummary('');
             setContent('');
             setImage(null);
+            setCreatedAt('');
 
             setModalVisible(true);
             setMessage('Sucesso! Notícia publicada com sucesso!');

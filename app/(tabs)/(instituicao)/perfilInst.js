@@ -9,89 +9,50 @@ import {
     ScrollView,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import { useRouter } from 'expo-router';
 import * as ImagePicker from 'expo-image-picker';
-import Animated, {
-    useSharedValue,
-    useAnimatedStyle,
-    withTiming,
-    runOnJS
-} from 'react-native-reanimated';
-
-function Header({ onMenuPress }) {
-    const router = useRouter();
-    return (
-        <View style={styles.header}>
-            <View style={styles.headerTopRow}>
-                <TouchableOpacity onPress={onMenuPress}>
-                    <Ionicons name="menu" size={40} color="#e3ff92" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-                    <AntDesign name="home" size={40} margin={5} color="#e3ff92" />
-                </TouchableOpacity>
-            </View>
-        </View>
-    );
-}
-
-function DrawerMenu({ isVisible, onClose, setShouldRenderDrawer }) {
-    const router = useRouter();
-    const drawerX = useSharedValue(-300);
-
-    useEffect(() => {
-        if (isVisible) {
-            drawerX.value = withTiming(0, { duration: 300 });
-        } else {
-            drawerX.value = withTiming(-300, { duration: 300 }, (isFinished) => {
-                if (isFinished) {
-                    runOnJS(setShouldRenderDrawer)(false);
-                }
-            });
-        }
-    }, [isVisible]);
-
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ translateX: drawerX.value }],
-        };
-    });
-
-    return (
-        <View style={styles.drawerContainer}>
-            <TouchableOpacity
-                style={styles.drawerOverlay}
-                onPress={onClose}
-                activeOpacity={1}
-            />
-            <Animated.View style={[styles.drawerContent, animatedStyle]}>
-                <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-                    <Ionicons name="close" size={30} color="#fff" />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.drawerItem} onPress={() => router.push('sobrenos')}>
-                    <Text style={styles.drawerItemText}>Sobre nós</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.drawerItem} onPress={() => router.push('configuracoes')}>
-                    <Text style={styles.drawerItemText}>Configurações</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.drawerItem} onPress={() => router.push('suporte')}>
-                    <Text style={styles.drawerItemText}>Fale conosco</Text>
-                </TouchableOpacity>
-            </Animated.View>
-        </View>
-    );
-}
+import HeaderPerfil from '../../../components/headerPerfil';
+import Drawer from '../../../components/drawer';
+import { getAuth, updateProfile } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../../firebase/firebaseConfig';
 
 export default function ProfileScreen() {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
     const [image, setImage] = useState(null);
-    const [userName, setUserName] = useState('Nome da instituição');
+    const auth = getAuth();
+    const user = auth.currentUser;
     const [personalData, setPersonalData] = useState({
-        cnpj: '12.345.678/0001-46',
-        cpf: '123.456.789-00',
-        email: 'exemplo@email.com',
+        nome: '',
+        cnpj: '',
+        cpf: '',
+        email: '',
     });
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (user) {
+                try {
+                    const docRef = doc(db, 'instituicao', user.uid);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
+                        setPersonalData({
+                            nome: data.nome || '',
+                            cnpj: data.cnpj || '',
+                            cpf: data.cpf || '',
+                            email: data.email || '',
+                        });
+                    } else {
+                        console.log('Documento não encontrado!');
+                    }
+                } catch (error) {
+                    console.log('Erro ao buscar nome:', error);
+                }
+            }
+        };
+        fetchUser();
+    }, []);
 
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -117,7 +78,7 @@ export default function ProfileScreen() {
 
     return (
         <SafeAreaView style={styles.container}>
-            <Header onMenuPress={toggleDrawer} />
+            <HeaderPerfil onMenuPress={toggleDrawer} />
 
             <TouchableOpacity
                 onPress={pickImage}
@@ -131,28 +92,19 @@ export default function ProfileScreen() {
             </TouchableOpacity>
 
             <ScrollView contentContainerStyle={styles.scrollView}>
-                <Text style={styles.userName}>{userName}</Text>
+                <Text style={styles.userName}>{personalData.nome}</Text>
 
                 <View style={styles.card}>
                     <Text style={styles.cardTitle}>Dados pessoais</Text>
+
                     <Text style={styles.label}>CNPJ:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={personalData.cnpj}
-                        editable={false}
-                    />
+                    <Text style={styles.infomation}>{personalData.cnpj}</Text>
+
                     <Text style={styles.label}>CPF:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={personalData.cpf}
-                        editable={false}
-                    />
+                    <Text style={styles.infomation}>{personalData.cpf}</Text>
+                    
                     <Text style={styles.label}>Email:</Text>
-                    <TextInput
-                        style={styles.input}
-                        value={personalData.email}
-                        editable={false}
-                    />
+                    <Text style={styles.infomation}>{personalData.email}</Text>
                 </View>
 
                 <TouchableOpacity style={styles.editButton}>
@@ -161,7 +113,7 @@ export default function ProfileScreen() {
             </ScrollView>
 
             {shouldRenderDrawer && (
-                <DrawerMenu
+                <Drawer
                     isVisible={isDrawerVisible}
                     onClose={toggleDrawer}
                     setShouldRenderDrawer={setShouldRenderDrawer}
@@ -230,7 +182,7 @@ const styles = StyleSheet.create({
         color: '#148311',
         marginBottom: 15,
     },
-    input: {
+    infomation: {
         width: '100%',
         borderBottomWidth: 1,
         borderBottomColor: '#148311',
@@ -253,41 +205,5 @@ const styles = StyleSheet.create({
         color: '#f5ffd9',
         fontSize: 16,
         fontWeight: '600',
-    },
-    drawerContainer: {
-        ...StyleSheet.absoluteFillObject,
-        flexDirection: 'row',
-        zIndex: 10,
-    },
-    drawerOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    drawerContent: {
-        width: '70%',
-        paddingTop: 50,
-        paddingHorizontal: 20,
-        backgroundColor: '#4ca444',
-        position: 'absolute',
-        left: 0,
-        height: '100%',
-    },
-    drawerItem: {
-        paddingVertical: 15,
-    },
-    drawerItemText: {
-        fontSize: 17,
-        color: '#f8ffe3',
-    },
-    closeButton: {
-        position: 'absolute',
-        top: 15,
-        right: 15,
-        padding: 10,
-    },
-    label: {
-        fontSize: 14,
-        color: '#b8bfa6',
-        marginBottom: 4,
     },
 });

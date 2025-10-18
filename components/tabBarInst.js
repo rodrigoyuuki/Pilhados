@@ -22,25 +22,19 @@ export default function TabBar() {
             <TouchableOpacity
                 style={styles.tabItem}
                 onPress={() => router.push("inicioInst")}>
-                <Ionicons name="home" size={27} color="#e3ff92" />
+                <Ionicons name="home" size={27} color="#fff" />
                 <Text style={styles.tabText}>Home</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.tabItem}
                 onPress={() => router.push("addNoticia")}>
-                <Ionicons name="bulb-outline" size={26} color="#e3ff92" />
+                <Ionicons name="bulb-outline" size={26} color="#fff" />
                 <Text style={styles.tabText}>Ideias</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.tabItem}
-                onPress={() => router.push("")}>
-                <FontAwesome5 name="clock" size={24} color="#e3ff92" />
-                <Text style={styles.tabText}>Histórico</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-                style={styles.tabItem}
-                onPress={() => router.push("")}>
-                <Ionicons name="calendar-outline" size={27} color="#e3ff92" />
+                onPress={() => router.push("agendamento")}>
+                <Ionicons name="calendar-outline" size={27} color="#fff" />
                 <Text style={styles.tabText}>Calendário</Text>
             </TouchableOpacity>
         </View>
@@ -57,8 +51,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: 120,
         backgroundColor: '#148311',
-        borderTopWidth: 1,
-        borderTopColor: '#eee',
         paddingLeft: 15,
         shadowColor: '#000',
         shadowOffset: { width: 0, height: -2 },
@@ -73,7 +65,7 @@ const styles = StyleSheet.create({
     },
     tabText: {
         fontSize: 10,
-        color: '#e3ff92',
+        color: '#fff',
         marginTop: 5,
         fontFamily: 'PoppinsRegular'
     },
