@@ -1,7 +1,5 @@
 ﻿# ♻️ PILHADOS
 
-<img src="/assets/images/logo.png" alt="Logo do PILHADOS - Solução para agendamento de coleta de Lixo Eletrônico" width="200"/>
-
 ## 💡 Sobre o Projeto
 
 O **PILHADOS** é uma inovadora iniciativa ecológica, desenvolvida como uma solução prática e sustentável para combater o **descarte irregular de lixo eletrônico**.
@@ -72,4 +70,5 @@ Buscamos garantir maior alcance e a destinação adequada do e-lixo, firmando pa
 ## 📌 Status do Projeto
 
 > **Status: Em Desenvolvimento!!!** 
+
 
