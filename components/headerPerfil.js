@@ -13,10 +13,10 @@ export default function HeaderPerfil({ onMenuPress }) {
         <View style={styles.header}>
             <View style={styles.headerTopRow}>
                 <TouchableOpacity onPress={onMenuPress}>
-                    <Ionicons name="menu" size={40} color="#e3ff92" />
+                    <Ionicons name="menu" size={40} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
-                    <Ionicons name="home" size={30} color="#e3ff92" />
+                    <Ionicons name="home" size={30} color="#fff" />
                 </TouchableOpacity>
             </View>
         </View>

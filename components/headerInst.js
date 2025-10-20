@@ -13,7 +13,7 @@ export default function HeaderInst({onMenuPress}) {
         <View style={styles.header}>
             <View style={styles.headerTopRow}>
                 <TouchableOpacity onPress={onMenuPress}>
-                    <Feather name="menu" size={35} color="white" />
+                    <Feather name="menu" size={35} color="#fff" />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => router.push('perfilInst')}>
                     <Ionicons name="person-circle" size={40} color="#fff" />

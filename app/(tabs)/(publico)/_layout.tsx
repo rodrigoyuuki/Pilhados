@@ -104,6 +104,13 @@ export default function StackLayout() {
           headerShown: false,
         }}
       />
+    <Stack.Screen
+        name="assinatura"
+        options={{
+          title: 'Assinatura',
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 }

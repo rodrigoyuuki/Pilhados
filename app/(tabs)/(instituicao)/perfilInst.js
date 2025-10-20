@@ -11,7 +11,7 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
 import HeaderPerfil from '../../../components/headerPerfil';
-import Drawer from '../../../components/drawer';
+import Drawer from '../../../components/drawerInst';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseConfig';

@@ -11,10 +11,10 @@ import {
     View,
 } from 'react-native';
 import CustomModal from '../../../components/alerts';
-import Drawer from '../../../components/drawer';
 import TabBar from '../../../components/tabBarInst';
 import HeaderInst from '../../../components/headerInst';
 import ServiceCard from '../../../components/serviceCard';
+import Drawer from '../../../components/drawerInst';
 
 function Header({ onMenuPress }) {
     const router = useRouter();

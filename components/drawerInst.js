@@ -14,7 +14,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Feather from '@expo/vector-icons/Feather';
 
-function DrawerMenu({ isVisible, onClose, setShouldRenderDrawer }) {
+function Drawer({ isVisible, onClose, setShouldRenderDrawer }) {
     const router = useRouter();
     const drawerX = useSharedValue(-300);
 
@@ -53,9 +53,6 @@ function DrawerMenu({ isVisible, onClose, setShouldRenderDrawer }) {
                 <TouchableOpacity style={styles.drawerItem} onPress={() => router.push('configuracoes')}>
                     <Text style={styles.drawerItemText}>Configurações</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.drawerItem} onPress={() => router.push('assinatura')}>
-                    <Text style={styles.drawerItemText}>Assinatura</Text>
-                </TouchableOpacity>
                 <TouchableOpacity style={styles.drawerItem} onPress={() => router.push('suporte')}>
                     <Text style={styles.drawerItemText}>Fale conosco</Text>
                 </TouchableOpacity>
@@ -64,9 +61,7 @@ function DrawerMenu({ isVisible, onClose, setShouldRenderDrawer }) {
     );
 }
 
-export default function Drawer(props) {
-    return <DrawerMenu {...props} />;
-}
+export default Drawer;
 
 const styles = StyleSheet.create({
     drawerContainer: {
