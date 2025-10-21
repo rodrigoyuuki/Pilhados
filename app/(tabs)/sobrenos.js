@@ -10,6 +10,13 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 
+const objetivos = [
+    "Promover a responsabilidade ambiental e incentivar o descarte correto de materiais eletrônicos.",
+    "Contribuir para a preservação do meio ambiente.",
+    "Promover uma cultura de consciência ecológica dentro das organizações.",
+    "Ajudar a construir um futuro mais limpo, tecnológico e responsável.",
+];
+
 export default function Sobrenos() {
     const router = useRouter();
 
@@ -43,46 +50,45 @@ export default function Sobrenos() {
 
                 <View style={{ width: 45 }}></View>
             </View>
-            <View style={{height: 1, width: '100%', backgroundColor: '#a6a6a6'}}></View>
+            <View style={{ height: 1, width: '100%', backgroundColor: '#a6a6a6' }}></View>
 
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View>
+                    <Text style={styles.subTitle}>Nosso propósito</Text>
                     <Text style={styles.paragraph}>
-                        O Pilhados é um aplicativo desenvolvido com o propósito de
-                        facilitar o agendamento de coletas seletivas de lixo eletrônico,
-                        conectando empresas públicas e privadas a soluções
-                        sustentáveis de descarte.
+                        Queremos facilitar o agendamento de coletas seletivas de lixo eletrônico,
+                        conectando empresas públicas e privadas a soluções sustentáveis de descarte.
                     </Text>
+
+                    <Text style={styles.subTitle}>Origem e criação</Text>
                     <Text style={styles.paragraph}>
-                        Criado por quatro estudantes do curso de Desenvolvimento de
-                        Sistemas da ETEC de Taboão da Serra, o Pilhados nasceu da
-                        preocupação com o impacto ambiental causado pelo descarte
-                        inadequado de resíduos eletrônicos — como pilhas, baterias,
-                        celulares, computadores e outros equipamentos que fazem parte
-                        do nosso dia a dia.
+                        Desenvolvido por quatro estudantes do curso de Desenvolvimento de Sistemas da ETEC
+                        de Taboão da Serra, a ideia surgiu da preocupação com o impacto ambiental do descarte
+                        inadequado de resíduos eletrônicos.
                     </Text>
+
+                    <Text style={styles.subTitle}>Visão e tecnologia</Text>
                     <Text style={styles.paragraph}>
-                        Acreditamos que a tecnologia pode (e deve) ser uma aliada da
-                        sustentabilidade. Por isso, desenvolvemos uma plataforma
-                        prática, intuitiva e eficiente, que promove a
-                        responsabilidade ambiental e incentiva o descarte correto
-                        desses materiais.
+                        Acreditamos que a tecnologia deve ser uma aliada da sustentabilidade, por isso,
+                        criamos uma plataforma prática, intuitiva e eficiente.
                     </Text>
-                    <Text style={styles.paragraph}>
-                        Nosso objetivo é contribuir para a preservação do meio
-                        ambiente, promovendo uma cultura de consciência ecológica
-                        dentro das organizações e ajudando a construir um futuro
-                        mais limpo, tecnológico e responsável.
-                    </Text>
-                    <Text style={styles.paragraph}>
-                        Seja público ou privado, pequeno ou grande — com o Pilhados,
-                        sua empresa pode fazer parte da mudança.
-                    </Text>
+
+                    <Text style={styles.subTitle}>Nossos objetivos</Text>
+                    <View style={styles.listContainer}>
+                        {objetivos.map((objetivo, index) => (
+                            <Text key={index} style={styles.listItem}>
+                                {`\u2022 ${objetivo}`}
+                            </Text>
+                        ))}
+                    </View>
+
+                    <Text style={styles.subTitle}>Quer saber mais?</Text>
                     <Text style={styles.linkText} onPress={handleLinkPress}>
                         Acesse nosso{' '}
                         <Text style={styles.link}>
                             artigo científico sobre lixo eletrônico
                         </Text>
+                        {' '}e conheça mais sobre o projeto.
                     </Text>
                 </View>
             </ScrollView>
@@ -112,6 +118,17 @@ const styles = StyleSheet.create({
         color: '#000',
         fontFamily: 'PoppinsBold',
     },
+    subTitle: {
+        backgroundColor: '#148311',
+        fontFamily: 'PoppinsBold',
+        fontSize: 18,
+        padding: 10,
+        paddingLeft: 18,
+        borderRadius: 15,
+        marginLeft: 10,
+        marginBottom: 15,
+        color: '#fff',
+    },
     backButton: {
         width: 35,
         height: 35,
@@ -134,6 +151,19 @@ const styles = StyleSheet.create({
         marginRight: 15,
         marginLeft: 15,
         fontFamily: 'PoppinsRegular',
+    },
+    listContainer: {
+        marginBottom: 15,
+        marginHorizontal: 15,
+    },
+    listItem: {
+        fontSize: 13,
+        lineHeight: 22,
+        color: '#333',
+        fontFamily: 'PoppinsRegular',
+        marginBottom: 8,
+        marginLeft: '10',
+        textAlign: 'justify',
     },
     linkText: {
         fontSize: 13,
