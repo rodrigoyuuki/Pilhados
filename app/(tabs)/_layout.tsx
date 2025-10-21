@@ -9,13 +9,6 @@ export default function StackLayout() {
   return (
     <Stack initialRouteName='boasVindas'>
       <Stack.Screen
-        name="teste"
-        options={{
-          title: 'Teste',
-          headerShown: false,
-        }}
-      />
-      <Stack.Screen
         name="boasVindas"
         options={{
           title: 'BoasVindas',

@@ -3,12 +3,12 @@ import {
     StyleSheet,
     View,
     Text,
-    SafeAreaView,
     TouchableOpacity,
     ScrollView,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import HeaderAgend from '../../../components/headerAgend';
 
 function CalendarCard({ selectedDate, setSelectedDate }) {

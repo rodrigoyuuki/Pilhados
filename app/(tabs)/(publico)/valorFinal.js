@@ -3,13 +3,13 @@ import {
     StyleSheet,
     View,
     Text,
-    SafeAreaView,
     TouchableOpacity,
     ScrollView,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useRouter } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 function Header() {
     const router = useRouter();

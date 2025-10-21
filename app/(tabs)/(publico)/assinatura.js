@@ -10,7 +10,6 @@ import {
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 
-// Obtém a largura da tela para cálculos de alinhamento
 const { width } = Dimensions.get('window');
 
 export default function Sobrenos() {
@@ -30,12 +29,9 @@ export default function Sobrenos() {
     const renderBenefits = () => (
         <View style={styles.topics}>
             {benefits.map((benefit, index) => (
-                // O contêiner de cada item (pointItem) garante o ícone e o texto lado a lado.
                 <View key={index} style={styles.pointItem}>
-                    {/* Ícone menor, cor do checkmark mais clara */}
                     <Ionicons name="checkmark-circle" size={18} color="#6ac259" /> 
                     
-                    {/* O texto é o estilo que se parece com o corpo do texto na imagem */}
                     <Text style={styles.benefitText}>{benefit}</Text>
                 </View>
             ))}
@@ -44,17 +40,13 @@ export default function Sobrenos() {
 
     return (
         <View style={styles.container}>
-            {/* O header é simplificado e centralizado como na imagem */}
             <View style={styles.header}>
-                {/* O título 'Mensal' da imagem é o texto principal, não no Header */}
             </View>
 
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 
-                {/* 1. Título 'Mensal' */}
                 <Text style={styles.mainTitle}>Mensal</Text>
 
-                {/* 2. Bloco de Preço */}
                 <View style={styles.priceContainer}>
                     <Text style={styles.currencySymbol}>R$</Text>
                     <Text style={styles.price}>0,00</Text>
@@ -63,7 +55,6 @@ export default function Sobrenos() {
                     Por mês
                 </Text>
 
-                {/* 3. Texto de Benefícios */}
                 <Text style={styles.text}>
                     Possua nosso <Text style={styles.boldText}>plano mensal</Text> e
                     tenha acesso a diversos <Text style={styles.boldText}>benefícios</Text>, como:
@@ -74,7 +65,7 @@ export default function Sobrenos() {
                     <TouchableOpacity style={styles.buyButton}>
                         <Text style={styles.buyButtonText}>Comprar</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => router.push('inicio')}>
+                    <TouchableOpacity onPress={() => router.back()}>
                         <Text style={styles.noInterestText}>Não tenho interesse</Text>
                     </TouchableOpacity>
                 </View>

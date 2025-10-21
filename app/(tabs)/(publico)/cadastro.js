@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
     Text,
-    SafeAreaView,
     StyleSheet,
     View,
     TouchableOpacity,
@@ -11,9 +10,8 @@ import {
     Platform,
     Image
 } from 'react-native';
-
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-
 import { auth, db } from "../../../firebase/firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 import {

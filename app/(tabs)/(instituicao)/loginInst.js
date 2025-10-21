@@ -6,13 +6,13 @@ import {
     Image,
     KeyboardAvoidingView,
     Platform,
-    SafeAreaView,
     StyleSheet,
     Text,
     TextInput,
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomModal from '../../../components/alerts';
 import LoadingModal from '../../../components/loading';
 import { auth } from '../../../firebase/firebaseConfig';

@@ -10,9 +10,8 @@ import {
     TextInput,
     KeyboardAvoidingView,
     Platform,
-    ScrollView, // Mantido apenas para garantir que o scroll funcione, mas removido do bloco de renderização principal para replicar a estrutura do segundo código
+    ScrollView, 
 } from 'react-native';
-// Verifique se o caminho para o firebaseConfig está correto no seu projeto
 import { auth } from '../../../firebase/firebaseConfig'
 import { signInWithEmailAndPassword } from "firebase/auth";
 import CustomModal from '../../../components/alerts';

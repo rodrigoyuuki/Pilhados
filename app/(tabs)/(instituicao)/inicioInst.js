@@ -3,13 +3,13 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { useEffect, useState } from 'react';
 import {
-    SafeAreaView,
     ScrollView,
     StyleSheet,
     Text,
     TouchableOpacity,
     View,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import CustomModal from '../../../components/alerts';
 import TabBar from '../../../components/tabBarInst';
 import HeaderInst from '../../../components/headerInst';
