@@ -54,7 +54,8 @@ export default function boasvindas() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        //backgroundColor: '#fff',
+        backgroundColor: 'red',
         justifyContent: 'center',
         alignItems: 'center',
         paddingHorizontal: 20,
