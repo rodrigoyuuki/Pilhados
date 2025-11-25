@@ -10,94 +10,84 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import Drawer from '../../../components/drawer';
 import TabBar from '../../../components/tabBar';
-import { collection, getDocs } from "firebase/firestore";
+import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
-import {Ionicons, Feather, Entypo} from '@expo/vector-icons';
+import { auth } from "../../../firebase/firebaseConfig";
+import { Feather, Ionicons } from '@expo/vector-icons';
 
 export default function Historico() {
     const router = useRouter();
 
-    const [listaNoticias, setListaNoticias] = useState([]);
+    const [agendamentos, setAgendamentos] = useState([]);
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
 
-    function infoNoticias(doc) {
-        const data = doc.data();
-        return {
-            id: doc.id,
-            content: data.content,
-            createdAt: data.createdAt,
-            imageUri: data.imageUri,
-            summary: data.summary,
-            title: data.title,
-        };
-    }
-
-    async function getDados() {
-        const noticias = [];
-        try {
-            const docRef = collection(db, "noticias");
-            const snapshot = await getDocs(docRef);
-
-            snapshot.forEach((doc) => {
-                const noticia = infoNoticias(doc);
-                noticias.push(noticia);
-            });
-            setListaNoticias(noticias);
-        } catch (err) {
-            console.error("Erro ao carregar notícias:", err);
-        }
-    }
     useEffect(() => {
-        getDados();
+        const uid = auth.currentUser?.uid;
+
+        if (!uid) return;
+
+        const q = query(
+            collection(db, "agendamentos"),
+            where("userId", "==", uid)
+        );
+
+        const unsubscribe = onSnapshot(q, (snapshot) => {
+            const lista = [];
+            snapshot.forEach((doc) => {
+                lista.push({ id: doc.id, ...doc.data() });
+            });
+            setAgendamentos(lista);
+        });
+
+        return () => unsubscribe();
     }, []);
 
     const toggleDrawer = () => {
-        if (!isDrawerVisible) {
-            setShouldRenderDrawer(true);
-        }
+        if (!isDrawerVisible) setShouldRenderDrawer(true);
         setIsDrawerVisible(!isDrawerVisible);
     };
 
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-            <View style={styles.headerTopRow}>
-                <TouchableOpacity onPress={toggleDrawer}>
-                    <Feather name="menu" size={35} color="white" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('perfil')}>
-                    <Ionicons name="person-circle" size={40} color="#fff" />
-                </TouchableOpacity>
-            </View>
-        </View>
 
+            {/* HEADER */}
+            <View style={styles.header}>
+                <View style={styles.headerTopRow}>
+                    <TouchableOpacity onPress={toggleDrawer}>
+                        <Feather name="menu" size={35} color="white" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => router.push('perfil')}>
+                        <Ionicons name="person-circle" size={40} color="#fff" />
+                    </TouchableOpacity>
+                </View>
+            </View>
+
+            {/* CONTEÚDO */}
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
-                {listaNoticias.map((noticia) => (
-                    <View key={noticia.id} style={styles.newsCard}>
-                        <Text style={styles.newsTitle}>{noticia.title}</Text>
-                        <Text style={styles.newsContent}>{noticia.summary}</Text>
-                        <TouchableOpacity
-                            style={styles.readMoreButton}
-                            onPress={() => router.push({
-                                pathname: '/noticia',
-                                params: {
-                                    id: noticia.id,
-                                    title: noticia.title,
-                                    content: noticia.content,
-                                    imageUri: noticia.imageUri,
-                                    summary: noticia.summary,
-                                    createdAt: noticia.createdAt
-                                }
-                            })}>
-                            <Text style={styles.readMoreText}>Ler mais</Text>
-                            <Entypo name="plus" size={24} color="#f8ffe3" />
-                        </TouchableOpacity>
+                {agendamentos.map((ag) => (
+                    <View key={ag.id} style={styles.card}>
+                        <Text style={styles.title}>Coleta realizada</Text>
+
+                        <Text style={styles.item}>📅 Data: {ag.data}</Text>
+                        <Text style={styles.item}>⏰ Horário: {ag.horario}</Text>
+                        <Text style={styles.item}>🏙️ Município: {ag.municipio}</Text>
+                        <Text style={styles.item}>🏠 Rua: {ag.rua}, Nº {ag.numero}</Text>
+                        <Text style={styles.item}>♻️ Resíduo: {ag.residueType}</Text>
+                        <Text style={styles.item}>📦 Quantidade: {ag.quantity}</Text>
                     </View>
                 ))}
+
+                {agendamentos.length === 0 && (
+                    <Text style={{ textAlign: "center", marginTop: 40, color: '#666' }}>
+                        Nenhum agendamento encontrado.
+                    </Text>
+                )}
             </ScrollView>
 
             <TabBar />
+
             {shouldRenderDrawer && (
                 <Drawer
                     isVisible={isDrawerVisible}
@@ -105,6 +95,7 @@ export default function Historico() {
                     setShouldRenderDrawer={setShouldRenderDrawer}
                 />
             )}
+
         </SafeAreaView>
     );
 }
@@ -119,44 +110,25 @@ const styles = StyleSheet.create({
         paddingTop: 20,
         paddingBottom: 150,
     },
-    newsCard: {
-        width: '80%',
-        backgroundColor: '#edffb9',
-        padding: 25,
-        marginBottom: 20,
+    card: {
+        width: "85%",
+        backgroundColor: "#edffb9",
+        padding: 20,
         borderRadius: 20,
-        shadowColor: '#000',
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.1,
-        shadowRadius: 4,
+        marginBottom: 20,
         elevation: 3,
     },
-    newsTitle: {
+    title: {
         fontSize: 16,
-        fontStyle: 'italic',
-        color: '#4ca444',
+        color: "#4ca444",
         marginBottom: 10,
-        textAlign: 'center'
-    },
-    newsContent: {
-        fontSize: 13,
-        color: '#555',
-        marginBottom: 20,
-        textAlign: 'justifye'
-    },
-    readMoreButton: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#4ca444',
-        paddingVertical: 13,
-        borderRadius: 15,
-    },
-    readMoreText: {
-        color: '#f8ffe3',
-        fontSize: 16,
         fontWeight: 'bold',
-        marginRight: 5,
+        textAlign: "center",
+    },
+    item: {
+        fontSize: 14,
+        color: "#444",
+        marginBottom: 5,
     },
     header: {
         paddingTop: 40,
@@ -169,9 +141,5 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%',
         marginBottom: 10,
-    },
-    headerTitle: {
-        fontSize: 16,
-        color: '#fff',
     },
 });

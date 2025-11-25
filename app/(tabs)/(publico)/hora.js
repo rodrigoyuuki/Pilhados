@@ -9,7 +9,7 @@ import {
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams, router } from 'expo-router';
 import Animated, {
     useSharedValue,
     useAnimatedStyle,
@@ -20,12 +20,11 @@ import HeaderAgend from '../../../components/headerAgend';
 
 const screenWidth = Dimensions.get('window').width;
 
-function TimePicker() {
+function TimePicker(props) {
     const hours = Array.from({ length: 24 }, (_, i) => i % 24);
     const minutes = Array.from({ length: 60 }, (_, i) => i % 60);
 
-    const [selectedHour, setSelectedHour] = useState(12);
-    const [selectedMinute, setSelectedMinute] = useState(0);
+    const { selectedHour, selectedMinute, onChangeHour, onChangeMinute } = props;
 
     const hourScrollViewRef = useRef(null);
     const minuteScrollViewRef = useRef(null);
@@ -50,7 +49,7 @@ function TimePicker() {
         const middleIndex = Math.round(y / ITEM_HEIGHT);
         const newHour = hours[middleIndex];
         if (newHour !== selectedHour) {
-            setSelectedHour(newHour);
+            onChangeHour(newHour);
         }
     };
 
@@ -59,7 +58,7 @@ function TimePicker() {
         const middleIndex = Math.round(y / ITEM_HEIGHT);
         const newMinute = minutes[middleIndex];
         if (newMinute !== selectedMinute) {
-            setSelectedMinute(newMinute);
+            onChangeMinute(newMinute);
         }
     };
 
@@ -127,6 +126,10 @@ function TimePicker() {
 }
 
 export default function AppointmentScreen() {
+    const [hour, setHour] = useState(12);
+    const [minute, setMinute] = useState(0);
+
+    const params = useLocalSearchParams();
     const router = useRouter();
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
@@ -168,10 +171,24 @@ export default function AppointmentScreen() {
                         <Text style={styles.subtitle}>
                             Informe seus horários disponíveis para coleta.
                         </Text>
-                        <TimePicker />
+                        <TimePicker
+                            selectedHour={hour}
+                            selectedMinute={minute}
+                            onChangeHour={setHour}
+                            onChangeMinute={setMinute}
+                        />
+
                         <TouchableOpacity
                             style={styles.proceedButton}
-                            onPress={() => router.push('local')}
+                            onPress={() =>
+                                router.push({
+                                    pathname: "local",
+                                    params: {
+                                        data: params.data,
+                                        horario: `${hour}:${minute}`
+                                    }
+                                })
+                            }
                         >
                             <Text style={styles.proceedButtonText}>Prosseguir</Text>
                         </TouchableOpacity>

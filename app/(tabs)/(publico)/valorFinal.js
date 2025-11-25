@@ -10,6 +10,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocalSearchParams } from "expo-router";
 
 function Header() {
     const router = useRouter();
@@ -52,11 +53,33 @@ export default function AgendamentoFinalizar() {
         router.push('confirmation');
     };
 
+    const {
+        data,
+        horario,
+        municipio,
+        cep,
+        rua,
+        numero,
+        residueType,
+        quantity,
+        tipoUsuario
+    } = useLocalSearchParams();
+
     return (
         <SafeAreaView style={styles.container}>
             <Header />
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.content}>
+                    <Text>Data: {data}</Text>
+                    <Text>Horário: {horario}</Text>
+                    <Text>Município: {municipio}</Text>
+                    <Text>CEP: {cep}</Text>
+                    <Text>Rua: {rua}</Text>
+                    <Text>Número: {numero}</Text>
+                    <Text>Tipo de resíduo: {residueType}</Text>
+                    <Text>Quantidade: {quantity}</Text>
+                    <Text>Usuário: {tipoUsuario}</Text>
+
                     <DetailSection icon="location" title="Endereço">
                         <Text style={styles.detailText}>Rua Argentina, 77</Text>
                         <Text style={styles.detailText}>Parque Pinheiros, 06764-390</Text>
@@ -104,10 +127,23 @@ export default function AgendamentoFinalizar() {
                         <Text style={styles.totalValueTitle}>Valor final</Text>
                         <Text style={styles.totalValueItem}>Frete: <Text style={styles.totalValuePrice}>R$ 20,00</Text></Text>
                     </View>
-                    
+
                     <TouchableOpacity
                         style={styles.finalizeButton}
-                        onPress={() => router.push('concluido')}
+                        onPress={() => router.push({
+                            pathname: "concluido",
+                            params: {
+                                data,
+                                horario,
+                                municipio,
+                                cep,
+                                rua,
+                                numero,
+                                residueType,
+                                quantity,
+                                tipoUsuario
+                            }
+                        })}
                     >
                         <Text style={styles.finalizeButtonText}>Finalizar</Text>
                     </TouchableOpacity>

@@ -17,6 +17,10 @@ import Animated, {
     withTiming,
     runOnJS,
 } from 'react-native-reanimated';
+import { useLocalSearchParams } from 'expo-router';
+import CustomDropdown from '../../../components/CustomDropdown';
+import RadioButton from '../../../components/RadioButton';
+import { Picker } from '@react-native-picker/picker';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -39,23 +43,26 @@ function Header({ onMenuPress }) {
     );
 }
 
-function SchedulingForm() {
-    const [municipio, setMunicipio] = useState('');
-    const [cep, setCep] = useState('');
-    const [rua, setRua] = useState('');
-    const [numero, setNumero] = useState('');
-    const [residueType, setResidueType] = useState('Pilha');
-    const [quantity, setQuantity] = useState('Quantidade');
-
+function SchedulingForm({
+    municipio, setMunicipio,
+    cep, setCep,
+    rua, setRua,
+    numero, setNumero,
+    residueType, setResidueType,
+    quantity, setQuantity,
+    tipoUsuario, setTipoUsuario
+}) {
     return (
         <View style={styles.formContainer}>
             <Text style={styles.formSectionTitle}>
                 Informe o local da coleta.
             </Text>
-            <TouchableOpacity style={styles.dropdownButton}>
-                <Text style={styles.dropdownText}>Município</Text>
-                <Ionicons name="chevron-down" size={20} color="#fff" />
-            </TouchableOpacity>
+            <CustomDropdown
+                label="Município"
+                value={municipio}
+                options={["Taboão da Serra", "São Paulo", "Embu das Artes"]}
+                onSelect={setMunicipio}
+            />
             <TextInput
                 style={styles.input}
                 placeholder="Informe seu CEP"
@@ -81,19 +88,58 @@ function SchedulingForm() {
             <Text style={styles.formSectionTitle}>
                 Informe o tipo e quantidade de resíduos.
             </Text>
-            <TouchableOpacity style={styles.dropdownButton}>
-                <Text style={styles.dropdownText}>{residueType}</Text>
-                <Ionicons name="chevron-down" size={20} color="#fff" />
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.dropdownButton}>
-                <Text style={styles.dropdownText}>{quantity}</Text>
-                <Ionicons name="chevron-down" size={20} color="#fff" />
-            </TouchableOpacity>
+            <CustomDropdown
+                label="Selecione o tipo"
+                value={residueType}
+                options={["Pilha", "Celular", "Notebook", "Computador", "Tablet"]}
+                onSelect={setResidueType}
+            />
+
+            <CustomDropdown
+                label="Selecione a quantidade"
+                value={quantity}
+                options={["100g", "200g", "500g", "1kg", "2kg"]}
+                onSelect={setQuantity}
+            />
+
+            <View style={{ marginTop: 20, width: "100%" }}>
+                <Text style={{ marginBottom: 10, fontFamily: "PoppinsRegular", color: "#555" }}>
+                    Selecione o tipo de usuário:
+                </Text>
+
+                <RadioButton
+                    label="Instituição"
+                    selected={tipoUsuario === "instituicao"}
+                    onPress={() => setTipoUsuario("instituicao")}
+                />
+
+                <RadioButton
+                    label="Usuário comum"
+                    selected={tipoUsuario === "comum"}
+                    onPress={() => setTipoUsuario("comum")}
+                />
+
+                <RadioButton
+                    label="Assinante"
+                    selected={tipoUsuario === "assinante"}
+                    onPress={() => setTipoUsuario("assinante")}
+                />
+            </View>
+
         </View>
     );
 }
 
 export default function AgendamentoLocal() {
+    const [tipoUsuario, setTipoUsuario] = useState("");
+    const [municipio, setMunicipio] = useState("");
+    const [cep, setCep] = useState("");
+    const [rua, setRua] = useState("");
+    const [numero, setNumero] = useState("");
+    const [residueType, setResidueType] = useState("Selecione o tipo");
+    const [quantity, setQuantity] = useState("Selecione a quantidade");
+
+    const { data, horario } = useLocalSearchParams();
     const router = useRouter();
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
@@ -130,11 +176,60 @@ export default function AgendamentoLocal() {
                 <Header onMenuPress={toggleDrawer} />
                 <ScrollView contentContainerStyle={styles.scrollViewContent}>
                     <View style={styles.content}>
-                        <SchedulingForm />
+                        <SchedulingForm
+                            municipio={municipio}
+                            setMunicipio={setMunicipio}
+                            cep={cep}
+                            setCep={setCep}
+                            rua={rua}
+                            setRua={setRua}
+                            numero={numero}
+                            setNumero={setNumero}
+                            residueType={residueType}
+                            setResidueType={setResidueType}
+                            quantity={quantity}
+                            setQuantity={setQuantity}
+                            tipoUsuario={tipoUsuario}
+                            setTipoUsuario={setTipoUsuario}
+                        />
+
                         <TouchableOpacity
                             style={styles.proceedButton}
-                            onPress={() => router.push('valorFinal')}
+                            onPress={() => {
+                                if (tipoUsuario === "comum") {
+                                    router.push({
+                                        pathname: "valorFinal",
+                                        params: {
+                                            data,
+                                            horario,
+                                            municipio,
+                                            cep,
+                                            rua,
+                                            numero,
+                                            residueType,
+                                            quantity,
+                                            tipoUsuario
+                                        }
+                                    });
+                                } else {
+                                    router.push({
+                                        pathname: "concluido",
+                                        params: {
+                                            data,
+                                            horario,
+                                            municipio,
+                                            cep,
+                                            rua,
+                                            numero,
+                                            residueType,
+                                            quantity,
+                                            tipoUsuario
+                                        }
+                                    });
+                                }
+                            }}
                         >
+
                             <Text style={styles.proceedButtonText}>Prosseguir</Text>
                         </TouchableOpacity>
                     </View>

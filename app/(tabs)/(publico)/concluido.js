@@ -15,16 +15,33 @@ import Animated, {
     withTiming,
     runOnJS,
 } from 'react-native-reanimated';
+import { useLocalSearchParams } from "expo-router";
+import { db, auth } from '../../../firebase/firebaseConfig';
+import { collection, addDoc, Timestamp } from 'firebase/firestore';
 
 const screenWidth = Dimensions.get('window').width;
 
 export default function Concluido() {
+    const {
+        data,
+        horario,
+        municipio,
+        cep,
+        rua,
+        numero,
+        residueType,
+        quantity,
+        tipoUsuario
+    } = useLocalSearchParams();
     const router = useRouter();
     const positionX = useSharedValue(screenWidth);
 
     useEffect(() => {
         positionX.value = withTiming(0, { duration: 300 });
+
+        salvarAgendamento();
     }, []);
+
 
     const animatedStyle = useAnimatedStyle(() => {
         return {
@@ -40,6 +57,29 @@ export default function Concluido() {
         });
     };
 
+    const salvarAgendamento = async () => {
+        try {
+            await addDoc(collection(db, "agendamentos"), {
+                data,
+                horario,
+                municipio,
+                cep,
+                rua,
+                numero,
+                residueType,
+                quantity,
+                tipoUsuario,
+                criadoEm: Timestamp.now(),
+                userId: auth.currentUser ? auth.currentUser.uid : null
+            });
+
+            console.log("Agendamento salvo com sucesso!");
+        } catch (error) {
+            console.log("Erro ao salvar no Firestore:", error);
+        }
+    };
+
+
     return (
         <Animated.View style={[styles.container, animatedStyle]}>
             <SafeAreaView style={{ flex: 1 }}>
@@ -50,6 +90,16 @@ export default function Concluido() {
                     <Text style={styles.message}>
                         Eba, sua coleta foi agendada com sucesso!
                     </Text>
+
+                    <Text>Data: {data}</Text>
+                    <Text>Horário: {horario}</Text>
+                    <Text>Município: {municipio}</Text>
+                    <Text>CEP: {cep}</Text>
+                    <Text>Rua: {rua}</Text>
+                    <Text>Número: {numero}</Text>
+                    <Text>Tipo de resíduo: {residueType}</Text>
+                    <Text>Quantidade: {quantity}</Text>
+                    <Text>Usuário: {tipoUsuario}</Text>
 
                     <TouchableOpacity style={styles.printButton}>
                         <Ionicons name="print" size={24} color="#148311" />

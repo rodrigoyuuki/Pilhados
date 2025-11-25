@@ -65,7 +65,7 @@ export default function Agendamento() {
                 <CalendarCard selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
                 <TouchableOpacity
                     style={[styles.proceedButton, !selectedDate && styles.disabledButton]}
-                    onPress={() => router.push('hora')}
+                    onPress={() => router.push({ pathname: "hora", params: { data: selectedDate } })}
                     disabled={!selectedDate}
                 >
                     <Text style={styles.proceedButtonText}>Prosseguir</Text>
