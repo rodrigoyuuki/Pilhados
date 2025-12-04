@@ -6,27 +6,29 @@ import {
     TouchableOpacity,
     TextInput,
     ScrollView,
-    Alert, 
+    Alert,
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import * as ImagePicker from 'expo-image-picker';
-import { Image } from 'expo-image'; 
-import { useNavigation } from 'expo-router'; 
+import { Image } from 'expo-image';
+import { useNavigation } from 'expo-router';
 import Drawer from '../../../components/drawer';
 import HeaderPerfil from '../../../components/headerPerfil';
 import { getAuth } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseConfig';
+import UpdatePerfil from '../../../components/updatePerfil';
 
 export default function ProfileScreen() {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
     const [image, setImage] = useState(null);
-    
+    const [uptadePerfilVisible, setUptadePerfilVisible] = useState(false);
+
     const auth = getAuth();
     const user = auth.currentUser;
-    const navigation = useNavigation(); 
-    
+    const navigation = useNavigation();
+
     const [personalData, setPersonalData] = useState({
         name: '',
         email: '',
@@ -55,7 +57,7 @@ export default function ProfileScreen() {
 
     useEffect(() => {
         fetchUser();
-    }, []); 
+    }, []);
     const pickImage = async () => {
         const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -84,7 +86,7 @@ export default function ProfileScreen() {
             return;
         }
         navigation.navigate('EditProfileScreen', {
-            initialData: personalData, 
+            initialData: personalData,
             userId: user.uid,
         });
     };
@@ -119,9 +121,9 @@ export default function ProfileScreen() {
                     <Text style={styles.information}>{personalData.email}</Text>
                 </View>
 
-                <TouchableOpacity 
-                    style={styles.editButton} 
-                >
+                <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={() => setUptadePerfilVisible(true)}>
                     <Text style={styles.editButtonText}>Editar</Text>
                 </TouchableOpacity>
             </ScrollView>
@@ -133,6 +135,12 @@ export default function ProfileScreen() {
                     setShouldRenderDrawer={setShouldRenderDrawer}
                 />
             )}
+
+            <UpdatePerfil
+                visible={uptadePerfilVisible}
+                onClose={() => setUptadePerfilVisible(false)}
+                currentName={userName}
+            />
         </View>
     );
 }

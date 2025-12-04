@@ -102,12 +102,17 @@ export default function ProfileScreen() {
 
                     <Text style={styles.label}>CPF:</Text>
                     <Text style={styles.infomation}>{personalData.cpf}</Text>
-                    
+
                     <Text style={styles.label}>Email:</Text>
                     <Text style={styles.infomation}>{personalData.email}</Text>
                 </View>
 
-                <TouchableOpacity style={styles.editButton}>
+                <TouchableOpacity
+                    style={styles.editButton}
+                    onPress={() => {
+                        console.log('BOTÃO EDITAR FOI PRESSIONADO');
+                    }}
+                >
                     <Text style={styles.editButtonText}>Editar</Text>
                 </TouchableOpacity>
             </ScrollView>
