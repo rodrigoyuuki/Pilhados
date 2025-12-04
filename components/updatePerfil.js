@@ -1,44 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
     Modal,
     View,
     Text,
     TouchableOpacity,
     StyleSheet,
-    TextInput,
-    Alert
 } from 'react-native';
-import { getAuth, updateProfile } from "firebase/auth";
-import { doc, updateDoc } from "firebase/firestore";
-import { db } from "../firebase/firebaseConfig";
 
-export default function UpdatePerfil({ visible, onClose, currentName }) {
-    const [name, setName] = useState(currentName || '');
-    const [loading, setLoading] = useState(false);
-
-    const handleUpdateName = async () => {
-        if (!name.trim()) {
-            Alert.alert("Erro", "Digite um nome válido!");
-            return;
-        }
-
-        setLoading(true);
-        const auth = getAuth();
-        const user = auth.currentUser;
-
-        try {
-            await updateProfile(user, { displayName: name });
-            const userRef = doc(db, "users", user.uid);
-            await updateDoc(userRef, { name });
-            Alert.alert("Sucesso", "Nome atualizado com sucesso!");
-            onClose();
-        } catch (error) {
-            console.log(error.message);
-            Alert.alert("Erro", "Não foi possível atualizar o nome.");
-        } finally {
-            setLoading(false);
-        }
-    };
+export default function UpdatePerfil({ visible, onClose, onEditName }) {
 
     return (
         <Modal
@@ -46,29 +15,33 @@ export default function UpdatePerfil({ visible, onClose, currentName }) {
             transparent
             animationType="fade"
             onRequestClose={onClose}>
+
             <View style={styles.modalBackground}>
                 <View style={styles.modalContainer}>
-                    <Text style={styles.modalTitle}>Alterar nome</Text>
-                    <TextInput
-                        placeholder="Digite seu novo nome"
-                        placeholderTextColor={'black'}
-                        style={styles.input}
-                        value={name}
-                        onChangeText={setName}
-                    />
-                    <View style={{ height: 1, backgroundColor: '#c8c7c7', marginBottom: 20 }}></View>
 
-                    <View style={styles.buttonRow}>
-                        <TouchableOpacity style={styles.modalButton} onPress={onClose}>
-                            <Text style={styles.modalButtonText}>CANCELAR</Text>
-                        </TouchableOpacity>
+                    <Text style={styles.modalTitle}>O que deseja alterar?</Text>
 
-                        <TouchableOpacity style={styles.modalButton} onPress={handleUpdateName}>
-                            <Text style={styles.modalButtonText}>
-                                {loading ? "Atualizando..." : "SALVAR"}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
+                    <TouchableOpacity style={styles.optionButton} onPress={onEditName}>
+                        <Text style={styles.optionText}>Nome</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.optionButton}>
+                        <Text style={styles.optionText}>Email</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.optionButton}>
+                        <Text style={styles.optionText}>Data de nascimento</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={[styles.optionButton, { marginTop: 20 }]}
+                        onPress={onClose}
+                    >
+                        <Text style={[styles.optionText, { color: 'red' }]}>
+                            Cancelar
+                        </Text>
+                    </TouchableOpacity>
+
                 </View>
             </View>
         </Modal>
@@ -86,26 +59,19 @@ const styles = StyleSheet.create({
         width: 300,
         backgroundColor: 'white',
         padding: 30,
+        borderRadius: 10,
     },
     modalTitle: {
-        fontSize: 16,
-        fontFamily: 'Murecho Bold',
+        fontSize: 18,
+        fontWeight: '600',
         marginBottom: 20,
         color: 'black',
     },
-    input: {
-        fontFamily: 'Murecho Regular',
+    optionButton: {
+        paddingVertical: 12,
     },
-    buttonRow: {
-        flexDirection: 'row',
-        width: '100%',
-        gap: 15,
-        justifyContent: 'flex-end'
-    },
-    modalButtonText: {
-        color: '#a31c32',
-        fontWeight: 'bold',
-        fontSize: 15,
-        fontFamily: 'Poppins Regular',
+    optionText: {
+        fontSize: 16,
+        color: '#148311',
     },
 });

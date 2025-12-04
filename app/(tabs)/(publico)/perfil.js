@@ -18,12 +18,15 @@ import { getAuth } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseConfig';
 import UpdatePerfil from '../../../components/updatePerfil';
+import UpdateName from '../../../components/updateName';
 
 export default function ProfileScreen() {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
     const [image, setImage] = useState(null);
     const [uptadePerfilVisible, setUptadePerfilVisible] = useState(false);
+    const [updateNameVisible, setUpdateNameVisible] = useState(false);
+
 
     const auth = getAuth();
     const user = auth.currentUser;
@@ -139,8 +142,17 @@ export default function ProfileScreen() {
             <UpdatePerfil
                 visible={uptadePerfilVisible}
                 onClose={() => setUptadePerfilVisible(false)}
-                currentName={userName}
+                onEditName={() => {
+                    setUptadePerfilVisible(false); 
+                    setUpdateNameVisible(true); 
+                }}
             />
+
+            <UpdateName
+                visible={updateNameVisible}
+                onClose={() => setUpdateNameVisible(false)}
+            />
+
         </View>
     );
 }
