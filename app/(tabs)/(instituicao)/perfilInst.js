@@ -77,7 +77,7 @@ export default function ProfileScreen() {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <HeaderPerfil onMenuPress={toggleDrawer} />
 
             <TouchableOpacity
@@ -119,31 +119,14 @@ export default function ProfileScreen() {
                     setShouldRenderDrawer={setShouldRenderDrawer}
                 />
             )}
-        </SafeAreaView>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f8ffe3',
-    },
-    header: {
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingTop: 40,
-        paddingBottom: 40,
-        backgroundColor: '#197815',
-        borderBottomWidth: 1,
-        borderBottomColor: '#f5ffd9',
-    },
-    headerTopRow: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        width: '100%',
-        marginBottom: 10,
+        backgroundColor: '#148311',
     },
     profileCircle: {
         width: 120,
@@ -163,6 +146,8 @@ const styles = StyleSheet.create({
         paddingTop: 80,
         alignItems: 'center',
         paddingHorizontal: 20,
+        backgroundColor: '#f8ffe3',
+        flex: 1
     },
     userName: {
         fontSize: 20,
@@ -181,6 +166,11 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         color: '#148311',
         marginBottom: 15,
+    },
+    label: {
+        fontSize: 14,
+        color: '#b8bfa6',
+        marginBottom: 4,
     },
     infomation: {
         width: '100%',

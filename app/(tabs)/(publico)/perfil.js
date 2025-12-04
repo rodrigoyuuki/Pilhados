@@ -203,37 +203,6 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '600',
     },
-    drawerContainer: {
-        ...StyleSheet.absoluteFillObject,
-        flexDirection: 'row',
-        zIndex: 10,
-    },
-    drawerOverlay: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-    },
-    drawerContent: {
-        width: '70%',
-        paddingTop: 50,
-        paddingHorizontal: 20,
-        backgroundColor: '#4ca444',
-        position: 'absolute',
-        left: 0,
-        height: '100%',
-    },
-    drawerItem: {
-        paddingVertical: 15,
-    },
-    drawerItemText: {
-        fontSize: 17,
-        color: '#f8ffe3',
-    },
-    closeButton: {
-        position: 'absolute',
-        top: 15,
-        right: 15,
-        padding: 10,
-    },
     label: {
         fontSize: 14,
         color: '#b8bfa6',
