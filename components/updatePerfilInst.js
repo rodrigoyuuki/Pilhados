@@ -7,7 +7,7 @@ import {
     StyleSheet,
 } from 'react-native';
 
-export default function UpdateName({ visible, onClose }) {
+export default function UpdatePerfilInst({ visible, onClose, onEditCNPJ, onEditEmail, onEditCPF }) {
 
     return (
         <Modal
@@ -18,7 +18,20 @@ export default function UpdateName({ visible, onClose }) {
 
             <View style={styles.modalBackground}>
                 <View style={styles.modalContainer}>
-                    <Text>Mudar Nome</Text>
+
+                    <Text style={styles.modalTitle}>O que deseja alterar?</Text>
+
+                    <TouchableOpacity style={styles.optionButton} onPress={onEditCNPJ}>
+                        <Text style={styles.optionText}>CNPJ</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.optionButton} onPress={onEditCPF}>
+                        <Text style={styles.optionText}>CPF</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.optionButton} onPress={onEditEmail}>
+                        <Text style={styles.optionText}>Email</Text>
+                    </TouchableOpacity>
 
                     <TouchableOpacity
                         style={[styles.optionButton, { marginTop: 20 }]}

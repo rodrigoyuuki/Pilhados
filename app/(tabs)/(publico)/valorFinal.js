@@ -72,18 +72,18 @@ export default function AgendamentoFinalizar() {
                 <View style={styles.content}>
 
                     <DetailSection icon="location" title="Endereço">
-                        <Text style={styles.detailText}>Rua Argentina, 77</Text>
-                        <Text style={styles.detailText}>Parque Pinheiros, 06764-390</Text>
+                        <Text style={styles.detailText}>{rua}, {numero}</Text>
+                        <Text style={styles.detailText}>{municipio}, {cep}</Text>
                     </DetailSection>
 
                     <DetailSection icon="time" title="Data e hora">
-                        <Text style={styles.detailText}>Data: 22 de agosto de 2025</Text>
-                        <Text style={styles.detailText}>Horário: 15:00</Text>
+                        <Text style={styles.detailText}>Data: {data}</Text>
+                        <Text style={styles.detailText}>Horário: {horario}</Text>
                     </DetailSection>
 
                     <DetailSection icon="bar-chart" title="Quantidade">
-                        <Text style={styles.detailText}>Tipo: Pilhas</Text>
-                        <Text style={styles.detailText}>Quantidade: 22 unidades</Text>
+                        <Text style={styles.detailText}>Tipo: {residueType}</Text>
+                        <Text style={styles.detailText}>Quantidade: {quantity}</Text>
                     </DetailSection>
 
                     <TouchableOpacity style={styles.paymentButton}>

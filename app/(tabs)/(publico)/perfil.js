@@ -19,6 +19,8 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseConfig';
 import UpdatePerfil from '../../../components/updatePerfil';
 import UpdateName from '../../../components/updateName';
+import UpdateEmail from '../../../components/updateEmail';
+import UpdateDate from '../../../components/updateDate';
 
 export default function ProfileScreen() {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
@@ -26,7 +28,8 @@ export default function ProfileScreen() {
     const [image, setImage] = useState(null);
     const [uptadePerfilVisible, setUptadePerfilVisible] = useState(false);
     const [updateNameVisible, setUpdateNameVisible] = useState(false);
-
+    const [updateEmailVisible, setUpdateEmailVisible] = useState(false);
+    const [updateDateVisible, setUpdateDateVisible] = useState(false);
 
     const auth = getAuth();
     const user = auth.currentUser;
@@ -143,16 +146,30 @@ export default function ProfileScreen() {
                 visible={uptadePerfilVisible}
                 onClose={() => setUptadePerfilVisible(false)}
                 onEditName={() => {
-                    setUptadePerfilVisible(false); 
-                    setUpdateNameVisible(true); 
+                    setUptadePerfilVisible(false);
+                    setUpdateNameVisible(true);
+                }}
+                onEditEmail={() => {
+                    setUptadePerfilVisible(false);
+                    setUpdateEmailVisible(true);
+                }}
+                onEditDate={() => {
+                    setUptadePerfilVisible(false);
+                    setUpdateDateVisible(true);
                 }}
             />
-
             <UpdateName
                 visible={updateNameVisible}
                 onClose={() => setUpdateNameVisible(false)}
             />
-
+            <UpdateEmail
+                visible={updateEmailVisible}
+                onClose={() => setUpdateEmailVisible(false)}
+            />
+            <UpdateDate
+                visible={updateDateVisible}
+                onClose={() => setUpdateDateVisible(false)}
+            />
         </View>
     );
 }

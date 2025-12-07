@@ -129,9 +129,8 @@ const styles = StyleSheet.create({
     scrollViewContent: {
         alignItems: 'center',
         paddingTop: 20,
-        paddingBottom: 130,
+        paddingBottom: 150,
         backgroundColor: '#f5f5f5',
-        height: '100%'
     },
     coletaTitle: {
         fontSize: 19,

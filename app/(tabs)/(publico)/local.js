@@ -19,8 +19,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useLocalSearchParams } from 'expo-router';
 import CustomDropdown from '../../../components/CustomDropdown';
-import RadioButton from '../../../components/RadioButton';
-import { Picker } from '@react-native-picker/picker';
+import { getAuth } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../../../firebase/firebaseConfig";
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -33,9 +34,6 @@ function Header({ onMenuPress }) {
                     onPress={() => router.back()}
                     style={styles.backButton}>
                     <Ionicons name="chevron-back" size={24} color="#fff" />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => console.log('perfil')}>
-                    <Ionicons name="person-circle" size={40} color="#148311" />
                 </TouchableOpacity>
             </View>
             <Text style={styles.headerTitle}>Agendamento</Text>
@@ -50,7 +48,6 @@ function SchedulingForm({
     numero, setNumero,
     residueType, setResidueType,
     quantity, setQuantity,
-    tipoUsuario, setTipoUsuario
 }) {
     return (
         <View style={styles.formContainer}>
@@ -101,31 +98,6 @@ function SchedulingForm({
                 options={["100g", "200g", "500g", "1kg", "2kg"]}
                 onSelect={setQuantity}
             />
-
-            <View style={{ marginTop: 20, width: "100%" }}>
-                <Text style={{ marginBottom: 10, fontFamily: "PoppinsRegular", color: "#555" }}>
-                    Selecione o tipo de usuário:
-                </Text>
-
-                <RadioButton
-                    label="Instituição"
-                    selected={tipoUsuario === "instituicao"}
-                    onPress={() => setTipoUsuario("instituicao")}
-                />
-
-                <RadioButton
-                    label="Usuário comum"
-                    selected={tipoUsuario === "comum"}
-                    onPress={() => setTipoUsuario("comum")}
-                />
-
-                <RadioButton
-                    label="Assinante"
-                    selected={tipoUsuario === "assinante"}
-                    onPress={() => setTipoUsuario("assinante")}
-                />
-            </View>
-
         </View>
     );
 }
@@ -144,6 +116,28 @@ export default function AgendamentoLocal() {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
     const [shouldRenderDrawer, setShouldRenderDrawer] = useState(false);
     const positionX = useSharedValue(screenWidth);
+
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    useEffect(() => {
+        async function loadUserType() {
+            if (!user) return;
+            const userDoc = await getDoc(doc(db, "users", user.uid));
+            if (userDoc.exists()) {
+                setTipoUsuario("comum");
+                return;
+            }
+            const instDoc = await getDoc(doc(db, "instituicao", user.uid));
+            if (instDoc.exists()) {
+                setTipoUsuario("instituicao");
+                return;
+            }
+            setTipoUsuario("comum");
+        }
+        loadUserType();
+    }, []);
+
 
     useEffect(() => {
         positionX.value = withTiming(0, { duration: 300 });
@@ -189,8 +183,6 @@ export default function AgendamentoLocal() {
                             setResidueType={setResidueType}
                             quantity={quantity}
                             setQuantity={setQuantity}
-                            tipoUsuario={tipoUsuario}
-                            setTipoUsuario={setTipoUsuario}
                         />
 
                         <TouchableOpacity
@@ -208,10 +200,10 @@ export default function AgendamentoLocal() {
                                             numero,
                                             residueType,
                                             quantity,
-                                            tipoUsuario
+                                            tipoUsuario: "comum"
                                         }
                                     });
-                                } else {
+                                } else if (tipoUsuario === "instituicao") {
                                     router.push({
                                         pathname: "concluido",
                                         params: {
@@ -223,13 +215,12 @@ export default function AgendamentoLocal() {
                                             numero,
                                             residueType,
                                             quantity,
-                                            tipoUsuario
+                                            tipoUsuario: "instituicao"
                                         }
                                     });
                                 }
                             }}
                         >
-
                             <Text style={styles.proceedButtonText}>Prosseguir</Text>
                         </TouchableOpacity>
                     </View>

@@ -98,7 +98,13 @@ export default function Concluido() {
 
                     <TouchableOpacity
                         style={styles.homeButton}
-                        onPress={() => router.push('inicio')}
+                        onPress={() => {
+                            if (tipoUsuario === "comum") {
+                                router.replace("inicio");
+                            } else {
+                                router.replace("inicioInst");
+                            }
+                        }}
                     >
                         <Text style={styles.homeButtonText}>Voltar ao início</Text>
                     </TouchableOpacity>

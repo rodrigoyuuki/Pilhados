@@ -7,7 +7,7 @@ import {
     StyleSheet,
 } from 'react-native';
 
-export default function UpdateName({ visible, onClose }) {
+export default function UpdateDate({ visible, onClose }) {
 
     return (
         <Modal
@@ -18,7 +18,7 @@ export default function UpdateName({ visible, onClose }) {
 
             <View style={styles.modalBackground}>
                 <View style={styles.modalContainer}>
-                    <Text>Mudar Nome</Text>
+                    <Text>Mudar Data</Text>
 
                     <TouchableOpacity
                         style={[styles.optionButton, { marginTop: 20 }]}

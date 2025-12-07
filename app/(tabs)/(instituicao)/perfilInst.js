@@ -15,6 +15,10 @@ import Drawer from '../../../components/drawerInst';
 import { getAuth, updateProfile } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseConfig';
+import UpdateCNPJ from '../../../components/updateCnpj';
+import UpdateCPF from '../../../components/updateCpf';
+import UpdateEmail from '../../../components/updateEmail';
+import UpdatePerfilInst from '../../../components/updatePerfilInst';
 
 export default function ProfileScreen() {
     const [isDrawerVisible, setIsDrawerVisible] = useState(false);
@@ -28,6 +32,27 @@ export default function ProfileScreen() {
         cpf: '',
         email: '',
     });
+    const [uptadePerfilVisible, setUptadePerfilVisible] = useState(false);
+    const [updateCPFVisible, setUpdateCPFVisible] = useState(false);
+    const [updateEmailVisible, setUpdateEmailVisible] = useState(false);
+    const [updateCNPJVisible, setUpdateCNPJVisible] = useState(false);
+
+    const maskCPF = (value) => {
+        return value
+            ?.replace(/\D/g, '')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+    };
+
+    const maskCNPJ = (value) => {
+        return value
+            ?.replace(/\D/g, '')
+            .replace(/(\d{2})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1.$2')
+            .replace(/(\d{3})(\d)/, '$1/$2')
+            .replace(/(\d{4})(\d{1,2})$/, '$1-$2');
+    };
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -98,10 +123,10 @@ export default function ProfileScreen() {
                     <Text style={styles.cardTitle}>Dados pessoais</Text>
 
                     <Text style={styles.label}>CNPJ:</Text>
-                    <Text style={styles.infomation}>{personalData.cnpj}</Text>
+                    <Text style={styles.infomation}>{maskCNPJ(personalData.cnpj)}</Text>
 
                     <Text style={styles.label}>CPF:</Text>
-                    <Text style={styles.infomation}>{personalData.cpf}</Text>
+                    <Text style={styles.infomation}>{maskCPF(personalData.cpf)}</Text>
 
                     <Text style={styles.label}>Email:</Text>
                     <Text style={styles.infomation}>{personalData.email}</Text>
@@ -109,10 +134,7 @@ export default function ProfileScreen() {
 
                 <TouchableOpacity
                     style={styles.editButton}
-                    onPress={() => {
-                        console.log('BOTÃO EDITAR FOI PRESSIONADO');
-                    }}
-                >
+                    onPress={() => setUptadePerfilVisible(true)}>
                     <Text style={styles.editButtonText}>Editar</Text>
                 </TouchableOpacity>
             </ScrollView>
@@ -124,6 +146,35 @@ export default function ProfileScreen() {
                     setShouldRenderDrawer={setShouldRenderDrawer}
                 />
             )}
+
+            <UpdatePerfilInst
+                visible={uptadePerfilVisible}
+                onClose={() => setUptadePerfilVisible(false)}
+                onEditCPF={() => {
+                    setUptadePerfilVisible(false);
+                    setUpdateCPFVisible(true);
+                }}
+                onEditEmail={() => {
+                    setUptadePerfilVisible(false);
+                    setUpdateEmailVisible(true);
+                }}
+                onEditCNPJ={() => {
+                    setUptadePerfilVisible(false);
+                    setUpdateCNPJVisible(true);
+                }}
+            />
+            <UpdateCNPJ
+                visible={updateCNPJVisible}
+                onClose={() => setUpdateCNPJVisible(false)}
+            />
+            <UpdateEmail
+                visible={updateEmailVisible}
+                onClose={() => setUpdateEmailVisible(false)}
+            />
+            <UpdateCPF
+                visible={updateCPFVisible}
+                onClose={() => setUpdateCPFVisible(false)}
+            />
         </View>
     );
 }
