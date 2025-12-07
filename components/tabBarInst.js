@@ -8,11 +8,7 @@ import {
 } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import EvilIcons from '@expo/vector-icons/EvilIcons';
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Entypo from '@expo/vector-icons/Entypo';
 
 export default function TabBar() {
 
@@ -28,7 +24,7 @@ export default function TabBar() {
             <TouchableOpacity
                 style={styles.tabItem}
                 onPress={() => router.push("addNoticia")}>
-                <Ionicons name="bulb-outline" size={26} color="#fff" />
+                <Entypo name="plus" size={32} color="#fff" />
                 <Text style={styles.tabText}>Ideias</Text>
             </TouchableOpacity>
             <TouchableOpacity
