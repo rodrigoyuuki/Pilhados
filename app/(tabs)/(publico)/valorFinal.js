@@ -22,9 +22,6 @@ function Header() {
                     style={styles.backButton}>
                     <Ionicons name="chevron-back" size={24} color="#fff" />
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('perfil')}>
-                    <Ionicons name="person-circle" size={40} color="#148311" />
-                </TouchableOpacity>
             </View>
             <Text style={styles.headerTitle}>Valor final</Text>
         </View>
@@ -88,7 +85,6 @@ export default function AgendamentoFinalizar() {
 
                     <TouchableOpacity style={styles.paymentButton}>
                         <Text style={styles.paymentButtonText}>Opções de pagamento</Text>
-                        <Ionicons name="chevron-forward" size={24} color="#148311" />
                     </TouchableOpacity>
 
                     <View style={styles.paymentOptions}>
@@ -183,7 +179,7 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        paddingHorizontal: 20,
+        paddingHorizontal: 35,
         paddingBottom: 50,
     },
     content: {

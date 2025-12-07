@@ -22,6 +22,7 @@ import CustomDropdown from '../../../components/CustomDropdown';
 import { getAuth } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "../../../firebase/firebaseConfig";
+import { MaskedTextInput } from "react-native-mask-text";
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -60,12 +61,13 @@ function SchedulingForm({
                 options={["Taboão da Serra", "São Paulo", "Embu das Artes"]}
                 onSelect={setMunicipio}
             />
-            <TextInput
+            <MaskedTextInput
+                mask="99999-999"
                 style={styles.input}
                 placeholder="Informe seu CEP"
                 placeholderTextColor="#A0A0A0"
                 value={cep}
-                onChangeText={setCep}
+                onChangeText={(text, rawText) => setCep(text)}
             />
             <TextInput
                 style={styles.input}
@@ -164,6 +166,14 @@ export default function AgendamentoLocal() {
         });
     };
 
+    const isFormValid =
+        municipio !== "" &&
+        cep !== "" &&
+        rua !== "" &&
+        numero !== "" &&
+        residueType !== "Selecione o tipo" &&
+        quantity !== "Selecione a quantidade";
+
     return (
         <Animated.View style={[styles.container, animatedStyle]}>
             <SafeAreaView style={{ flex: 1 }}>
@@ -186,8 +196,14 @@ export default function AgendamentoLocal() {
                         />
 
                         <TouchableOpacity
-                            style={styles.proceedButton}
+                            style={[
+                                styles.proceedButton,
+                                !isFormValid && { backgroundColor: "#a8a8a8" }
+                            ]}
+                            disabled={!isFormValid}
                             onPress={() => {
+                                if (!isFormValid) return;
+
                                 if (tipoUsuario === "comum") {
                                     router.push({
                                         pathname: "valorFinal",

@@ -14,20 +14,22 @@ export default function UpdateName({ visible, onClose }) {
             visible={visible}
             transparent
             animationType="fade"
-            onRequestClose={onClose}>
-
+            onRequestClose={onClose}
+        >
             <View style={styles.modalBackground}>
                 <View style={styles.modalContainer}>
-                    <Text>Mudar Nome</Text>
+
+                    <Text style={styles.modalTitle}>Mudar Nome</Text>
 
                     <TouchableOpacity
-                        style={[styles.optionButton, { marginTop: 20 }]}
+                        style={[styles.cancelarButton]}
                         onPress={onClose}
                     >
-                        <Text style={[styles.optionText, { color: 'red' }]}>
+                        <Text style={styles.cancelarText}>
                             Cancelar
                         </Text>
                     </TouchableOpacity>
+
                 </View>
             </View>
         </Modal>
@@ -43,21 +45,37 @@ const styles = StyleSheet.create({
     },
     modalContainer: {
         width: 300,
-        backgroundColor: 'white',
+        backgroundColor: '#f8ffe3',   
         padding: 30,
-        borderRadius: 10,
+        borderRadius: 25,     
     },
     modalTitle: {
-        fontSize: 18,
-        fontWeight: '600',
-        marginBottom: 20,
-        color: 'black',
+        fontSize: 17,
+        fontFamily: 'PoppinsBold',
+        marginBottom: 10,
+        color: '#0e670b',
+        textAlign: 'center',
     },
     optionButton: {
-        paddingVertical: 12,
+        paddingVertical: 7,
     },
     optionText: {
         fontSize: 16,
         color: '#148311',
+        fontFamily: 'PoppinsRegular',
     },
+    cancelarButton: {
+        backgroundColor: '#0e670b',
+        width: '40%',
+        paddingVertical: 10,
+        borderRadius: 20,
+        alignSelf: 'center',
+        marginTop: 20,
+    },
+    cancelarText: {
+        color: 'white',
+        fontSize: 13,
+        fontFamily: 'PoppinsRegular',
+        textAlign: 'center',
+    }
 });

@@ -63,7 +63,7 @@ export default function Configuracoes() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'blue',
+        backgroundColor: 'white',
     },
     header: {
         width: '100%',
