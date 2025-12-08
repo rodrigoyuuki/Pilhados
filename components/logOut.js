@@ -9,17 +9,21 @@ import {
 } from "react-native";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig";
+import { useRouter } from "expo-router";
 
-export default function LogoutModal({ visible, onClose, navigation }) {
+export default function LogoutModal({ visible, onClose }) {
+
+    const router = useRouter();
 
     const handleLogout = async () => {
         try {
             await signOut(auth);
-            Alert.alert("Sucesso", "Você saiu da conta.");
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "Login" }],
-            });
+            onClose(); 
+            setTimeout(() => {
+                Alert.alert("Sucesso", "Você saiu da conta.");
+                router.replace("/boasVindas");
+            }, 200);
+
         } catch (error) {
             Alert.alert("Erro", "Não foi possível sair da conta.");
         }

@@ -13,6 +13,7 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import LogoutModal from '../../components/logOut';
 import DeleteAccountModal from '../../components/delete';
+import Feather from '@expo/vector-icons/Feather';
 
 export default function Configuracoes() {
     const router = useRouter();
@@ -53,14 +54,14 @@ export default function Configuracoes() {
 
                     <View style={{ height: 1, width: '100%', backgroundColor: '#a6a6a6', marginVertical: 15 }}></View>
 
-                    <TouchableOpacity style={styles.logOut} onPress={() => setLogoutVisible(true)}>
+                    <TouchableOpacity style={styles.button} onPress={() => setLogoutVisible(true)}>
                         <Text style={styles.itemText}>Sair</Text>
                         <FontAwesome style={{ marginLeft: 10 }} name="sign-out" size={20} color="#000" />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.logOut} onPress={() => setDeleteVisible(true)}>
+                    <TouchableOpacity style={styles.button} onPress={() => setDeleteVisible(true)}>
                         <Text style={styles.itemText}>Excluir Conta</Text>
-                        <FontAwesome style={{ marginLeft: 10 }} name="sign-out" size={20} color="#000" />
+                        <Feather style={{ marginLeft: 10 }} name="x-circle" size={22} color="black" />
                     </TouchableOpacity>
                 </View>
             </ScrollView>
@@ -132,7 +133,9 @@ const styles = StyleSheet.create({
         color: '#333',
         fontFamily: 'PoppinsRegular',
     },
-    logOut: {
-        flexDirection: 'row'
+    button: {
+        flexDirection: 'row',
+        marginTop: 10,
+        alignItems: 'center'
     }
 });

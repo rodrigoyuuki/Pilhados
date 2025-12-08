@@ -7,16 +7,18 @@ import {
     TouchableOpacity,
     StyleSheet,
     ActivityIndicator,
-    Alert
+    Alert,
 } from "react-native";
 import { deleteUser, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { doc, deleteDoc } from "firebase/firestore";
 import { auth, db } from "../firebase/firebaseConfig";
+import { useRouter } from "expo-router";
 
-export default function DeleteAccountModal({ visible, onClose, navigation }) {
+export default function DeleteAccountModal({ visible, onClose }) {
 
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
         if (!visible) {
@@ -44,10 +46,7 @@ export default function DeleteAccountModal({ visible, onClose, navigation }) {
 
             Alert.alert("Conta excluída", "Sua conta foi removida permanentemente.");
 
-            navigation.reset({
-                index: 0,
-                routes: [{ name: "Login" }],
-            });
+            router.replace("/boasVindas");
 
         } catch (error) {
             if (error.code === "auth/wrong-password") {
