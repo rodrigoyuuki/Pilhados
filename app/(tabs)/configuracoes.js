@@ -11,10 +11,13 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import LogoutModal from '../../components/logOut';
+import DeleteAccountModal from '../../components/delete';
 
 export default function Configuracoes() {
     const router = useRouter();
-    const [isNotificationsEnabled, setIsNotificationsEnabled] = useState(false);
+    const [logoutVisible, setLogoutVisible] = useState(false);
+    const [deleteVisible, setDeleteVisible] = useState(false);
 
     const handleGoBack = () => {
         router.back();
@@ -44,18 +47,32 @@ export default function Configuracoes() {
             <ScrollView contentContainerStyle={styles.scrollViewContent}>
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>Outros</Text>
-                    <TouchableOpacity onPress={() =>  router.push('suporte')}>
+                    <TouchableOpacity onPress={() => router.push('suporte')}>
                         <Text style={styles.itemText}>Ajuda e suporte</Text>
                     </TouchableOpacity>
 
                     <View style={{ height: 1, width: '100%', backgroundColor: '#a6a6a6', marginVertical: 15 }}></View>
 
-                    <TouchableOpacity style={styles.logOut} onPress={() => router.push('boasVindas')}>
+                    <TouchableOpacity style={styles.logOut} onPress={() => setLogoutVisible(true)}>
                         <Text style={styles.itemText}>Sair</Text>
-                        <FontAwesome style={{marginLeft: 10}} name="sign-out" size={20} color="#000" />
+                        <FontAwesome style={{ marginLeft: 10 }} name="sign-out" size={20} color="#000" />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.logOut} onPress={() => setDeleteVisible(true)}>
+                        <Text style={styles.itemText}>Excluir Conta</Text>
+                        <FontAwesome style={{ marginLeft: 10 }} name="sign-out" size={20} color="#000" />
                     </TouchableOpacity>
                 </View>
             </ScrollView>
+            <LogoutModal
+                visible={logoutVisible}
+                onClose={() => setLogoutVisible(false)}
+            />
+
+            <DeleteAccountModal
+                visible={deleteVisible}
+                onClose={() => setDeleteVisible(false)}
+            />
         </SafeAreaView>
     );
 }

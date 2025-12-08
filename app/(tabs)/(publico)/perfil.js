@@ -19,7 +19,6 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseConfig';
 import UpdatePerfil from '../../../components/updatePerfil';
 import UpdateName from '../../../components/updateName';
-import UpdateEmail from '../../../components/updateEmail';
 import UpdateDate from '../../../components/updateDate';
 
 export default function ProfileScreen() {
@@ -28,7 +27,6 @@ export default function ProfileScreen() {
     const [image, setImage] = useState(null);
     const [uptadePerfilVisible, setUptadePerfilVisible] = useState(false);
     const [updateNameVisible, setUpdateNameVisible] = useState(false);
-    const [updateEmailVisible, setUpdateEmailVisible] = useState(false);
     const [updateDateVisible, setUpdateDateVisible] = useState(false);
 
     const auth = getAuth();
@@ -149,10 +147,6 @@ export default function ProfileScreen() {
                     setUptadePerfilVisible(false);
                     setUpdateNameVisible(true);
                 }}
-                onEditEmail={() => {
-                    setUptadePerfilVisible(false);
-                    setUpdateEmailVisible(true);
-                }}
                 onEditDate={() => {
                     setUptadePerfilVisible(false);
                     setUpdateDateVisible(true);
@@ -161,10 +155,6 @@ export default function ProfileScreen() {
             <UpdateName
                 visible={updateNameVisible}
                 onClose={() => setUpdateNameVisible(false)}
-            />
-            <UpdateEmail
-                visible={updateEmailVisible}
-                onClose={() => setUpdateEmailVisible(false)}
             />
             <UpdateDate
                 visible={updateDateVisible}

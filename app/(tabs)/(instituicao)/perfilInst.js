@@ -17,7 +17,6 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../../../firebase/firebaseConfig';
 import UpdateCNPJ from '../../../components/updateCnpj';
 import UpdateCPF from '../../../components/updateCpf';
-import UpdateEmail from '../../../components/updateEmail';
 import UpdatePerfilInst from '../../../components/updatePerfilInst';
 
 export default function ProfileScreen() {
@@ -34,7 +33,6 @@ export default function ProfileScreen() {
     });
     const [uptadePerfilVisible, setUptadePerfilVisible] = useState(false);
     const [updateCPFVisible, setUpdateCPFVisible] = useState(false);
-    const [updateEmailVisible, setUpdateEmailVisible] = useState(false);
     const [updateCNPJVisible, setUpdateCNPJVisible] = useState(false);
 
     const maskCPF = (value) => {
@@ -154,10 +152,6 @@ export default function ProfileScreen() {
                     setUptadePerfilVisible(false);
                     setUpdateCPFVisible(true);
                 }}
-                onEditEmail={() => {
-                    setUptadePerfilVisible(false);
-                    setUpdateEmailVisible(true);
-                }}
                 onEditCNPJ={() => {
                     setUptadePerfilVisible(false);
                     setUpdateCNPJVisible(true);
@@ -166,14 +160,14 @@ export default function ProfileScreen() {
             <UpdateCNPJ
                 visible={updateCNPJVisible}
                 onClose={() => setUpdateCNPJVisible(false)}
-            />
-            <UpdateEmail
-                visible={updateEmailVisible}
-                onClose={() => setUpdateEmailVisible(false)}
+                instituicaoId={user.uid}
+                currentCNPJ={personalData.cnpj}
             />
             <UpdateCPF
                 visible={updateCPFVisible}
                 onClose={() => setUpdateCPFVisible(false)}
+                instituicaoId={user.uid}
+                currentCPF={personalData.cpf}
             />
         </View>
     );

@@ -7,7 +7,7 @@ import {
     StyleSheet,
 } from 'react-native';
 
-export default function UpdatePerfil({ visible, onClose, onEditName, onEditEmail, onEditDate }) {
+export default function UpdatePerfil({ visible, onClose, onEditName, onEditDate }) {
 
     return (
         <Modal
@@ -23,10 +23,6 @@ export default function UpdatePerfil({ visible, onClose, onEditName, onEditEmail
 
                     <TouchableOpacity style={styles.optionButton} onPress={onEditName}>
                         <Text style={styles.optionText}>Nome</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.optionButton} onPress={onEditEmail}>
-                        <Text style={styles.optionText}>Email</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={styles.optionButton} onPress={onEditDate}>
