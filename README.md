@@ -22,6 +22,7 @@ O PILHADOS oferece funcionalidades focadas na facilidade de uso e na otimizaçã
     * ✅ **Usuários Individuais:** Agendam coletas, acessam dicas ecológicas e acompanham notícias de ONGs parceiras.
     * 🏢 **Instituições (Escolas, ONGs, Órgãos Públicos):** Login otimizado para agendamentos em parceria com as prefeituras.
 * **Conteúdo Educativo:** Acesso a dicas ecológicas e notícias para promover a conscientização sobre a sustentabilidade.
+* * **Planilha de dados:** O aplicativo organiza os dados em uma tabela para que os coletores saibam onde e o que vão coletar. (Link da planilha: https://docs.google.com/spreadsheets/d/1AqGucc5RnXXYv8SyMe-6O0WtKgvsMgbvQ1VMsyeZYQ8/edit?usp=sharing) 
 
 ---
 
@@ -69,6 +70,6 @@ Buscamos garantir maior alcance e a destinação adequada do e-lixo, firmando pa
 
 ## 📌 Status do Projeto
 
-> **Status: Em Desenvolvimento!!!** 
+> **Status: Concluído!!!** 
 
 
